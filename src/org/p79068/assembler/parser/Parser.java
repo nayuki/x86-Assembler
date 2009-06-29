@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.p79068.assembler.Program;
 import org.p79068.assembler.Statement;
+import org.p79068.assembler.operand.Label;
 import org.p79068.assembler.operand.Operand;
 
 
@@ -36,6 +37,8 @@ public final class Parser {
 						operands.add(Operand.parseOperand(tokenizer.nextToken().getText()));
 					else if (tokenizer.check(TokenType.DECIMAL))
 						operands.add(Operand.parseOperand(tokenizer.nextToken().getText()));
+					else if (tokenizer.check(TokenType.NAME))
+						operands.add(new Label(tokenizer.nextToken().getText()));
 					else
 						throw new RuntimeException();
 				}
