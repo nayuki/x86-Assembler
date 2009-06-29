@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.p79068.assembler.InstructionStatement;
+import org.p79068.assembler.LabelStatement;
 import org.p79068.assembler.Program;
 import org.p79068.assembler.operand.Label;
 import org.p79068.assembler.operand.Operand;
@@ -23,7 +24,8 @@ public final class Parser {
 				break;
 			
 			while (tokenizer.check(TokenType.LABEL)) {
-				program.addLabel(tokenizer.nextToken().getText(), 0);
+				String name = tokenizer.nextToken().getText();
+				program.addStatement(new LabelStatement(name));
 			}
 			
 			if (tokenizer.check(TokenType.NAME)) {
