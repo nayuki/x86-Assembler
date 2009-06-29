@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
 
+import org.p79068.assembler.InstructionStatement;
 import org.p79068.assembler.Program;
 import org.p79068.assembler.Statement;
 import org.p79068.assembler.operand.Operand;
@@ -23,10 +24,13 @@ public final class Assembler {
 		
 		try {
 			for (Statement st : program.getStatements()) {
-				String mnemonic = st.getMnemonic();
-				Operand[] operands = st.getOperands();
-				byte[] machinecode = CodeGenerator.getMachineCode(patterntable, mnemonic, operands);
-				out.write(machinecode);
+				if (st instanceof InstructionStatement) {
+					InstructionStatement ist = (InstructionStatement)st;
+					String mnemonic = ist.getMnemonic();
+					Operand[] operands = ist.getOperands();
+					byte[] machinecode = CodeGenerator.getMachineCode(patterntable, mnemonic, operands);
+					out.write(machinecode);
+				}
 			}
 		} finally {
 			out.close();

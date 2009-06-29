@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.p79068.assembler.InstructionStatement;
 import org.p79068.assembler.Program;
-import org.p79068.assembler.Statement;
 import org.p79068.assembler.operand.Label;
 import org.p79068.assembler.operand.Operand;
 
@@ -43,7 +43,7 @@ public final class Parser {
 						throw new RuntimeException();
 				}
 				
-				program.addStatement(new Statement(mnemonic, operands.toArray(new Operand[operands.size()])));
+				program.addStatement(new InstructionStatement(mnemonic, operands.toArray(new Operand[operands.size()])));
 			}
 			
 			if (tokenizer.check(TokenType.NEWLINE))
