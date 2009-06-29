@@ -20,6 +20,19 @@ public class LabelStatement extends Statement {
 	}
 	
 	
+	public boolean equals(Object obj) {
+		if (!(obj instanceof LabelStatement))
+			return false;
+		else
+			return name.equals(((LabelStatement)obj).name);
+	}
+	
+	
+	public int hashCode() {
+		return name.hashCode();
+	}
+	
+	
 	public String toString() {
 		return name;
 	}

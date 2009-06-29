@@ -1,5 +1,7 @@
 package org.p79068.assembler;
 
+import java.util.Arrays;
+
 import org.p79068.assembler.operand.Operand;
 
 
@@ -25,9 +27,23 @@ public class InstructionStatement extends Statement {
 	}
 	
 	
-	
 	public Operand[] getOperands() {
 		return operands;
+	}
+	
+	
+	public boolean equals(Object obj) {
+		if (!(obj instanceof LabelStatement))
+			return false;
+		else {
+			InstructionStatement ist = (InstructionStatement)obj;
+			return mnemonic.equals(ist.mnemonic) && Arrays.deepEquals(operands, ist.operands);
+		}
+	}
+	
+	
+	public int hashCode() {
+		return mnemonic.hashCode() + Arrays.deepHashCode(operands);
 	}
 	
 	
