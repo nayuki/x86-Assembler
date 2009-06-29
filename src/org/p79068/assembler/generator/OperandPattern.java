@@ -15,6 +15,8 @@ public abstract class OperandPattern {
 	public static OperandPattern IMM16 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is16Bit(); } };
 	public static OperandPattern IMM32 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Immediate; } };
 	
+	public static OperandPattern IMM8S = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).isSigned8Bit(); } };
+	
 	public static OperandPattern IMM_VAL_1 = new LiteralOperandPattern(new Immediate(1));
 	public static OperandPattern IMM_VAL_3 = new LiteralOperandPattern(new Immediate(3));
 	
