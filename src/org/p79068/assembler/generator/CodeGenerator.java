@@ -39,14 +39,14 @@ public final class CodeGenerator {
 		
 		// Append immediate operands if necessary
 		for (int i = 0; i < patt.operands.length; i++) {
-			OperandSlot slot = patt.operands[i];
-			if (slot == OperandSlot.IMM8) {
+			OperandPattern slot = patt.operands[i];
+			if (slot == OperandPattern.IMM8) {
 				int value = ((Immediate)operands[i]).getValue();
 				result = concatenate(result, new byte[]{(byte)(value >>> 0)});
-			} else if (slot == OperandSlot.IMM16) {
+			} else if (slot == OperandPattern.IMM16) {
 				int value = ((Immediate)operands[i]).getValue();
 				result = concatenate(result, new byte[]{(byte)(value >>> 0), (byte)(value >>> 8)});
-			} else if (slot == OperandSlot.IMM32) {
+			} else if (slot == OperandPattern.IMM32) {
 				int value = ((Immediate)operands[i]).getValue();
 				result = concatenate(result, new byte[]{(byte)(value >>> 0), (byte)(value >>> 8), (byte)(value >>> 16), (byte)(value >>> 24)});
 			}
