@@ -1,6 +1,5 @@
 package org.p79068.assembler;
 
-import org.p79068.assembler.generator.InstructionPattern;
 import org.p79068.assembler.operand.Operand;
 
 
@@ -9,11 +8,6 @@ public class InstructionStatement extends Statement {
 	private String mnemonic;
 	
 	private Operand[] operands;
-	
-	
-	private int position;
-	
-	private InstructionPattern matchedPattern;
 	
 	
 	
@@ -34,16 +28,6 @@ public class InstructionStatement extends Statement {
 	
 	public Operand[] getOperands() {
 		return operands;
-	}
-	
-	
-	public int getPosition() {
-		return position;
-	}
-	
-	
-	public InstructionPattern getMatchedPattern() {
-		return matchedPattern;
 	}
 	
 	
