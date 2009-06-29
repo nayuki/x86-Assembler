@@ -57,6 +57,9 @@ public final class Parser {
 	
 	
 	
+	/**
+	 * Not instantiable.
+	 */
 	private Parser() {}
 	
 }

@@ -208,6 +208,9 @@ public final class CodeGenerator {
 	
 	
 	
+	/**
+	 * Not instantiable.
+	 */
 	private CodeGenerator() {}
 	
 }

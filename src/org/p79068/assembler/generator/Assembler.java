@@ -35,6 +35,9 @@ public final class Assembler {
 	
 	
 	
+	/**
+	 * Not instantiable.
+	 */
 	private Assembler() {}
 	
 }

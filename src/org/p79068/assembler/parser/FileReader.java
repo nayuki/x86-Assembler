@@ -35,6 +35,9 @@ final class FileReader {
 	
 	
 	
+	/**
+	 * Not instantiable.
+	 */
 	private FileReader() {}
 	
 }

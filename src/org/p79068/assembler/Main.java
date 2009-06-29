@@ -19,6 +19,9 @@ public final class Main {
 	
 	
 	
+	/**
+	 * Not instantiable.
+	 */
 	private Main() {}
 	
 }
