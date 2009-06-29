@@ -5,11 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.p79068.assembler.operand.OperandSizeMode;
-import org.p79068.assembler.operand.OperandSlot;
 
-import static org.p79068.assembler.operand.OperandSlot.*;
-import static org.p79068.assembler.operand.OperandSizeMode.*;
+import static org.p79068.assembler.generator.OperandSizeMode.*;
+import static org.p79068.assembler.generator.OperandSlot.*;
 
 
 public final class InstructionPattern {

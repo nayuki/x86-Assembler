@@ -1,29 +1,15 @@
-package org.p79068.assembler.operand;
+package org.p79068.assembler.generator;
+
+import org.p79068.assembler.operand.Immediate;
+import org.p79068.assembler.operand.Memory32;
+import org.p79068.assembler.operand.Operand;
+import org.p79068.assembler.operand.Register16;
+import org.p79068.assembler.operand.Register32;
+import org.p79068.assembler.operand.Register8;
+import org.p79068.assembler.operand.SegmentRegister;
 
 
 public abstract class OperandSlot {
-	
-	public abstract boolean matches(Operand operand);
-	
-	
-	
-	private static class LiteralOperandSlot extends OperandSlot {
-		
-		private Operand literal;
-		
-		
-		public LiteralOperandSlot(Operand literal) {
-			this.literal = literal;
-		}
-		
-		@Override
-		public boolean matches(Operand operand) {
-			return operand.equals(literal);
-		}
-		
-	}
-	
-	
 	
 	public static OperandSlot IMM8 = new OperandSlot() { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is8Bit(); } };
 	public static OperandSlot IMM16 = new OperandSlot() { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is16Bit(); } };
@@ -77,5 +63,28 @@ public abstract class OperandSlot {
 	public static OperandSlot FS = new LiteralOperandSlot(SegmentRegister.FS_REGISTER);
 	public static OperandSlot GS = new LiteralOperandSlot(SegmentRegister.GS_REGISTER);
 	public static OperandSlot SS = new LiteralOperandSlot(SegmentRegister.SS_REGISTER);
+	
+	
+	
+	public abstract boolean matches(Operand operand);
+	
+	
+	
+	
+	private static class LiteralOperandSlot extends OperandSlot {
+		
+		private Operand literal;
+		
+		
+		public LiteralOperandSlot(Operand literal) {
+			this.literal = literal;
+		}
+		
+		@Override
+		public boolean matches(Operand operand) {
+			return operand.equals(literal);
+		}
+		
+	}
 	
 }

@@ -5,8 +5,6 @@ import java.util.Set;
 import org.p79068.assembler.operand.Immediate;
 import org.p79068.assembler.operand.Memory32;
 import org.p79068.assembler.operand.Operand;
-import org.p79068.assembler.operand.OperandSizeMode;
-import org.p79068.assembler.operand.OperandSlot;
 import org.p79068.assembler.operand.Register;
 import org.p79068.assembler.operand.Register32;
 

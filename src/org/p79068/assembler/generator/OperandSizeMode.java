@@ -1,4 +1,4 @@
-package org.p79068.assembler.operand;
+package org.p79068.assembler.generator;
 
 
 public enum OperandSizeMode {
