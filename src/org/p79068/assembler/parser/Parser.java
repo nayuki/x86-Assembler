@@ -32,9 +32,17 @@ public final class Parser {
 				String mnemonic = tokenizer.nextToken().getText();
 				
 				List<Operand> operands = new ArrayList<Operand>();
+				boolean expectcomma = false;
 				while (!tokenizer.check(TokenType.NEWLINE)) {
-					if (tokenizer.check(TokenType.COMMA))
+					if (!expectcomma) {
+						if (tokenizer.check(TokenType.COMMA))
+							throw new RuntimeException();
+					} else {
+						if (!tokenizer.check(TokenType.COMMA))
+							throw new RuntimeException();
 						tokenizer.nextToken();
+					}
+					
 					if (tokenizer.check(TokenType.REGISTER))
 						operands.add(Operand.parseOperand(tokenizer.nextToken().getText()));
 					else if (tokenizer.check(TokenType.DECIMAL))
@@ -43,6 +51,7 @@ public final class Parser {
 						operands.add(new Label(tokenizer.nextToken().getText()));
 					else
 						throw new RuntimeException();
+					expectcomma = true;
 				}
 				
 				program.addStatement(new InstructionStatement(mnemonic, operands.toArray(new Operand[operands.size()])));
