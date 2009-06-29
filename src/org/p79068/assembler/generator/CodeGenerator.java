@@ -206,4 +206,8 @@ public final class CodeGenerator {
 		return result;
 	}
 	
+	
+	
+	private CodeGenerator() {}
+	
 }

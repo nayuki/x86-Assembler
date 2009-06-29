@@ -33,4 +33,8 @@ public final class Assembler {
 		}
 	}
 	
+	
+	
+	private Assembler() {}
+	
 }

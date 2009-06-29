@@ -52,4 +52,8 @@ public final class Parser {
 		return program;
 	}
 	
+	
+	
+	private Parser() {}
+	
 }

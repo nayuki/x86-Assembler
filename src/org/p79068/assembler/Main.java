@@ -17,4 +17,8 @@ public final class Main {
 		Assembler.assembleToFile(program, outputfile);
 	}
 	
+	
+	
+	private Main() {}
+	
 }

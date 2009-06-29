@@ -33,4 +33,8 @@ final class FileReader {
 		return sb.toString();
 	}
 	
+	
+	
+	private FileReader() {}
+	
 }
