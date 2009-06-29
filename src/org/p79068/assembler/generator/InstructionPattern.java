@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-
 import static org.p79068.assembler.generator.OperandSizeMode.*;
 import static org.p79068.assembler.generator.OperandSlot.*;
 
@@ -354,11 +353,9 @@ public final class InstructionPattern {
 		mode32.add(new InstructionPattern("popw"  , new OperandSlot[]{FS}                  , MODELESS, new int[]{0x0F, 0xA1}));
 		mode32.add(new InstructionPattern("pushw" , new OperandSlot[]{GS}                  , MODELESS, new int[]{0x0F, 0xA8}));
 		mode32.add(new InstructionPattern("popw"  , new OperandSlot[]{GS}                  , MODELESS, new int[]{0x0F, 0xA9}));
-		
 		mode32.add(new InstructionPattern("cmpxchgb", new OperandSlot[]{RM8, REG8}         , MODELESS, new int[]{0x0F, 0xB0}, new ModRM(0, 1)));
 		mode32.add(new InstructionPattern("cmpxchgw", new OperandSlot[]{RM16, REG16}       , MODE16  , new int[]{0x0F, 0xB1}, new ModRM(0, 1)));
 		mode32.add(new InstructionPattern("cmpxchgl", new OperandSlot[]{RM32, REG32}       , MODE32  , new int[]{0x0F, 0xB1}, new ModRM(0, 1)));
-		
 		mode32.add(new InstructionPattern("bswapw", new OperandSlot[]{REG16}               , MODE16  , new int[]{0x0F, 0xC8}, new RegisterInOpcode(0)));
 		mode32.add(new InstructionPattern("bswapl", new OperandSlot[]{REG32}               , MODE32  , new int[]{0x0F, 0xC8}, new RegisterInOpcode(0)));
 		
