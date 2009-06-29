@@ -36,10 +36,10 @@ public final class Parser {
 				while (!tokenizer.check(TokenType.NEWLINE)) {
 					if (!expectcomma) {
 						if (tokenizer.check(TokenType.COMMA))
-							throw new RuntimeException();
+							throw new RuntimeException("Expected operand, got comma");
 					} else {
 						if (!tokenizer.check(TokenType.COMMA))
-							throw new RuntimeException();
+							throw new RuntimeException("Expected comma");
 						tokenizer.nextToken();
 					}
 					
@@ -50,7 +50,7 @@ public final class Parser {
 					else if (tokenizer.check(TokenType.NAME))
 						operands.add(new Label(tokenizer.nextToken().getText()));
 					else
-						throw new RuntimeException();
+						throw new RuntimeException("Expected operand");
 					expectcomma = true;
 				}
 				
@@ -60,7 +60,7 @@ public final class Parser {
 			if (tokenizer.check(TokenType.NEWLINE))
 				tokenizer.nextToken();
 			else
-				throw new RuntimeException();
+				throw new RuntimeException("Expected newline");
 		}
 		
 		return program;
