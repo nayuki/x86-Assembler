@@ -2,7 +2,7 @@ package org.p79068.assembler.operand;
 
 
 /**
- * A segment register operand.
+ * A segment register operand. Immutable.
  */
 public final class SegmentRegister extends Register {
 	

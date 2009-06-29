@@ -2,7 +2,7 @@ package org.p79068.assembler.operand;
 
 
 /**
- * A 16-bit register operand.
+ * A 16-bit register operand. Immutable.
  */
 public final class Register16 extends Register {
 	

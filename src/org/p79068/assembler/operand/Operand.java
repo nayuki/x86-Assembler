@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 
 /**
- * An operand for an instruction.
+ * An operand for an instruction. Immutable.
  * @see Immediate
  * @see Register
  * @see Memory32

@@ -2,7 +2,7 @@ package org.p79068.assembler.operand;
 
 
 /**
- * A 32-bit memory reference.
+ * A 32-bit memory reference. Immutable.
  * @see Register32
  */
 public final class Memory32 extends Operand {

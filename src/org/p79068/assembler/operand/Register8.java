@@ -2,7 +2,7 @@ package org.p79068.assembler.operand;
 
 
 /**
- * An 8-bit register operand.
+ * An 8-bit register operand. Immutable.
  */
 public final class Register8 extends Register {
 	
