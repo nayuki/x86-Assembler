@@ -24,12 +24,12 @@ public final class Parser {
 				break;
 			
 			while (tokenizer.check(TokenType.LABEL)) {
-				String name = tokenizer.nextToken().getText();
+				String name = tokenizer.nextToken().text;
 				program.addStatement(new LabelStatement(name));
 			}
 			
 			if (tokenizer.check(TokenType.NAME)) {
-				String mnemonic = tokenizer.nextToken().getText();
+				String mnemonic = tokenizer.nextToken().text;
 				
 				List<Operand> operands = new ArrayList<Operand>();
 				boolean expectcomma = false;
@@ -44,11 +44,11 @@ public final class Parser {
 					}
 					
 					if (tokenizer.check(TokenType.REGISTER))
-						operands.add(Operand.parseOperand(tokenizer.nextToken().getText()));
+						operands.add(Operand.parseOperand(tokenizer.nextToken().text));
 					else if (tokenizer.check(TokenType.DECIMAL))
-						operands.add(Operand.parseOperand(tokenizer.nextToken().getText()));
+						operands.add(Operand.parseOperand(tokenizer.nextToken().text));
 					else if (tokenizer.check(TokenType.NAME))
-						operands.add(new Label(tokenizer.nextToken().getText()));
+						operands.add(new Label(tokenizer.nextToken().text));
 					else
 						throw new RuntimeException("Expected operand");
 					expectcomma = true;

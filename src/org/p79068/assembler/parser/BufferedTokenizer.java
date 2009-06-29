@@ -36,7 +36,7 @@ final class BufferedTokenizer {
 	
 	
 	public boolean check(TokenType type) {
-		return peek().getType() == type;
+		return peek().type == type;
 	}
 	
 }

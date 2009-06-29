@@ -3,9 +3,9 @@ package org.p79068.assembler.parser;
 
 final class Token {
 	
-	private TokenType type;
+	public final TokenType type;
 	
-	private String text;
+	public final String text;
 	
 	
 	
@@ -16,16 +16,6 @@ final class Token {
 		this.text = text;
 	}
 	
-	
-	
-	public TokenType getType() {
-		return type;
-	}
-	
-	
-	public String getText() {
-		return text;
-	}
 	
 	
 	public boolean equals(Object obj) {
