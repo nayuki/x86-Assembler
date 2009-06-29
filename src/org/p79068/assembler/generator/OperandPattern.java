@@ -68,23 +68,4 @@ public abstract class OperandPattern {
 	
 	public abstract boolean matches(Operand operand);
 	
-	
-	
-	
-	private static class LiteralOperandPattern extends OperandPattern {
-		
-		private Operand literal;
-		
-		
-		public LiteralOperandPattern(Operand literal) {
-			this.literal = literal;
-		}
-		
-		@Override
-		public boolean matches(Operand operand) {
-			return operand.equals(literal);
-		}
-		
-	}
-	
 }
