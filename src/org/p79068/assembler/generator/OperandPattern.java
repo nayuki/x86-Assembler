@@ -1,6 +1,6 @@
 package org.p79068.assembler.generator;
 
-import org.p79068.assembler.operand.Immediate;
+import org.p79068.assembler.operand.ImmediateValue;
 import org.p79068.assembler.operand.Memory32;
 import org.p79068.assembler.operand.Operand;
 import org.p79068.assembler.operand.Register16;
@@ -11,14 +11,14 @@ import org.p79068.assembler.operand.SegmentRegister;
 
 abstract class OperandPattern {
 	
-	public static OperandPattern IMM8  = new OperandPattern("imm8" ) { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is8Bit(); } };
-	public static OperandPattern IMM16 = new OperandPattern("imm16") { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is16Bit(); } };
-	public static OperandPattern IMM32 = new OperandPattern("imm32") { public boolean matches(Operand op) { return op instanceof Immediate; } };
+	public static OperandPattern IMM8  = new OperandPattern("imm8" ) { public boolean matches(Operand op) { return op instanceof ImmediateValue && ((ImmediateValue)op).is8Bit(); } };
+	public static OperandPattern IMM16 = new OperandPattern("imm16") { public boolean matches(Operand op) { return op instanceof ImmediateValue && ((ImmediateValue)op).is16Bit(); } };
+	public static OperandPattern IMM32 = new OperandPattern("imm32") { public boolean matches(Operand op) { return op instanceof ImmediateValue; } };
 	
-	public static OperandPattern IMM8S = new OperandPattern("imm8s") { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).isSigned8Bit(); } };
+	public static OperandPattern IMM8S = new OperandPattern("imm8s") { public boolean matches(Operand op) { return op instanceof ImmediateValue && ((ImmediateValue)op).isSigned8Bit(); } };
 	
-	public static OperandPattern IMM_VAL_1 = new LiteralOperandPattern(new Immediate(1));
-	public static OperandPattern IMM_VAL_3 = new LiteralOperandPattern(new Immediate(3));
+	public static OperandPattern IMM_VAL_1 = new LiteralOperandPattern(new ImmediateValue(1));
+	public static OperandPattern IMM_VAL_3 = new LiteralOperandPattern(new ImmediateValue(3));
 	
 	public static OperandPattern MEM = new OperandPattern("mem") { public boolean matches(Operand op) { return op instanceof Memory32; } };
 	

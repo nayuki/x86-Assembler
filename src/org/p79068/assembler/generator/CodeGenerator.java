@@ -2,7 +2,7 @@ package org.p79068.assembler.generator;
 
 import java.util.Set;
 
-import org.p79068.assembler.operand.Immediate;
+import org.p79068.assembler.operand.ImmediateValue;
 import org.p79068.assembler.operand.Memory32;
 import org.p79068.assembler.operand.Operand;
 import org.p79068.assembler.operand.Register;
@@ -41,13 +41,13 @@ final class CodeGenerator {
 		for (int i = 0; i < patt.operands.length; i++) {
 			OperandPattern slot = patt.operands[i];
 			if (slot == OperandPattern.IMM8) {
-				int value = ((Immediate)operands[i]).getValue();
+				int value = ((ImmediateValue)operands[i]).getValue();
 				result = concatenate(result, new byte[]{(byte)(value >>> 0)});
 			} else if (slot == OperandPattern.IMM16) {
-				int value = ((Immediate)operands[i]).getValue();
+				int value = ((ImmediateValue)operands[i]).getValue();
 				result = concatenate(result, new byte[]{(byte)(value >>> 0), (byte)(value >>> 8)});
 			} else if (slot == OperandPattern.IMM32) {
-				int value = ((Immediate)operands[i]).getValue();
+				int value = ((ImmediateValue)operands[i]).getValue();
 				result = concatenate(result, new byte[]{(byte)(value >>> 0), (byte)(value >>> 8), (byte)(value >>> 16), (byte)(value >>> 24)});
 			}
 		}
@@ -93,52 +93,49 @@ final class CodeGenerator {
 			
 		} else if (rm instanceof Memory32) {
 			Memory32 m = (Memory32)rm;
+			ImmediateValue disp = ((ImmediateValue)m.getDisplacement());
 			
 			if (m.getBase() == null && m.getIndex() == null) {  // disp32
 				mod = 0;
 				rmvalue = 5;
-				rest = m.getDisplacement().to4Bytes();
+				rest = disp.to4Bytes();
 				
-			} else if (m.getBase() != Register32.ESP_REGISTER && m.getBase() != Register32.EBP_REGISTER && m.getIndex() == null && m.getDisplacement().isZero()) {  // eax, ecx, edx, ebx, esi, edi
+			} else if (m.getBase() != Register32.ESP_REGISTER && m.getBase() != Register32.EBP_REGISTER && m.getIndex() == null && disp.isZero()) {  // eax, ecx, edx, ebx, esi, edi
 				mod = 0;
 				rmvalue = m.getBase().getRegisterNumber();
 				rest = new byte[0];
 				
-			} else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null && m.getDisplacement().isSigned8Bit()) {  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
+			} else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null && disp.isSigned8Bit()) {  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
 				mod = 1;
 				rmvalue = m.getBase().getRegisterNumber();
-				rest = m.getDisplacement().to1Byte();
+				rest = disp.to1Byte();
 				
 			} else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null) {  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp32
 				mod = 2;
 				rmvalue = m.getBase().getRegisterNumber();
-				rest = m.getDisplacement().to4Bytes();
+				rest = disp.to4Bytes();
 				
 			} else {  // SIB
 				rmvalue = 4;
 				
 				if (m.getBase() == null) {  // index*scale + disp32
 					mod = 0;
-					rest = m.getDisplacement().to4Bytes();
+					rest = disp.to4Bytes();
 					
-				} else if (m.getBase() != Register32.EBP_REGISTER && m.getDisplacement().isZero()) {  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
+				} else if (m.getBase() != Register32.EBP_REGISTER && disp.isZero()) {  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
 					mod = 0;
 					rest = new byte[0];
 					
-				} else if (m.getDisplacement().isSigned8Bit()) {  // base + index*scale + disp8
+				} else if (disp.isSigned8Bit()) {  // base + index*scale + disp8
 					mod = 1;
-					rest = m.getDisplacement().to1Byte();
+					rest = disp.to1Byte();
 					
 				} else {  // base + index*scale + disp32
 					mod = 2;
-					rest = m.getDisplacement().to4Bytes();
+					rest = disp.to4Bytes();
 				}
 				
-				int scale = getScaleNumber(m.getScale());
-				int index = getIndexNumber(m.getIndex());
-				int base = getBaseNumber(m.getBase());
-				
-				byte[] sib = {(byte)(scale << 6 | index << 3 | base << 0)};
+				byte[] sib = makeSIBByte(m);
 				rest = concatenate(sib, rest);
 			}
 			
@@ -154,10 +151,25 @@ final class CodeGenerator {
 			regopvalue = option.regOpcodeParameterIndex - 10;
 		
 		// Make ModR/M byte
-		byte[] modrm = {(byte)(mod << 6 | regopvalue << 3 | rmvalue << 0)};
+		byte[] modrm = makeModRMByte(mod, regopvalue, rmvalue);
 		
 		// Concatenate and return
 		return concatenate(modrm, rest);
+	}
+	
+	
+	private static byte[] makeModRMByte(int mod, int regop, int rm) {
+		if (mod < 0 || mod >= 4 || regop < 0 || regop >= 8 || rm < 0 || rm >= 8)
+			throw new IllegalArgumentException();
+		return new byte[]{(byte)(mod << 6 | regop << 3 | rm << 0)};
+	}
+	
+	
+	private static byte[] makeSIBByte(Memory32 mem) {
+		int scale = getScaleNumber(mem.getScale());
+		int index = getIndexNumber(mem.getIndex());
+		int base = getBaseNumber(mem.getBase());
+		return new byte[]{(byte)(scale << 6 | index << 3 | base << 0)};
 	}
 	
 	

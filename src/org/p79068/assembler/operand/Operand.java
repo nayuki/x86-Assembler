@@ -24,7 +24,7 @@ public class Operand {
 		if (result == null) result = Register16.parseOperand(op);
 		if (result == null) result = Register8.parseOperand(op);
 		if (result == null) result = SegmentRegister.parseOperand(op);
-		if (result == null) try { result = new Immediate(Integer.parseInt(op)); } catch (NumberFormatException e) {}
+		if (result == null) try { result = new ImmediateValue(Integer.parseInt(op)); } catch (NumberFormatException e) {}
 		
 		if (result == null) {
 			Matcher m = BASE_PATTERN.matcher(op);
@@ -32,7 +32,7 @@ public class Operand {
 				Operand base = parseOperand(m.group(1));
 				if (!(base instanceof Register32))
 					throw new IllegalArgumentException("Invalid base register");
-				result = new Memory32((Register32)base, null, 1, Immediate.ZERO);
+				result = new Memory32((Register32)base, null, 1, ImmediateValue.ZERO);
 			}
 		}
 		
@@ -45,7 +45,7 @@ public class Operand {
 					throw new IllegalArgumentException("Invalid base register");
 				if (!(index instanceof Register32))
 					throw new IllegalArgumentException("Invalid index register");
-				result = new Memory32((Register32)base, (Register32)index, 1, Immediate.ZERO);
+				result = new Memory32((Register32)base, (Register32)index, 1, ImmediateValue.ZERO);
 			}
 		}
 		

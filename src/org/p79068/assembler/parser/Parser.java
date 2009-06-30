@@ -9,6 +9,7 @@ import org.p79068.assembler.InstructionStatement;
 import org.p79068.assembler.LabelStatement;
 import org.p79068.assembler.Program;
 import org.p79068.assembler.operand.Immediate;
+import org.p79068.assembler.operand.ImmediateValue;
 import org.p79068.assembler.operand.Label;
 import org.p79068.assembler.operand.Memory32;
 import org.p79068.assembler.operand.Operand;
@@ -49,21 +50,21 @@ public final class Parser {
 					if (tokenizer.check(TokenType.REGISTER))
 						operands.add(Operand.parseOperand(tokenizer.nextToken().text));
 					else if (tokenizer.check(TokenType.DECIMAL)) {
-						Immediate op = (Immediate)Operand.parseOperand(tokenizer.nextToken().text);
+						ImmediateValue op = (ImmediateValue)Operand.parseOperand(tokenizer.nextToken().text);
 						Memory32 m = parseMemory(tokenizer, op);
 						if (m == null)
 							operands.add(op);
 						else
 							operands.add(m);
 					} else if (tokenizer.check(TokenType.NAME)) {
-						Immediate op = (Immediate)(Object)new Label(tokenizer.nextToken().text);
+						Label op = new Label(tokenizer.nextToken().text);
 						Memory32 m = parseMemory(tokenizer, op);
 						if (m == null)
 							operands.add(op);
 						else
 							operands.add(m);
 					} else if (tokenizer.check(TokenType.LEFT_PAREN))
-						operands.add(parseMemory(tokenizer, Immediate.ZERO));
+						operands.add(parseMemory(tokenizer, ImmediateValue.ZERO));
 					else
 						throw new RuntimeException("Expected operand");
 					expectcomma = true;

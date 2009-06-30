@@ -103,7 +103,7 @@ public final class Memory32 extends Operand {
 				sb.append("*").append(scale);
 		}
 		
-		if (displacement.getValue() != 0 || !hasTerm) {
+		if (displacement instanceof Label || displacement instanceof ImmediateValue && ((ImmediateValue)displacement).getValue() != 0 || !hasTerm) {
 			if (hasTerm) sb.append("+");
 			else hasTerm = true;
 			sb.append(displacement);

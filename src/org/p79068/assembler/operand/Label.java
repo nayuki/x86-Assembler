@@ -1,7 +1,7 @@
 package org.p79068.assembler.operand;
 
 
-public class Label extends Operand {
+public class Label extends Immediate {
 	
 	private String name;
 	
