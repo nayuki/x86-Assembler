@@ -8,8 +8,11 @@ import java.util.List;
 import org.p79068.assembler.InstructionStatement;
 import org.p79068.assembler.LabelStatement;
 import org.p79068.assembler.Program;
+import org.p79068.assembler.operand.Immediate;
 import org.p79068.assembler.operand.Label;
+import org.p79068.assembler.operand.Memory32;
 import org.p79068.assembler.operand.Operand;
+import org.p79068.assembler.operand.Register32;
 
 
 public final class Parser {
@@ -45,10 +48,22 @@ public final class Parser {
 					
 					if (tokenizer.check(TokenType.REGISTER))
 						operands.add(Operand.parseOperand(tokenizer.nextToken().text));
-					else if (tokenizer.check(TokenType.DECIMAL))
-						operands.add(Operand.parseOperand(tokenizer.nextToken().text));
-					else if (tokenizer.check(TokenType.NAME))
-						operands.add(new Label(tokenizer.nextToken().text));
+					else if (tokenizer.check(TokenType.DECIMAL)) {
+						Immediate op = (Immediate)Operand.parseOperand(tokenizer.nextToken().text);
+						Memory32 m = parseMemory(tokenizer, op);
+						if (m == null)
+							operands.add(op);
+						else
+							operands.add(m);
+					} else if (tokenizer.check(TokenType.NAME)) {
+						Immediate op = (Immediate)(Object)new Label(tokenizer.nextToken().text);
+						Memory32 m = parseMemory(tokenizer, op);
+						if (m == null)
+							operands.add(op);
+						else
+							operands.add(m);
+					} else if (tokenizer.check(TokenType.LEFT_PAREN))
+						operands.add(parseMemory(tokenizer, Immediate.ZERO));
 					else
 						throw new RuntimeException("Expected operand");
 					expectcomma = true;
@@ -64,6 +79,44 @@ public final class Parser {
 		}
 		
 		return program;
+	}
+	
+	
+	
+	private static Memory32 parseMemory(BufferedTokenizer tokenizer, Immediate displacement) {
+		if (tokenizer.check(TokenType.LEFT_PAREN))
+			tokenizer.nextToken();
+		else
+			return null;
+		
+		Register32 base = null;
+		Register32 index = null;
+		int scale = 1;
+		
+		if (tokenizer.check(TokenType.REGISTER))
+			base = (Register32)Operand.parseOperand(tokenizer.nextToken().text);
+		
+		if (tokenizer.check(TokenType.COMMA)) {
+			tokenizer.nextToken();
+			
+			if (tokenizer.check(TokenType.REGISTER))
+				index = (Register32)Operand.parseOperand(tokenizer.nextToken().text);
+			
+			if (tokenizer.check(TokenType.COMMA)) {
+				tokenizer.nextToken();
+				
+				if (tokenizer.check(TokenType.DECIMAL))
+					scale = Integer.parseInt(tokenizer.nextToken().text);
+			}
+			
+		}
+		
+		if (tokenizer.check(TokenType.RIGHT_PAREN)) {
+			tokenizer.nextToken();
+		} else
+			throw new RuntimeException();
+		
+		return new Memory32(base, scale, index, displacement);
 	}
 	
 	
