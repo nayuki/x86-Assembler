@@ -14,15 +14,18 @@ import java.util.regex.Pattern;
 
 final class Tokenizer {
 	
-	private String sourceCode;
-	
-	private int offset;
-	
-	
-	
-	public Tokenizer(File file) throws IOException {
-		sourceCode = read(file);
-		offset = 0;
+	private static class TokenizerPattern {
+		
+		public final Pattern pattern;
+		
+		public final TokenType tokenType;
+		
+		
+		public TokenizerPattern(String pattern, TokenType tokenType) {
+			this.pattern = Pattern.compile(pattern);
+			this.tokenType = tokenType;
+		}
+		
 	}
 	
 	
@@ -49,49 +52,6 @@ final class Tokenizer {
 	}
 	
 	
-	public Token nextToken() {
-		for (TokenizerPattern pat : patterns) {
-			String match = match(pat.pattern);
-			if (match != null) {
-				offset += match.length();
-				if (pat.tokenType != null)
-					return new Token(pat.tokenType, match);
-			}
-		}
-		throw new RuntimeException();
-	}
-	
-	
-	
-	private String match(Pattern pattern) {
-		Matcher m = pattern.matcher(sourceCode);
-		m.region(offset, sourceCode.length());
-		if (!m.find())
-			return null;
-		else
-			return m.group();
-	}
-	
-	
-	
-	
-	private static class TokenizerPattern {
-		
-		public final Pattern pattern;
-		
-		public final TokenType tokenType;
-		
-		
-		public TokenizerPattern(String pattern, TokenType tokenType) {
-			this.pattern = Pattern.compile(pattern);
-			this.tokenType = tokenType;
-		}
-		
-	}
-	
-	
-	
-	
 	/**
 	 * Reads the contents of the specified file, appends a newline character ({@code '\n'}), and returns the result.
 	 * @param file
@@ -113,6 +73,43 @@ final class Tokenizer {
 		sb.append('\n');
 		
 		return sb.toString();
+	}
+	
+	
+	
+	private String sourceCode;
+	
+	private int offset;
+	
+	
+	
+	public Tokenizer(File file) throws IOException {
+		sourceCode = read(file);
+		offset = 0;
+	}
+	
+	
+	
+	public Token nextToken() {
+		for (TokenizerPattern pat : patterns) {
+			String match = match(pat.pattern);
+			if (match != null) {
+				offset += match.length();
+				if (pat.tokenType != null)
+					return new Token(pat.tokenType, match);
+			}
+		}
+		throw new RuntimeException();
+	}
+	
+	
+	private String match(Pattern pattern) {
+		Matcher m = pattern.matcher(sourceCode);
+		m.region(offset, sourceCode.length());
+		if (!m.find())
+			return null;
+		else
+			return m.group();
 	}
 	
 }
