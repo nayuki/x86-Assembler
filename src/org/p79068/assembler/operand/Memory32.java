@@ -24,11 +24,11 @@ public final class Memory32 extends Operand {
 	/**
 	 * Constructs a memory32 operand with the specified base, index, scale, and displacement. The base register may be {@code null}. The index register may be {@code null}, but must not be {@link Register32}.ESP_REGISTER. The scale must be either 1, 2, 4, or 8. The displacement must not be {@code null}.
 	 * @param base the base register, possibly {@code null}
-	 * @param scale the index scale, either 1, 2, 4, or 8
 	 * @param index the index register, possibly {@code null}
+	 * @param scale the index scale, either 1, 2, 4, or 8
 	 * @param displacement the displacement, which is not {@code null}
 	 */
-	public Memory32(Register32 base, int scale, Register32 index, Immediate displacement) {
+	public Memory32(Register32 base, Register32 index, int scale, Immediate displacement) {
 		if (index == Register32.ESP_REGISTER)
 			throw new IllegalArgumentException("Invalid index register");
 		if (scale != 1 && scale != 2 && scale != 4 && scale != 8)

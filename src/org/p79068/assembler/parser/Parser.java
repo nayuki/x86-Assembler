@@ -116,7 +116,7 @@ public final class Parser {
 		} else
 			throw new RuntimeException();
 		
-		return new Memory32(base, scale, index, displacement);
+		return new Memory32(base, index, scale, displacement);
 	}
 	
 	

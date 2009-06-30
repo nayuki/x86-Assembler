@@ -32,7 +32,7 @@ public class Operand {
 				Operand base = parseOperand(m.group(1));
 				if (!(base instanceof Register32))
 					throw new IllegalArgumentException("Invalid base register");
-				result = new Memory32((Register32)base, 1, null, Immediate.ZERO);
+				result = new Memory32((Register32)base, null, 1, Immediate.ZERO);
 			}
 		}
 		
@@ -45,7 +45,7 @@ public class Operand {
 					throw new IllegalArgumentException("Invalid base register");
 				if (!(index instanceof Register32))
 					throw new IllegalArgumentException("Invalid index register");
-				result = new Memory32((Register32)base, 1, (Register32)index, Immediate.ZERO);
+				result = new Memory32((Register32)base, (Register32)index, 1, Immediate.ZERO);
 			}
 		}
 		
