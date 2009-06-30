@@ -405,13 +405,42 @@ public final class InstructionPattern {
 		mode32.add(new InstructionPattern("cmpxchgb", new OperandPattern[]{RM8, REG8}         , MODELESS, new int[]{0x0F, 0xB0}, new ModRM(0, 1)));
 		mode32.add(new InstructionPattern("cmpxchgw", new OperandPattern[]{RM16, REG16}       , MODE16  , new int[]{0x0F, 0xB1}, new ModRM(0, 1)));
 		mode32.add(new InstructionPattern("cmpxchgl", new OperandPattern[]{RM32, REG32}       , MODE32  , new int[]{0x0F, 0xB1}, new ModRM(0, 1)));
+		mode32.add(new InstructionPattern("lssw"  , new OperandPattern[]{REG16, MEM}          , MODE16  , new int[]{0x0F, 0xB2}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("lssl"  , new OperandPattern[]{REG32, MEM}          , MODE32  , new int[]{0x0F, 0xB2}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("btrw"  , new OperandPattern[]{RM16, REG16}         , MODE16  , new int[]{0x0F, 0xB3}, new ModRM(0, 1)));
+		mode32.add(new InstructionPattern("btrl"  , new OperandPattern[]{RM32, REG32}         , MODE32  , new int[]{0x0F, 0xB3}, new ModRM(0, 1)));
+		mode32.add(new InstructionPattern("lfsw"  , new OperandPattern[]{REG16, MEM}          , MODE16  , new int[]{0x0F, 0xB4}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("lfsl"  , new OperandPattern[]{REG32, MEM}          , MODE32  , new int[]{0x0F, 0xB4}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("lgsw"  , new OperandPattern[]{REG16, MEM}          , MODE16  , new int[]{0x0F, 0xB5}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("lgsl"  , new OperandPattern[]{REG32, MEM}          , MODE32  , new int[]{0x0F, 0xB5}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("btw"   , new OperandPattern[]{RM16, IMM8}          , MODE16  , new int[]{0x0F, 0xBA}, new ModRM(0, 14)));
+		mode32.add(new InstructionPattern("btl"   , new OperandPattern[]{RM32, IMM8}          , MODE32  , new int[]{0x0F, 0xBA}, new ModRM(0, 14)));
+		mode32.add(new InstructionPattern("btsw"  , new OperandPattern[]{RM16, IMM8}          , MODE16  , new int[]{0x0F, 0xBA}, new ModRM(0, 15)));
+		mode32.add(new InstructionPattern("btsl"  , new OperandPattern[]{RM32, IMM8}          , MODE32  , new int[]{0x0F, 0xBA}, new ModRM(0, 15)));
+		mode32.add(new InstructionPattern("btrw"  , new OperandPattern[]{RM16, IMM8}          , MODE16  , new int[]{0x0F, 0xBA}, new ModRM(0, 16)));
+		mode32.add(new InstructionPattern("btrl"  , new OperandPattern[]{RM32, IMM8}          , MODE32  , new int[]{0x0F, 0xBA}, new ModRM(0, 16)));
+		mode32.add(new InstructionPattern("btcw"  , new OperandPattern[]{RM16, IMM8}          , MODE16  , new int[]{0x0F, 0xBA}, new ModRM(0, 17)));
+		mode32.add(new InstructionPattern("btcl"  , new OperandPattern[]{RM32, IMM8}          , MODE32  , new int[]{0x0F, 0xBA}, new ModRM(0, 17)));
+		mode32.add(new InstructionPattern("btcw"  , new OperandPattern[]{RM16, REG16}         , MODE16  , new int[]{0x0F, 0xBB}, new ModRM(0, 1)));
+		mode32.add(new InstructionPattern("btcl"  , new OperandPattern[]{RM32, REG32}         , MODE32  , new int[]{0x0F, 0xBB}, new ModRM(0, 1)));
+		mode32.add(new InstructionPattern("bsfw"  , new OperandPattern[]{REG16, RM16}         , MODE16  , new int[]{0x0F, 0xBC}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("bsfl"  , new OperandPattern[]{REG32, RM32}         , MODE32  , new int[]{0x0F, 0xBC}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("bsrw"  , new OperandPattern[]{REG16, RM16}         , MODE16  , new int[]{0x0F, 0xBD}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("bsrl"  , new OperandPattern[]{REG32, RM32}         , MODE32  , new int[]{0x0F, 0xBD}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("movsxwb", new OperandPattern[]{RM16, RM8}          , MODE16  , new int[]{0x0F, 0xBE}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("movsxlb", new OperandPattern[]{RM32, RM8}          , MODE32  , new int[]{0x0F, 0xBE}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("movsxww", new OperandPattern[]{RM16, RM16}         , MODE16  , new int[]{0x0F, 0xBF}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("movsxlw", new OperandPattern[]{RM32, RM16}         , MODE32  , new int[]{0x0F, 0xBF}, new ModRM(1, 0)));
+		mode32.add(new InstructionPattern("xaddb" , new OperandPattern[]{RM8, REG8}           , MODELESS, new int[]{0x0F, 0xC0}, new ModRM(0, 1)));
+		mode32.add(new InstructionPattern("xaddw" , new OperandPattern[]{RM16, REG16}         , MODE16  , new int[]{0x0F, 0xC1}, new ModRM(0, 1)));
+		mode32.add(new InstructionPattern("xaddl" , new OperandPattern[]{RM32, REG32}         , MODE32  , new int[]{0x0F, 0xC1}, new ModRM(0, 1)));
+		mode32.add(new InstructionPattern("cmpxchg8b", new OperandPattern[]{MEM}                , MODELESS, new int[]{0x0F, 0xC7}, new ModRM(0, 11)));
 		mode32.add(new InstructionPattern("bswapw", new OperandPattern[]{REG16}               , MODE16  , new int[]{0x0F, 0xC8}, new RegisterInOpcode(0)));
 		mode32.add(new InstructionPattern("bswapl", new OperandPattern[]{REG32}               , MODE32  , new int[]{0x0F, 0xC8}, new RegisterInOpcode(0)));
 		mode32.add(new InstructionPattern("movzxwb", new OperandPattern[]{RM16, RM8}          , MODE16  , new int[]{0x0F, 0xB6}, new ModRM(1, 0)));
 		mode32.add(new InstructionPattern("movzxlb", new OperandPattern[]{RM32, RM8}          , MODE32  , new int[]{0x0F, 0xB6}, new ModRM(1, 0)));
 		mode32.add(new InstructionPattern("movzxww", new OperandPattern[]{RM16, RM16}         , MODE16  , new int[]{0x0F, 0xB7}, new ModRM(1, 0)));
 		mode32.add(new InstructionPattern("movzxlw", new OperandPattern[]{RM32, RM16}         , MODE32  , new int[]{0x0F, 0xB7}, new ModRM(1, 0)));
-		
 		
 		MODE32_PATTERN_TABLE = Collections.unmodifiableSet(mode32);
 	}
