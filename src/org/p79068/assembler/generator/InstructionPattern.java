@@ -542,20 +542,24 @@ public final class InstructionPattern {
 			throw new IllegalArgumentException("Invalid register/opcode constant value");
 		else if (option.regOpcodeParameterIndex >= operands.length)
 			throw new IndexOutOfBoundsException("Parameter index out of bounds");
+		else if (!isRegisterOperandSlot(operands[option.regOpcodeParameterIndex]))
+			throw new IllegalArgumentException("Option does not match operand");
 	}
 	
 	
 	private static boolean isRegisterMemoryOperandSlot(OperandPattern opslot) {
 		return opslot == RM8
 		    || opslot == RM16
-		    || opslot == RM32;
+		    || opslot == RM32
+		    || opslot == MEM;
 	}
 	
 	
 	private static boolean isRegisterOperandSlot(OperandPattern opslot) {
 		return opslot == REG8
 		    || opslot == REG16
-		    || opslot == REG32;
+		    || opslot == REG32
+		    || opslot == SREG;
 	}
 	
 	
