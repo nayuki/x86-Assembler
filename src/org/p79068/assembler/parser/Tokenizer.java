@@ -1,7 +1,11 @@
 package org.p79068.assembler.parser;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -17,7 +21,7 @@ final class Tokenizer {
 	
 	
 	public Tokenizer(File file) throws IOException {
-		sourceCode = FileReader.read(file);
+		sourceCode = read(file);
 		offset = 0;
 	}
 	
@@ -83,6 +87,32 @@ final class Tokenizer {
 			this.tokenType = tokenType;
 		}
 		
+	}
+	
+	
+	
+	
+	/**
+	 * Reads the contents of the specified file, appends a newline character ({@code '\n'}), and returns the result.
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	private static String read(File file) throws IOException {
+		Reader in = new InputStreamReader(new BufferedInputStream(new FileInputStream(file)));
+		
+		StringBuilder sb = new StringBuilder();
+		char[] buffer = new char[32 * 1024];
+		while (true) {
+			int read = in.read(buffer);
+			if (read == -1)
+				break;
+			sb.append(buffer, 0, read);
+		}
+		
+		sb.append('\n');
+		
+		return sb.toString();
 	}
 	
 }
