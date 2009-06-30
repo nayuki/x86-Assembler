@@ -80,6 +80,24 @@ public final class Memory32 extends Operand {
 	}
 	
 	
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Memory32))
+			return false;
+		else {
+			Memory32 other = (Memory32)obj;
+			return base == other.base
+			    && index == other.index
+			    && scale == other.scale
+			    && displacement.equals(other.displacement);
+		}
+	}
+	
+	
+	public int hashCode() {
+		return base.hashCode() + index.hashCode() + scale + displacement.hashCode();
+	}
+	
+	
 	/**
 	 * Returns a string representation of this memory reference.
 	 * @return a string representation of this memory reference
