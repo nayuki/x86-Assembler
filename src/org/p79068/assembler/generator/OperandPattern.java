@@ -11,26 +11,25 @@ import org.p79068.assembler.operand.SegmentRegister;
 
 public abstract class OperandPattern {
 	
-	public static OperandPattern IMM8 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is8Bit(); } };
-	public static OperandPattern IMM16 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is16Bit(); } };
-	public static OperandPattern IMM32 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Immediate; } };
+	public static OperandPattern IMM8  = new OperandPattern("imm8" ) { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is8Bit(); } };
+	public static OperandPattern IMM16 = new OperandPattern("imm16") { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is16Bit(); } };
+	public static OperandPattern IMM32 = new OperandPattern("imm32") { public boolean matches(Operand op) { return op instanceof Immediate; } };
 	
-	public static OperandPattern IMM8S = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).isSigned8Bit(); } };
+	public static OperandPattern IMM8S = new OperandPattern("imm8s") { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).isSigned8Bit(); } };
 	
 	public static OperandPattern IMM_VAL_1 = new LiteralOperandPattern(new Immediate(1));
 	public static OperandPattern IMM_VAL_3 = new LiteralOperandPattern(new Immediate(3));
 	
-	public static OperandPattern RM8 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Register8 || op instanceof Memory32; } };
-	public static OperandPattern RM16 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Register16 || op instanceof Memory32; } };
-	public static OperandPattern RM32 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Register32 || op instanceof Memory32; } };
+	public static OperandPattern MEM = new OperandPattern("mem") { public boolean matches(Operand op) { return op instanceof Memory32; } };
 	
-	public static OperandPattern MEM = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Memory32; } };
+	public static OperandPattern RM8  = new OperandPattern("r/m8" ) { public boolean matches(Operand op) { return op instanceof Register8  || op instanceof Memory32; } };
+	public static OperandPattern RM16 = new OperandPattern("r/m16") { public boolean matches(Operand op) { return op instanceof Register16 || op instanceof Memory32; } };
+	public static OperandPattern RM32 = new OperandPattern("r/m32") { public boolean matches(Operand op) { return op instanceof Register32 || op instanceof Memory32; } };
 	
-	public static OperandPattern REG8 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Register8; } };
-	public static OperandPattern REG16 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Register16; } };
-	public static OperandPattern REG32 = new OperandPattern() { public boolean matches(Operand op) { return op instanceof Register32; } };
-	
-	public static OperandPattern SREG = new OperandPattern() { public boolean matches(Operand op) { return op instanceof SegmentRegister; } };
+	public static OperandPattern REG8  = new OperandPattern("reg8" ) { public boolean matches(Operand op) { return op instanceof Register8; } };
+	public static OperandPattern REG16 = new OperandPattern("reg16") { public boolean matches(Operand op) { return op instanceof Register16; } };
+	public static OperandPattern REG32 = new OperandPattern("reg32") { public boolean matches(Operand op) { return op instanceof Register32; } };
+	public static OperandPattern SREG  = new OperandPattern("sreg")  { public boolean matches(Operand op) { return op instanceof SegmentRegister; } };
 	
 	public static OperandPattern AL = new LiteralOperandPattern(Register8.AL_REGISTER);
 	public static OperandPattern AH = new LiteralOperandPattern(Register8.AH_REGISTER);
@@ -68,6 +67,23 @@ public abstract class OperandPattern {
 	
 	
 	
+	private String name;
+	
+	
+	
+	public OperandPattern(String name) {
+		if (name == null)
+			throw new NullPointerException();
+		this.name = name;
+	}
+	
+	
+	
 	public abstract boolean matches(Operand operand);
+	
+	
+	public String toString() {
+		return name;
+	}
 	
 }

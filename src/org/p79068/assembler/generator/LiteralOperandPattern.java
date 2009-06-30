@@ -10,6 +10,7 @@ final class LiteralOperandPattern extends OperandPattern {
 	
 	
 	public LiteralOperandPattern(Operand literal) {
+		super(literal.toString());
 		this.literal = literal;
 	}
 	

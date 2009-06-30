@@ -501,6 +501,28 @@ public final class InstructionPattern {
 	
 	
 	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(mnemonic);
+		
+		if (operands.length > 0) {
+			sb.append("  ");
+			boolean initial = true;
+			for (OperandPattern op : operands) {
+				if (initial)
+					initial = false;
+				else
+					sb.append(", ");
+				sb.append(op);
+			}
+		}
+		
+		return sb.toString();
+	}
+	
+	
+	
 	private static void checkOption(RegisterInOpcode option, OperandPattern[] operands) {
 		if (option.parameterIndex >= operands.length)
 			throw new IndexOutOfBoundsException("Parameter index out of bounds");
