@@ -9,7 +9,7 @@ import org.p79068.assembler.operand.Register;
 import org.p79068.assembler.operand.Register32;
 
 
-public final class CodeGenerator {
+final class CodeGenerator {
 	
 	public static byte[] getMachineCode(Set<InstructionPattern> patterns, String mnemonic, Operand[] operands) {
 		// Get matching instruction pattern

@@ -1,7 +1,7 @@
 package org.p79068.assembler.generator;
 
 
-public enum OperandSizeMode {
+enum OperandSizeMode {
 	
 	MODE16,
 	

@@ -9,7 +9,7 @@ import org.p79068.assembler.operand.Register8;
 import org.p79068.assembler.operand.SegmentRegister;
 
 
-public abstract class OperandPattern {
+abstract class OperandPattern {
 	
 	public static OperandPattern IMM8  = new OperandPattern("imm8" ) { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is8Bit(); } };
 	public static OperandPattern IMM16 = new OperandPattern("imm16") { public boolean matches(Operand op) { return op instanceof Immediate && ((Immediate)op).is16Bit(); } };

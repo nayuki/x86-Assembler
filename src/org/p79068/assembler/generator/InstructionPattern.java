@@ -454,16 +454,16 @@ public final class InstructionPattern {
 	
 	
 	
-	public String mnemonic;
+	public final String mnemonic;
 	
-	public OperandPattern[] operands;
+	public final OperandPattern[] operands;
 	
-	public OperandSizeMode operandSizeMode;
+	public final OperandSizeMode operandSizeMode;
 	
-	public InstructionOption[] options;
+	public final InstructionOption[] options;
 	
 	
-	public byte[] opcodes;
+	public final byte[] opcodes;
 	
 	
 	
