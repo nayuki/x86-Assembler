@@ -53,7 +53,7 @@ public class InstructionStatement extends Statement {
 		sb.append(mnemonic);
 		
 		if (operands.length > 0) {
-			sb.append("    ");
+			sb.append("  ");
 			
 			boolean initial = true;
 			for (Operand op : operands) {
