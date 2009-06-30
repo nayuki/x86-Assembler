@@ -10,11 +10,11 @@ public final class Memory32 extends Operand {
 	/** The base register, which may be {@code null}. */
 	private Register32 base;
 	
-	/** The scale, which is either 1, 2, 4, or 8. */
-	private int scale;
-	
 	/** The index register, which is not {@link Register32}.ESP_REGISTER, and may be {@code null}. */
 	private Register32 index;
+	
+	/** The scale, which is either 1, 2, 4, or 8. */
+	private int scale;
 	
 	/** The displacement, which is not {@code null}. */
 	private Immediate displacement;
@@ -37,8 +37,8 @@ public final class Memory32 extends Operand {
 			throw new NullPointerException();
 		
 		this.base = base;
-		this.scale = scale;
 		this.index = index;
+		this.scale = scale;
 		this.displacement = displacement;
 	}
 	
