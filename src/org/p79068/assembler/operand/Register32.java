@@ -46,19 +46,8 @@ public final class Register32 extends Register {
 	
 	
 	
-	private String name;
-	
-	
-	
 	private Register32(String name, int registerNumber) {
-		super(registerNumber);
-		this.name = name;
-	}
-	
-	
-	
-	public String toString() {
-		return name;
+		super(name, registerNumber);
 	}
 	
 }

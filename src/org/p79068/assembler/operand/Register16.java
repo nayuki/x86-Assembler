@@ -46,18 +46,8 @@ public final class Register16 extends Register {
 	
 	
 	
-	private String name;
-	
-	
 	private Register16(String name, int registerNumber) {
-		super(registerNumber);
-		this.name = name;
-	}
-	
-	
-	
-	public String toString() {
-		return name;
+		super(name, registerNumber);
 	}
 	
 }

@@ -38,19 +38,8 @@ public final class SegmentRegister extends Register {
 	
 	
 	
-	private String name;
-	
-	
-	
 	private SegmentRegister(String name, int registerNumber) {
-		super(registerNumber);
-		this.name = name;
-	}
-	
-	
-	
-	public String toString() {
-		return name;
+		super(name, registerNumber);
 	}
 	
 }

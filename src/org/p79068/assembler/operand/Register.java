@@ -8,9 +8,14 @@ public abstract class Register extends Operand {
 	
 	private final int registerNumber;
 	
+	private final String name;
 	
 	
-	Register(int registerNumber) {
+	
+	Register(String name, int registerNumber) {
+		if (name == null)
+			throw new NullPointerException();
+		this.name = name;
 		this.registerNumber = registerNumber;
 	}
 	
@@ -18,6 +23,11 @@ public abstract class Register extends Operand {
 	
 	public int getRegisterNumber() {
 		return registerNumber;
+	}
+	
+	
+	public String toString() {
+		return name;
 	}
 	
 }
