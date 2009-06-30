@@ -1,6 +1,7 @@
 package org.p79068.assembler.generator;
 
 import org.p79068.assembler.operand.ImmediateValue;
+import org.p79068.assembler.operand.Label;
 import org.p79068.assembler.operand.Memory32;
 import org.p79068.assembler.operand.Operand;
 import org.p79068.assembler.operand.Register16;
@@ -11,9 +12,9 @@ import org.p79068.assembler.operand.SegmentRegister;
 
 abstract class OperandPattern {
 	
-	public static OperandPattern IMM8  = new OperandPattern("imm8" ) { public boolean matches(Operand op) { return op instanceof ImmediateValue && ((ImmediateValue)op).is8Bit(); } };
-	public static OperandPattern IMM16 = new OperandPattern("imm16") { public boolean matches(Operand op) { return op instanceof ImmediateValue && ((ImmediateValue)op).is16Bit(); } };
-	public static OperandPattern IMM32 = new OperandPattern("imm32") { public boolean matches(Operand op) { return op instanceof ImmediateValue; } };
+	public static OperandPattern IMM8  = new OperandPattern("imm8" ) { public boolean matches(Operand op) { return op instanceof Label || op instanceof ImmediateValue && ((ImmediateValue)op).is8Bit(); } };
+	public static OperandPattern IMM16 = new OperandPattern("imm16") { public boolean matches(Operand op) { return op instanceof Label || op instanceof ImmediateValue && ((ImmediateValue)op).is16Bit(); } };
+	public static OperandPattern IMM32 = new OperandPattern("imm32") { public boolean matches(Operand op) { return op instanceof Label || op instanceof ImmediateValue; } };
 	
 	public static OperandPattern IMM8S = new OperandPattern("imm8s") { public boolean matches(Operand op) { return op instanceof ImmediateValue && ((ImmediateValue)op).isSigned8Bit(); } };
 	
