@@ -100,24 +100,35 @@ final class CodeGenerator {
 		// Append immediate operands if necessary
 		for (int i = 0; i < patt.operands.length; i++) {
 			OperandPattern slot = patt.operands[i];
-			if (slot == OperandPattern.IMM8 || slot == OperandPattern.IMM8S) {
+			
+			if (slot == OperandPattern.IMM8 || slot == OperandPattern.IMM8S || slot == OperandPattern.IMM16 || slot == OperandPattern.IMM32 || slot == OperandPattern.REL8 || slot == OperandPattern.REL16 || slot == OperandPattern.REL32) {
+				
 				ImmediateValue value = ((Immediate)operands[i]).getValue(program);
-				result = concatenate(result, value.to1Byte());
-			} else if (slot == OperandPattern.IMM16) {
-				ImmediateValue value = ((Immediate)operands[i]).getValue(program);
-				result = concatenate(result, value.to2Bytes());
-			} else if (slot == OperandPattern.IMM32) {
-				ImmediateValue value = ((Immediate)operands[i]).getValue(program);
-				result = concatenate(result, value.to4Bytes());
-			} else if (slot == OperandPattern.REL8) {
-				ImmediateValue value = new ImmediateValue(((Immediate)operands[i]).getValue(program).getValue() - offset);
-				result = concatenate(result, value.to1Byte());
-			} else if (slot == OperandPattern.REL16) {
-				ImmediateValue value = new ImmediateValue(((Immediate)operands[i]).getValue(program).getValue() - offset);
-				result = concatenate(result, value.to2Bytes());
-			} else if (slot == OperandPattern.REL32) {
-				ImmediateValue value = new ImmediateValue(((Immediate)operands[i]).getValue(program).getValue() - offset);
-				result = concatenate(result, value.to4Bytes());
+				
+				if (slot == OperandPattern.REL8 || slot == OperandPattern.REL16 || slot == OperandPattern.REL32)
+					value = new ImmediateValue(value.getValue(program).getValue() - offset);
+				
+				// Encode signed or unsigned
+				if (slot == OperandPattern.IMM8) {
+					result = concatenate(result, value.to1Byte());
+				} else if (slot == OperandPattern.IMM16) {
+					result = concatenate(result, value.to2Bytes());
+				} else if (slot == OperandPattern.IMM32 || slot == OperandPattern.REL32) {
+					result = concatenate(result, value.to4Bytes());
+				}
+				
+				// Encode signed
+				else if (slot == OperandPattern.IMM8S || slot == OperandPattern.REL8) {
+					if (!value.isSigned8Bit())
+						throw new RuntimeException();
+					result = concatenate(result, value.to1Byte());
+				} else if (slot == OperandPattern.REL16) {
+					if (!value.isSigned16Bit())
+						throw new RuntimeException();
+					result = concatenate(result, value.to2Bytes());
+				} else {
+					throw new AssertionError();
+				}
 			}
 		}
 		

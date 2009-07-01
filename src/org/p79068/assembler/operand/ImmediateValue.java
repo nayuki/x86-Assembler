@@ -41,6 +41,15 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	/**
+	 * Tests whether this value is a signed 16-bit number.
+	 * @return {@code true} if this value is a signed 16-bit number, {@code false} otherwise
+	 */
+	public boolean isSigned16Bit() {
+		return ((short)value) == value;
+	}
+	
+	
 	public boolean is8Bit() {
 		return (value >> 8) == (value >> 31);
 	}
