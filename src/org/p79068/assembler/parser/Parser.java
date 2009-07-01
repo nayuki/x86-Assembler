@@ -123,7 +123,7 @@ public final class Parser {
 		if (tokenizer.check(TokenType.RIGHT_PAREN)) {
 			tokenizer.nextToken();
 		} else
-			throw new RuntimeException();
+			throw new RuntimeException("Expected right parenthesis");
 		
 		return new Memory32(base, index, scale, displacement);
 	}
