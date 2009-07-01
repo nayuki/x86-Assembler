@@ -13,6 +13,7 @@ import org.p79068.assembler.operand.ImmediateValue;
 import org.p79068.assembler.operand.Label;
 import org.p79068.assembler.operand.Memory32;
 import org.p79068.assembler.operand.Operand;
+import org.p79068.assembler.operand.Register;
 import org.p79068.assembler.operand.Register32;
 
 
@@ -66,7 +67,7 @@ public final class Parser {
 			}
 			
 			if (tokenizer.check(TokenType.REGISTER))
-				operands.add(Operand.parseOperand(tokenizer.nextToken().text));
+				operands.add(Register.parseRegister(tokenizer.nextToken().text));
 			else if (tokenizer.check(TokenType.DECIMAL)) {
 				ImmediateValue op = (ImmediateValue)Operand.parseOperand(tokenizer.nextToken().text);
 				Memory32 m = parseMemory(tokenizer, op);
