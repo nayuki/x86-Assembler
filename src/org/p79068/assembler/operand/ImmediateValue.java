@@ -17,6 +17,10 @@ public class ImmediateValue extends Immediate {
 	
 	
 	
+	/**
+	 * Constructs an immediate value with the specified signed or unsigned 32-bit integer value.
+	 * @param value the value
+	 */
 	public ImmediateValue(int value) {
 		this.value = value;
 	}
@@ -77,6 +81,10 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	/**
+	 * Returns the value of this immediate value.
+	 * @return the value
+	 */
 	public int getValue() {
 		return value;
 	}
@@ -100,6 +108,10 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	/**
+	 * Returns this value encoded as 4 bytes in little endian.
+	 * @return this value encoded as 4 bytes in little endian
+	 */
 	public byte[] to4Bytes() {
 		return new byte[]{
 			(byte)(value >>>  0),
@@ -110,6 +122,10 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	/**
+	 * Returns the low 16 bits of this value encoded as 2 bytes in little endian.
+	 * @return the low 16 bits of this value encoded as 2 bytes in little endian
+	 */
 	public byte[] to2Bytes() {
 		if (!is16Bit())
 			throw new IllegalStateException("Not a 16-bit integer");
@@ -120,6 +136,10 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	/**
+	 * Returns the low 8 bits of this value encoded as 1 byte.
+	 * @return the low 8 bits of this value encoded as 1 byte
+	 */
 	public byte[] to1Byte() {
 		if (!is8Bit())
 			throw new IllegalStateException("Not an 8-bit integer");
