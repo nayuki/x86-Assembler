@@ -38,7 +38,7 @@ final class Tokenizer {
 		patterns.add(new TokenizerPattern("^[A-Za-z_][A-Za-z0-9_]*:", TokenType.LABEL));
 		patterns.add(new TokenizerPattern("^[A-Za-z_][A-Za-z0-9_]*", TokenType.NAME));
 		patterns.add(new TokenizerPattern("^%[A-Za-z][A-Za-z0-9_]*", TokenType.REGISTER));
-		patterns.add(new TokenizerPattern("^0x[0-9a-fA-F]+", TokenType.HEXADECIMAL));
+		patterns.add(new TokenizerPattern("^0[xX][0-9a-fA-F]+", TokenType.HEXADECIMAL));
 		patterns.add(new TokenizerPattern("^-?[0-9]+", TokenType.DECIMAL));
 		patterns.add(new TokenizerPattern("^\\$", TokenType.DOLLAR));
 		patterns.add(new TokenizerPattern("^,", TokenType.COMMA));
