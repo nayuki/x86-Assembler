@@ -106,7 +106,7 @@ final class CodeGenerator {
 				ImmediateValue value = ((Immediate)operands[i]).getValue(program);
 				
 				if (slot == OperandPattern.REL8 || slot == OperandPattern.REL16 || slot == OperandPattern.REL32)
-					value = new ImmediateValue(value.getValue(program).getValue() - offset);
+					value = new ImmediateValue(value.getValue(program).getValue() - offset - getMachineCodeLength(table, mnemonic, operands));
 				
 				// Encode signed or unsigned
 				if (slot == OperandPattern.IMM8) {
