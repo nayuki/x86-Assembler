@@ -33,6 +33,10 @@ final class Token {
 	}
 	
 	
+	/**
+	 * Returns a string representation of this token. The format is subjected to change.
+	 * @return a string representation of this token
+	 */
 	public String toString() {
 		return String.format("[%s %s]", type, text);
 	}

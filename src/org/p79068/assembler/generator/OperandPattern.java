@@ -88,6 +88,10 @@ abstract class OperandPattern {
 	public abstract boolean matches(Operand operand);
 	
 	
+	/**
+	 * Returns a string representation of this operand pattern. The format is subjected to change.
+	 * @return a string representation of this operand pattern
+	 */
 	public String toString() {
 		return name;
 	}

@@ -99,7 +99,7 @@ public final class Memory32 extends Operand {
 	
 	
 	/**
-	 * Returns a string representation of this memory reference.
+	 * Returns a string representation of this memory reference. The format is subjected to change.
 	 * @return a string representation of this memory reference
 	 */
 	public String toString() {

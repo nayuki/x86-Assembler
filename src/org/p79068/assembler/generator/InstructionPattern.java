@@ -61,6 +61,10 @@ public final class InstructionPattern {
 	
 	
 	
+	/**
+	 * Returns a string representation of this instruction pattern. The format is subjected to change.
+	 * @return a string representation of this instruction pattern
+	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		

@@ -26,6 +26,10 @@ public abstract class Register extends Operand {
 	}
 	
 	
+	/**
+	 * Returns a string representation of this register. The format is subjected to change.
+	 * @return a string representation of this register
+	 */
 	public String toString() {
 		return name;
 	}

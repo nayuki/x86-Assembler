@@ -103,6 +103,10 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	/**
+	 * Returns a string representation of this immediate value. The format is subjected to change.
+	 * @return a string representation of this immediate value
+	 */
 	public String toString() {
 		return Integer.toString(value);
 	}

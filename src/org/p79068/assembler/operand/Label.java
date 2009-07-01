@@ -40,6 +40,10 @@ public class Label extends Immediate {
 	}
 	
 	
+	/**
+	 * Returns a string representation of this label operand. The format is subjected to change.
+	 * @return a string representation of this label operand
+	 */
 	public String toString() {
 		return name;
 	}
