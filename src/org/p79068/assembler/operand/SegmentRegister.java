@@ -26,18 +26,6 @@ public final class SegmentRegister extends Register {
 	
 	
 	
-	public static SegmentRegister parseOperand(String name) {
-		if (name.equals("%cs")) return CS_REGISTER;
-		if (name.equals("%ds")) return DS_REGISTER;
-		if (name.equals("%es")) return ES_REGISTER;
-		if (name.equals("%fs")) return FS_REGISTER;
-		if (name.equals("%gs")) return GS_REGISTER;
-		if (name.equals("%ss")) return SS_REGISTER;
-		return null;
-	}
-	
-	
-	
 	private SegmentRegister(String name, int registerNumber) {
 		super(name, registerNumber);
 	}

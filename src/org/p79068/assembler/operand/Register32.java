@@ -32,20 +32,6 @@ public final class Register32 extends Register {
 	
 	
 	
-	public static Register32 parseOperand(String name) {
-		if (name.equals("%eax")) return EAX_REGISTER;
-		if (name.equals("%ebx")) return EBX_REGISTER;
-		if (name.equals("%ecx")) return ECX_REGISTER;
-		if (name.equals("%edx")) return EDX_REGISTER;
-		if (name.equals("%esp")) return ESP_REGISTER;
-		if (name.equals("%ebp")) return EBP_REGISTER;
-		if (name.equals("%esi")) return ESI_REGISTER;
-		if (name.equals("%edi")) return EDI_REGISTER;
-		return null;
-	}
-	
-	
-	
 	private Register32(String name, int registerNumber) {
 		super(name, registerNumber);
 	}

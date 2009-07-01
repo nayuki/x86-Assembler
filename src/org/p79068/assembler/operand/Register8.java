@@ -32,20 +32,6 @@ public final class Register8 extends Register {
 	
 	
 	
-	public static Register8 parseOperand(String name) {
-		if (name.equals("%al")) return AL_REGISTER;
-		if (name.equals("%ah")) return AH_REGISTER;
-		if (name.equals("%bl")) return BL_REGISTER;
-		if (name.equals("%bh")) return BH_REGISTER;
-		if (name.equals("%cl")) return CL_REGISTER;
-		if (name.equals("%ch")) return CH_REGISTER;
-		if (name.equals("%dl")) return DL_REGISTER;
-		if (name.equals("%dh")) return DH_REGISTER;
-		return null;
-	}
-	
-	
-	
 	private Register8(String name, int registerNumber) {
 		super(name, registerNumber);
 	}

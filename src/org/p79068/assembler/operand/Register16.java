@@ -32,20 +32,6 @@ public final class Register16 extends Register {
 	
 	
 	
-	public static Register16 parseOperand(String name) {
-		if (name.equals("%ax")) return AX_REGISTER;
-		if (name.equals("%bx")) return BX_REGISTER;
-		if (name.equals("%cx")) return CX_REGISTER;
-		if (name.equals("%dx")) return DX_REGISTER;
-		if (name.equals("%sp")) return SP_REGISTER;
-		if (name.equals("%bp")) return BP_REGISTER;
-		if (name.equals("%si")) return SI_REGISTER;
-		if (name.equals("%di")) return DI_REGISTER;
-		return null;
-	}
-	
-	
-	
 	private Register16(String name, int registerNumber) {
 		super(name, registerNumber);
 	}
