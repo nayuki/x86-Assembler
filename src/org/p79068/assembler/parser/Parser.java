@@ -189,6 +189,7 @@ public final class Parser {
 	
 	
 	private static Register parseRegister(String name) {
+		name = name.toLowerCase();
 		if (!REGISTER_TABLE.containsKey(name))
 			throw new IllegalArgumentException("Invalid register name");
 		return REGISTER_TABLE.get(name);
