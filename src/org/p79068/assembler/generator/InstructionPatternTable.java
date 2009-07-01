@@ -559,12 +559,21 @@ public class InstructionPatternTable {
 	
 	
 	public InstructionPattern match(String mnemonic, Operand[] operands) {
+		InstructionPattern bestmatch = null;
 		for (InstructionPattern patt : patterns) {
 			if (matches(patt, mnemonic, operands)) {
-				return patt;
+				if (bestmatch == null) {
+					bestmatch = patt;
+				} else if (isBetterMatch(patt, bestmatch, operands)) {
+					bestmatch = patt;
+				}
 			}
 		}
-		throw new IllegalArgumentException("No match: " + mnemonic);
+		
+		if (bestmatch != null)
+			return bestmatch;
+		else
+			throw new IllegalArgumentException("No match: " + mnemonic);
 	}
 	
 	
@@ -578,12 +587,44 @@ public class InstructionPatternTable {
 			return false;
 		if (patt.operands.length != operands.length)
 			return false;
-		for (int i = 0; i < patt.operands.length && i < operands.length; i++) {
+		for (int i = 0; i < operands.length && i < operands.length; i++) {
 			if (!patt.operands[i].matches(operands[i]))
 				return false;
 		}
 		return true;
 	}
 	
+	
+	private static boolean isBetterMatch(InstructionPattern x, InstructionPattern y, Operand[] operands) {
+		boolean isbetter = false;
+		boolean isworse = false;
+		
+		for (int i = 0; i < operands.length; i++) {
+			if (x.operands[i] == REL8 || x.operands[i] == REL16 || x.operands[i] == REL32) {
+				// Wider is better
+				isbetter |= isWider(x.operands[i], y.operands[i]);
+				isworse |= isWider(y.operands[i], x.operands[i]);
+			}
+		}
+		
+		return !isworse && isbetter;
+	}
+	
+	
+	private static boolean isWider(OperandPattern x, OperandPattern y) {
+		return getWidth(x) > getWidth(y);
+	}
+	
+	
+	private static int getWidth(OperandPattern op) {
+		if (op == REL8)
+			return 8;
+		else if (op == REL16)
+			return 16;
+		else if (op == REL32)
+			return 32;
+		else
+			throw new IllegalArgumentException();
+	}
 	
 }
