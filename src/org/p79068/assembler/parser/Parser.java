@@ -66,26 +66,21 @@ public final class Parser {
 				tokenizer.nextToken();
 			}
 			
-			if (tokenizer.check(TokenType.REGISTER))
+			if (tokenizer.check(TokenType.REGISTER)) {
 				operands.add(Register.parseRegister(tokenizer.nextToken().text));
-			else if (tokenizer.check(TokenType.DECIMAL)) {
-				ImmediateValue op = (ImmediateValue)Operand.parseOperand(tokenizer.nextToken().text);
-				Memory32 m = parseMemory(tokenizer, op);
-				if (m == null)
-					operands.add(op);
+			} else if (tokenizer.check(TokenType.DOLLAR)) {
+				tokenizer.nextToken();
+				operands.add(parseImmediate(tokenizer));
+			} else if (canParseImmediate(tokenizer) || tokenizer.check(TokenType.LEFT_PAREN)) {
+				Immediate disp;
+				if (canParseImmediate(tokenizer))
+					disp = parseImmediate(tokenizer);
 				else
-					operands.add(m);
-			} else if (tokenizer.check(TokenType.NAME)) {
-				Label op = new Label(tokenizer.nextToken().text);
-				Memory32 m = parseMemory(tokenizer, op);
-				if (m == null)
-					operands.add(op);
-				else
-					operands.add(m);
-			} else if (tokenizer.check(TokenType.LEFT_PAREN))
-				operands.add(parseMemory(tokenizer, ImmediateValue.ZERO));
-			else
+					disp = ImmediateValue.ZERO;
+				operands.add(parseMemory(tokenizer, disp));
+			} else {
 				throw new RuntimeException("Expected operand");
+			}
 			expectcomma = true;
 		}
 		
@@ -93,38 +88,59 @@ public final class Parser {
 	}
 	
 	
+	private static boolean canParseImmediate(BufferedTokenizer tokenizer) {
+		return tokenizer.check(TokenType.DECIMAL)
+		    || tokenizer.check(TokenType.HEXADECIMAL)
+		    || tokenizer.check(TokenType.NAME);
+	}
+	
+	
+	private static Immediate parseImmediate(BufferedTokenizer tokenizer) {
+		if (tokenizer.check(TokenType.DECIMAL)) {
+			return new ImmediateValue(Integer.parseInt(tokenizer.nextToken().text));
+		} else if (tokenizer.check(TokenType.HEXADECIMAL)) {
+			String text = tokenizer.nextToken().text;
+			text = text.substring(2, text.length());
+			return new ImmediateValue((int)Long.parseLong(text, 16));
+		} else if (tokenizer.check(TokenType.NAME)) {
+			return new Label(tokenizer.nextToken().text);
+		} else {
+			throw new RuntimeException("Expected immediate");
+		}
+	}
+	
+	
 	private static Memory32 parseMemory(BufferedTokenizer tokenizer, Immediate displacement) {
-		if (tokenizer.check(TokenType.LEFT_PAREN))
-			tokenizer.nextToken();
-		else
-			return null;
-		
 		Register32 base = null;
 		Register32 index = null;
 		int scale = 1;
 		
-		if (tokenizer.check(TokenType.REGISTER))
-			base = (Register32)Operand.parseOperand(tokenizer.nextToken().text);
-		
-		if (tokenizer.check(TokenType.COMMA)) {
+		if (tokenizer.check(TokenType.LEFT_PAREN)) {
 			tokenizer.nextToken();
 			
 			if (tokenizer.check(TokenType.REGISTER))
-				index = (Register32)Operand.parseOperand(tokenizer.nextToken().text);
+				base = Register32.parseOperand(tokenizer.nextToken().text);
 			
 			if (tokenizer.check(TokenType.COMMA)) {
 				tokenizer.nextToken();
 				
-				if (tokenizer.check(TokenType.DECIMAL))
-					scale = Integer.parseInt(tokenizer.nextToken().text);
+				if (tokenizer.check(TokenType.REGISTER))
+					index = Register32.parseOperand(tokenizer.nextToken().text);
+				
+				if (tokenizer.check(TokenType.COMMA)) {
+					tokenizer.nextToken();
+					
+					if (tokenizer.check(TokenType.DECIMAL))
+						scale = Integer.parseInt(tokenizer.nextToken().text);
+				}
+				
 			}
 			
+			if (tokenizer.check(TokenType.RIGHT_PAREN))
+				tokenizer.nextToken();
+			else
+				throw new RuntimeException("Expected right parenthesis");
 		}
-		
-		if (tokenizer.check(TokenType.RIGHT_PAREN)) {
-			tokenizer.nextToken();
-		} else
-			throw new RuntimeException("Expected right parenthesis");
 		
 		return new Memory32(base, index, scale, displacement);
 	}
