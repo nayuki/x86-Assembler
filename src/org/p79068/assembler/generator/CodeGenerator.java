@@ -9,6 +9,66 @@ import org.p79068.assembler.operand.Register32;
 
 final class CodeGenerator {
 	
+	public static int getMachineCodeLength(InstructionPatternTable table, String mnemonic, Operand[] operands) {
+		InstructionPattern patt = table.match(mnemonic, operands);
+		int length = 0;
+		
+		if (patt.operandSizeMode == OperandSizeMode.MODE16)
+			length++;
+		
+		length += patt.opcodes.length;
+		
+		if (patt.options.length == 1 && patt.options[0] instanceof ModRM)
+			length += getModRMBytesLength((ModRM)patt.options[0], operands);
+		
+		for (int i = 0; i < patt.operands.length; i++) {
+			OperandPattern slot = patt.operands[i];
+			if (slot == OperandPattern.IMM8)
+				length += 1;
+			else if (slot == OperandPattern.IMM16)
+				length += 2;
+			else if (slot == OperandPattern.IMM32)
+				length += 4;
+		}
+		
+		return length;
+	}
+	
+	
+	private static int getModRMBytesLength(ModRM option, Operand[] operands) {
+		Operand rm = operands[option.rmParameterIndex];
+		
+		if (rm instanceof Register) {
+			return 1;
+			
+		} else if (rm instanceof Memory32) {
+			Memory32 m = (Memory32)rm;
+			ImmediateValue disp = ((ImmediateValue)m.getDisplacement());
+			
+			if (m.getBase() == null && m.getIndex() == null)  // disp32
+				return 5;
+			else if (m.getBase() != Register32.ESP_REGISTER && m.getBase() != Register32.EBP_REGISTER && m.getIndex() == null && disp.isZero())  // eax, ecx, edx, ebx, esi, edi
+				return 1;
+			else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null && disp.isSigned8Bit())  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
+				return 2;
+			else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null)  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp32
+				return 5;
+			else {  // SIB
+				if (m.getBase() == null)  // index*scale + disp32
+					return 6;
+				else if (m.getBase() != Register32.EBP_REGISTER && disp.isZero())  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
+					return 2;
+				else if (disp.isSigned8Bit())  // base + index*scale + disp8
+					return 3;
+				else  // base + index*scale + disp32
+					return 6;
+			}
+			
+		} else
+			throw new AssertionError();
+	}
+	
+	
 	public static byte[] getMachineCode(InstructionPatternTable table, String mnemonic, Operand[] operands) {
 		// Get matching instruction pattern
 		InstructionPattern patt = table.match(mnemonic, operands);

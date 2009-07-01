@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.p79068.assembler.InstructionStatement;
+import org.p79068.assembler.LabelStatement;
 import org.p79068.assembler.Program;
 import org.p79068.assembler.Statement;
 import org.p79068.assembler.operand.Operand;
@@ -18,6 +19,19 @@ public final class Assembler {
 	
 	
 	public static void assembleToFile(Program program, File outputfile) throws IOException {
+		int offset = 0;
+		for (Statement st : program.getStatements()) {
+			if (st instanceof InstructionStatement) {
+				InstructionStatement ist = (InstructionStatement)st;
+				String mnemonic = ist.getMnemonic();
+				Operand[] operands = ist.getOperands();
+				int length = CodeGenerator.getMachineCodeLength(patterntable, mnemonic, operands);
+				offset += length;
+			} else if (st instanceof LabelStatement) {
+				program.addLabel(((LabelStatement)st).getName(), offset);
+			}
+		}
+		
 		OutputStream out0 = new FileOutputStream(outputfile);
 		OutputStream out = new BufferedOutputStream(out0);
 		
