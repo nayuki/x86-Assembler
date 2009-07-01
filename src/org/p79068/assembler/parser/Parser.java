@@ -19,70 +19,77 @@ import org.p79068.assembler.operand.Register32;
 public final class Parser {
 	
 	public static Program parseFile(File inputFile) throws IOException {
+		BufferedTokenizer tokenizer = new BufferedTokenizer(new Tokenizer(inputFile));
 		Program program = new Program();
 		
-		BufferedTokenizer tokenizer = new BufferedTokenizer(new Tokenizer(inputFile));
-		
-		while (true) {
-			if (tokenizer.check(TokenType.END_OF_FILE))
-				break;
-			
-			while (tokenizer.check(TokenType.LABEL)) {
-				String name = tokenizer.nextToken().text;
-				name = name.substring(0, name.length() - 1);
-				program.addStatement(new LabelStatement(name));
-			}
-			
-			if (tokenizer.check(TokenType.NAME)) {
-				String mnemonic = tokenizer.nextToken().text;
-				
-				List<Operand> operands = new ArrayList<Operand>();
-				boolean expectcomma = false;
-				while (!tokenizer.check(TokenType.NEWLINE)) {
-					if (!expectcomma) {
-						if (tokenizer.check(TokenType.COMMA))
-							throw new RuntimeException("Expected operand, got comma");
-					} else {
-						if (!tokenizer.check(TokenType.COMMA))
-							throw new RuntimeException("Expected comma");
-						tokenizer.nextToken();
-					}
-					
-					if (tokenizer.check(TokenType.REGISTER))
-						operands.add(Operand.parseOperand(tokenizer.nextToken().text));
-					else if (tokenizer.check(TokenType.DECIMAL)) {
-						ImmediateValue op = (ImmediateValue)Operand.parseOperand(tokenizer.nextToken().text);
-						Memory32 m = parseMemory(tokenizer, op);
-						if (m == null)
-							operands.add(op);
-						else
-							operands.add(m);
-					} else if (tokenizer.check(TokenType.NAME)) {
-						Label op = new Label(tokenizer.nextToken().text);
-						Memory32 m = parseMemory(tokenizer, op);
-						if (m == null)
-							operands.add(op);
-						else
-							operands.add(m);
-					} else if (tokenizer.check(TokenType.LEFT_PAREN))
-						operands.add(parseMemory(tokenizer, ImmediateValue.ZERO));
-					else
-						throw new RuntimeException("Expected operand");
-					expectcomma = true;
-				}
-				
-				program.addStatement(new InstructionStatement(mnemonic, operands.toArray(new Operand[operands.size()])));
-			}
-			
-			if (tokenizer.check(TokenType.NEWLINE))
-				tokenizer.nextToken();
-			else
-				throw new RuntimeException("Expected newline");
-		}
+		while (!tokenizer.check(TokenType.END_OF_FILE))
+			parseLine(tokenizer, program);
 		
 		return program;
 	}
 	
+	
+	private static void parseLine(BufferedTokenizer tokenizer, Program program) {
+		// Parse label declarations
+		while (tokenizer.check(TokenType.LABEL)) {
+			String name = tokenizer.nextToken().text;
+			name = name.substring(0, name.length() - 1);
+			program.addStatement(new LabelStatement(name));
+		}
+		
+		// Parse instruction
+		if (tokenizer.check(TokenType.NAME))
+			parseInstruction(tokenizer, program);
+		
+		if (tokenizer.check(TokenType.NEWLINE))
+			tokenizer.nextToken();
+		else
+			throw new RuntimeException("Expected newline");
+	}
+	
+	
+	private static void parseInstruction(BufferedTokenizer tokenizer, Program program) {
+		// Parse mnemonic (easy)
+		String mnemonic = tokenizer.nextToken().text;
+		
+		// Parse operands (hard)
+		List<Operand> operands = new ArrayList<Operand>();
+		boolean expectcomma = false;
+		while (!tokenizer.check(TokenType.NEWLINE)) {
+			if (!expectcomma) {
+				if (tokenizer.check(TokenType.COMMA))
+					throw new RuntimeException("Expected operand, got comma");
+			} else {
+				if (!tokenizer.check(TokenType.COMMA))
+					throw new RuntimeException("Expected comma");
+				tokenizer.nextToken();
+			}
+			
+			if (tokenizer.check(TokenType.REGISTER))
+				operands.add(Operand.parseOperand(tokenizer.nextToken().text));
+			else if (tokenizer.check(TokenType.DECIMAL)) {
+				ImmediateValue op = (ImmediateValue)Operand.parseOperand(tokenizer.nextToken().text);
+				Memory32 m = parseMemory(tokenizer, op);
+				if (m == null)
+					operands.add(op);
+				else
+					operands.add(m);
+			} else if (tokenizer.check(TokenType.NAME)) {
+				Label op = new Label(tokenizer.nextToken().text);
+				Memory32 m = parseMemory(tokenizer, op);
+				if (m == null)
+					operands.add(op);
+				else
+					operands.add(m);
+			} else if (tokenizer.check(TokenType.LEFT_PAREN))
+				operands.add(parseMemory(tokenizer, ImmediateValue.ZERO));
+			else
+				throw new RuntimeException("Expected operand");
+			expectcomma = true;
+		}
+		
+		program.addStatement(new InstructionStatement(mnemonic, operands.toArray(new Operand[operands.size()])));
+	}
 	
 	
 	private static Memory32 parseMemory(BufferedTokenizer tokenizer, Immediate displacement) {
