@@ -1,5 +1,6 @@
 package org.p79068.assembler.generator;
 
+import org.p79068.assembler.operand.Immediate;
 import org.p79068.assembler.operand.ImmediateValue;
 import org.p79068.assembler.operand.Label;
 import org.p79068.assembler.operand.Memory32;
@@ -17,6 +18,10 @@ abstract class OperandPattern {
 	public static OperandPattern IMM32 = new OperandPattern("imm32") { public boolean matches(Operand op) { return op instanceof Label || op instanceof ImmediateValue; } };
 	
 	public static OperandPattern IMM8S = new OperandPattern("imm8s") { public boolean matches(Operand op) { return op instanceof ImmediateValue && ((ImmediateValue)op).isSigned8Bit(); } };
+	
+	public static OperandPattern REL8  = new OperandPattern("rel8" ) { public boolean matches(Operand op) { return op instanceof Immediate; } };
+	public static OperandPattern REL16 = new OperandPattern("rel16") { public boolean matches(Operand op) { return op instanceof Immediate; } };
+	public static OperandPattern REL32 = new OperandPattern("rel32") { public boolean matches(Operand op) { return op instanceof Immediate; } };
 	
 	public static OperandPattern IMM_VAL_1 = new LiteralOperandPattern(new ImmediateValue(1));
 	public static OperandPattern IMM_VAL_3 = new LiteralOperandPattern(new ImmediateValue(3));
