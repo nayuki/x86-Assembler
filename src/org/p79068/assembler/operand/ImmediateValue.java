@@ -33,8 +33,8 @@ public class ImmediateValue extends Immediate {
 	
 	
 	/**
-	 * Tests whether this value is a signed 8-bit number.
-	 * @return {@code true} if this value is a signed 8-bit number, {@code false} otherwise
+	 * Tests whether this value is a signed 8-bit integer.
+	 * @return {@code true} if this value is a signed 8-bit integer, {@code false} otherwise
 	 */
 	public boolean isSigned8Bit() {
 		return ((byte)value) == value;
@@ -42,24 +42,36 @@ public class ImmediateValue extends Immediate {
 	
 	
 	/**
-	 * Tests whether this value is a signed 16-bit number.
-	 * @return {@code true} if this value is a signed 16-bit number, {@code false} otherwise
+	 * Tests whether this value is a signed 16-bit integer.
+	 * @return {@code true} if this value is a signed 16-bit integer, {@code false} otherwise
 	 */
 	public boolean isSigned16Bit() {
 		return ((short)value) == value;
 	}
 	
 	
+	/**
+	 * Tests whether this value is a signed or unsigned 8-bit integer.
+	 * @return {@code true} if this value is a signed or unsigned 8-bit integer, {@code false} otherwise
+	 */
 	public boolean is8Bit() {
 		return (value >> 8) == (value >> 31);
 	}
 	
 	
+	/**
+	 * Tests whether this value is a signed or unsigned 16-bit integer.
+	 * @return {@code true} if this value is a signed or unsigned 16-bit integer, {@code false} otherwise
+	 */
 	public boolean is16Bit() {
 		return (value >> 16) == (value >> 31);
 	}
 	
 	
+	/**
+	 * Tests whether this value is a signed or unsigned 32-bit integer.
+	 * @return {@code true} if this value is a signed or unsigned 32-bit integer, {@code false} otherwise
+	 */
 	public ImmediateValue getValue(Program program) {
 		return this;
 	}
@@ -100,7 +112,7 @@ public class ImmediateValue extends Immediate {
 	
 	public byte[] to2Bytes() {
 		if (!is16Bit())
-			throw new IllegalStateException("Not a 16-bit value");
+			throw new IllegalStateException("Not a 16-bit integer");
 		return new byte[]{
 			(byte)(value >>>  0),
 			(byte)(value >>>  8)
@@ -110,7 +122,7 @@ public class ImmediateValue extends Immediate {
 	
 	public byte[] to1Byte() {
 		if (!is8Bit())
-			throw new IllegalStateException("Not an 8-bit value");
+			throw new IllegalStateException("Not an 8-bit integer");
 		return new byte[]{
 			(byte)(value >>>  0)
 		};
