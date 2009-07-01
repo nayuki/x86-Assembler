@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Set;
 
 import org.p79068.assembler.InstructionStatement;
 import org.p79068.assembler.Program;
@@ -15,7 +14,7 @@ import org.p79068.assembler.operand.Operand;
 
 public final class Assembler {
 	
-	private static Set<InstructionPattern> patterntable = InstructionPattern.MODE32_PATTERN_TABLE;
+	private static InstructionPatternTable patterntable = InstructionPatternTable.MODE32_TABLE;
 	
 	
 	public static void assembleToFile(Program program, File outputfile) throws IOException {

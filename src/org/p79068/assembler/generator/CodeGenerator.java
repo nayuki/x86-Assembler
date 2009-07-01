@@ -1,7 +1,5 @@
 package org.p79068.assembler.generator;
 
-import java.util.Set;
-
 import org.p79068.assembler.operand.ImmediateValue;
 import org.p79068.assembler.operand.Memory32;
 import org.p79068.assembler.operand.Operand;
@@ -11,9 +9,9 @@ import org.p79068.assembler.operand.Register32;
 
 final class CodeGenerator {
 	
-	public static byte[] getMachineCode(Set<InstructionPattern> patterns, String mnemonic, Operand[] operands) {
+	public static byte[] getMachineCode(InstructionPatternTable table, String mnemonic, Operand[] operands) {
 		// Get matching instruction pattern
-		InstructionPattern patt = match(patterns, mnemonic, operands);
+		InstructionPattern patt = table.match(mnemonic, operands);
 		
 		// Initialize blank result
 		byte[] result = new byte[0];
@@ -54,29 +52,6 @@ final class CodeGenerator {
 		
 		// Return machine code sequence
 		return result;
-	}
-	
-	
-	private static InstructionPattern match(Set<InstructionPattern> patterns, String mnemonic, Operand[] operands) {
-		for (InstructionPattern patt : patterns) {
-			if (matches(patt, mnemonic, operands)) {
-				return patt;
-			}
-		}
-		throw new IllegalArgumentException("No match: " + mnemonic);
-	}
-	
-	
-	private static boolean matches(InstructionPattern patt, String mnemonic, Operand[] operands) {
-		if (!patt.mnemonic.equals(mnemonic))
-			return false;
-		if (patt.operands.length != operands.length)
-			return false;
-		for (int i = 0; i < patt.operands.length && i < operands.length; i++) {
-			if (!patt.operands[i].matches(operands[i]))
-				return false;
-		}
-		return true;
 	}
 	
 	
