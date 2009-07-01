@@ -28,7 +28,8 @@ public final class Assembler {
 				int length = CodeGenerator.getMachineCodeLength(patterntable, mnemonic, operands);
 				offset += length;
 			} else if (st instanceof LabelStatement) {
-				program.addLabel(((LabelStatement)st).getName(), offset);
+				String name = ((LabelStatement)st).getName();
+				program.addLabel(name, offset);
 			}
 		}
 		
@@ -36,13 +37,19 @@ public final class Assembler {
 		OutputStream out = new BufferedOutputStream(out0);
 		
 		try {
+			offset = 0;
 			for (Statement st : program.getStatements()) {
 				if (st instanceof InstructionStatement) {
 					InstructionStatement ist = (InstructionStatement)st;
 					String mnemonic = ist.getMnemonic();
 					Operand[] operands = ist.getOperands();
-					byte[] machinecode = CodeGenerator.getMachineCode(patterntable, mnemonic, operands);
+					byte[] machinecode = CodeGenerator.getMachineCode(patterntable, mnemonic, operands, program, offset);
 					out.write(machinecode);
+					offset += machinecode.length;
+				} else if (st instanceof LabelStatement) {
+					String name = ((LabelStatement)st).getName();
+					if (offset != program.getLabelOffset(name))
+						throw new AssertionError();
 				}
 			}
 		} finally {

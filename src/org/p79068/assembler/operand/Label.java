@@ -1,5 +1,7 @@
 package org.p79068.assembler.operand;
 
+import org.p79068.assembler.Program;
+
 
 public class Label extends Immediate {
 	
@@ -17,6 +19,11 @@ public class Label extends Immediate {
 	
 	public String getName() {
 		return name;
+	}
+	
+	
+	public ImmediateValue getValue(Program program) {
+		return new ImmediateValue(program.getLabelOffset(name));
 	}
 	
 	

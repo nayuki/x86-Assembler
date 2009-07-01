@@ -1,5 +1,7 @@
 package org.p79068.assembler.operand;
 
+import org.p79068.assembler.Program;
+
 
 /**
  * An immediate literal value.
@@ -46,6 +48,11 @@ public class ImmediateValue extends Immediate {
 	
 	public boolean is16Bit() {
 		return (value >> 16) == (value >> 31);
+	}
+	
+	
+	public ImmediateValue getValue(Program program) {
+		return this;
 	}
 	
 	

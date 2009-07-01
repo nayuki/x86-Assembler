@@ -1,5 +1,7 @@
 package org.p79068.assembler.generator;
 
+import org.p79068.assembler.Program;
+import org.p79068.assembler.operand.Immediate;
 import org.p79068.assembler.operand.ImmediateValue;
 import org.p79068.assembler.operand.Memory32;
 import org.p79068.assembler.operand.Operand;
@@ -23,11 +25,11 @@ final class CodeGenerator {
 		
 		for (int i = 0; i < patt.operands.length; i++) {
 			OperandPattern slot = patt.operands[i];
-			if (slot == OperandPattern.IMM8)
+			if (slot == OperandPattern.IMM8 || slot == OperandPattern.REL8)
 				length += 1;
-			else if (slot == OperandPattern.IMM16)
+			else if (slot == OperandPattern.IMM16 || slot == OperandPattern.REL16)
 				length += 2;
-			else if (slot == OperandPattern.IMM32)
+			else if (slot == OperandPattern.IMM32 || slot == OperandPattern.REL32)
 				length += 4;
 		}
 		
@@ -43,22 +45,22 @@ final class CodeGenerator {
 			
 		} else if (rm instanceof Memory32) {
 			Memory32 m = (Memory32)rm;
-			ImmediateValue disp = ((ImmediateValue)m.getDisplacement());
+			Immediate disp = m.getDisplacement();
 			
 			if (m.getBase() == null && m.getIndex() == null)  // disp32
 				return 5;
-			else if (m.getBase() != Register32.ESP_REGISTER && m.getBase() != Register32.EBP_REGISTER && m.getIndex() == null && disp.isZero())  // eax, ecx, edx, ebx, esi, edi
+			else if (m.getBase() != Register32.ESP_REGISTER && m.getBase() != Register32.EBP_REGISTER && m.getIndex() == null && disp instanceof ImmediateValue && ((ImmediateValue)disp).isZero())  // eax, ecx, edx, ebx, esi, edi
 				return 1;
-			else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null && disp.isSigned8Bit())  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
+			else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null && disp instanceof ImmediateValue && ((ImmediateValue)disp).isSigned8Bit())  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
 				return 2;
 			else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null)  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp32
 				return 5;
 			else {  // SIB
 				if (m.getBase() == null)  // index*scale + disp32
 					return 6;
-				else if (m.getBase() != Register32.EBP_REGISTER && disp.isZero())  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
+				else if (m.getBase() != Register32.EBP_REGISTER && disp instanceof ImmediateValue && ((ImmediateValue)disp).isZero())  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
 					return 2;
-				else if (disp.isSigned8Bit())  // base + index*scale + disp8
+				else if (disp instanceof ImmediateValue && ((ImmediateValue)disp).isSigned8Bit())  // base + index*scale + disp8
 					return 3;
 				else  // base + index*scale + disp32
 					return 6;
@@ -69,7 +71,7 @@ final class CodeGenerator {
 	}
 	
 	
-	public static byte[] getMachineCode(InstructionPatternTable table, String mnemonic, Operand[] operands) {
+	public static byte[] getMachineCode(InstructionPatternTable table, String mnemonic, Operand[] operands, Program program, int offset) {
 		// Get matching instruction pattern
 		InstructionPattern patt = table.match(mnemonic, operands);
 		
@@ -93,20 +95,29 @@ final class CodeGenerator {
 		
 		// Append ModR/M and SIB bytes if necessary
 		if (patt.options.length == 1 && patt.options[0] instanceof ModRM)
-			result = concatenate(result, makeModRMBytes((ModRM)patt.options[0], operands));
+			result = concatenate(result, makeModRMBytes((ModRM)patt.options[0], operands, program));
 		
 		// Append immediate operands if necessary
 		for (int i = 0; i < patt.operands.length; i++) {
 			OperandPattern slot = patt.operands[i];
 			if (slot == OperandPattern.IMM8) {
-				int value = ((ImmediateValue)operands[i]).getValue();
-				result = concatenate(result, new byte[]{(byte)(value >>> 0)});
+				ImmediateValue value = ((Immediate)operands[i]).getValue(program);
+				result = concatenate(result, value.to1Byte());
 			} else if (slot == OperandPattern.IMM16) {
-				int value = ((ImmediateValue)operands[i]).getValue();
-				result = concatenate(result, new byte[]{(byte)(value >>> 0), (byte)(value >>> 8)});
+				ImmediateValue value = ((Immediate)operands[i]).getValue(program);
+				result = concatenate(result, value.to2Bytes());
 			} else if (slot == OperandPattern.IMM32) {
-				int value = ((ImmediateValue)operands[i]).getValue();
-				result = concatenate(result, new byte[]{(byte)(value >>> 0), (byte)(value >>> 8), (byte)(value >>> 16), (byte)(value >>> 24)});
+				ImmediateValue value = ((Immediate)operands[i]).getValue(program);
+				result = concatenate(result, value.to4Bytes());
+			} else if (slot == OperandPattern.REL8) {
+				ImmediateValue value = new ImmediateValue(((Immediate)operands[i]).getValue(program).getValue() - offset);
+				result = concatenate(result, value.to1Byte());
+			} else if (slot == OperandPattern.REL16) {
+				ImmediateValue value = new ImmediateValue(((Immediate)operands[i]).getValue(program).getValue() - offset);
+				result = concatenate(result, value.to2Bytes());
+			} else if (slot == OperandPattern.REL32) {
+				ImmediateValue value = new ImmediateValue(((Immediate)operands[i]).getValue(program).getValue() - offset);
+				result = concatenate(result, value.to4Bytes());
 			}
 		}
 		
@@ -115,7 +126,7 @@ final class CodeGenerator {
 	}
 	
 	
-	private static byte[] makeModRMBytes(ModRM option, Operand[] operands) {
+	private static byte[] makeModRMBytes(ModRM option, Operand[] operands, Program program) {
 		Operand rm = operands[option.rmParameterIndex];
 		int mod;
 		int rmvalue;
@@ -128,19 +139,19 @@ final class CodeGenerator {
 			
 		} else if (rm instanceof Memory32) {
 			Memory32 m = (Memory32)rm;
-			ImmediateValue disp = ((ImmediateValue)m.getDisplacement());
+			ImmediateValue disp = m.getDisplacement().getValue(program);
 			
 			if (m.getBase() == null && m.getIndex() == null) {  // disp32
 				mod = 0;
 				rmvalue = 5;
 				rest = disp.to4Bytes();
 				
-			} else if (m.getBase() != Register32.ESP_REGISTER && m.getBase() != Register32.EBP_REGISTER && m.getIndex() == null && disp.isZero()) {  // eax, ecx, edx, ebx, esi, edi
+			} else if (m.getBase() != Register32.ESP_REGISTER && m.getBase() != Register32.EBP_REGISTER && m.getIndex() == null && m.getDisplacement() instanceof ImmediateValue && disp.isZero()) {  // eax, ecx, edx, ebx, esi, edi
 				mod = 0;
 				rmvalue = m.getBase().getRegisterNumber();
 				rest = new byte[0];
 				
-			} else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null && disp.isSigned8Bit()) {  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
+			} else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null && m.getDisplacement() instanceof ImmediateValue && disp.isSigned8Bit()) {  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
 				mod = 1;
 				rmvalue = m.getBase().getRegisterNumber();
 				rest = disp.to1Byte();
@@ -157,11 +168,11 @@ final class CodeGenerator {
 					mod = 0;
 					rest = disp.to4Bytes();
 					
-				} else if (m.getBase() != Register32.EBP_REGISTER && disp.isZero()) {  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
+				} else if (m.getBase() != Register32.EBP_REGISTER && m.getDisplacement() instanceof ImmediateValue && disp.isZero()) {  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
 					mod = 0;
 					rest = new byte[0];
 					
-				} else if (disp.isSigned8Bit()) {  // base + index*scale + disp8
+				} else if (m.getDisplacement() instanceof ImmediateValue && disp.isSigned8Bit()) {  // base + index*scale + disp8
 					mod = 1;
 					rest = disp.to1Byte();
 					
