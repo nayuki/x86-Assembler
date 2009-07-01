@@ -3,7 +3,9 @@ package org.p79068.assembler.generator;
 import static org.p79068.assembler.generator.OperandPattern.*;
 import static org.p79068.assembler.generator.OperandSizeMode.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.p79068.assembler.operand.Operand;
@@ -550,18 +552,24 @@ public class InstructionPatternTable {
 	
 	private Set<InstructionPattern> patterns;
 	
+	private Map<String,Set<InstructionPattern>> patternsByMnemonic;
+	
 	
 	
 	private InstructionPatternTable() {
 		patterns = new HashSet<InstructionPattern>();
+		patternsByMnemonic = new HashMap<String,Set<InstructionPattern>>();
 	}
 	
 	
 	
 	public InstructionPattern match(String mnemonic, Operand[] operands) {
+		if (!patternsByMnemonic.containsKey(mnemonic))
+			throw new IllegalArgumentException("Invalid mnemonic: " + mnemonic);
+		
 		InstructionPattern bestmatch = null;
-		for (InstructionPattern patt : patterns) {
-			if (matches(patt, mnemonic, operands)) {
+		for (InstructionPattern patt : patternsByMnemonic.get(mnemonic)) {
+			if (matches(patt, operands)) {
 				if (bestmatch == null) {
 					bestmatch = patt;
 				} else if (isBetterMatch(patt, bestmatch, operands)) {
@@ -579,12 +587,14 @@ public class InstructionPatternTable {
 	
 	private void add(InstructionPattern pat) {
 		patterns.add(pat);
+		
+		if (!patternsByMnemonic.containsKey(pat.mnemonic))
+			patternsByMnemonic.put(pat.mnemonic, new HashSet<InstructionPattern>());
+		patternsByMnemonic.get(pat.mnemonic).add(pat);
 	}
 	
 	
-	private static boolean matches(InstructionPattern patt, String mnemonic, Operand[] operands) {
-		if (!patt.mnemonic.equals(mnemonic))
-			return false;
+	private static boolean matches(InstructionPattern patt, Operand[] operands) {
 		if (patt.operands.length != operands.length)
 			return false;
 		for (int i = 0; i < operands.length && i < operands.length; i++) {
