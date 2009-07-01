@@ -3,7 +3,9 @@ package org.p79068.assembler.parser;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.p79068.assembler.InstructionStatement;
 import org.p79068.assembler.LabelStatement;
@@ -14,7 +16,10 @@ import org.p79068.assembler.operand.Label;
 import org.p79068.assembler.operand.Memory32;
 import org.p79068.assembler.operand.Operand;
 import org.p79068.assembler.operand.Register;
+import org.p79068.assembler.operand.Register16;
 import org.p79068.assembler.operand.Register32;
+import org.p79068.assembler.operand.Register8;
+import org.p79068.assembler.operand.SegmentRegister;
 
 
 public final class Parser {
@@ -67,7 +72,7 @@ public final class Parser {
 			}
 			
 			if (tokenizer.check(TokenType.REGISTER)) {
-				operands.add(Register.parseRegister(tokenizer.nextToken().text));
+				operands.add(parseRegister(tokenizer.nextToken().text));
 			} else if (tokenizer.check(TokenType.DOLLAR)) {
 				tokenizer.nextToken();
 				operands.add(parseImmediate(tokenizer));
@@ -119,13 +124,13 @@ public final class Parser {
 			tokenizer.nextToken();
 			
 			if (tokenizer.check(TokenType.REGISTER))
-				base = Register32.parseOperand(tokenizer.nextToken().text);
+				base = (Register32)parseRegister(tokenizer.nextToken().text);
 			
 			if (tokenizer.check(TokenType.COMMA)) {
 				tokenizer.nextToken();
 				
 				if (tokenizer.check(TokenType.REGISTER))
-					index = Register32.parseOperand(tokenizer.nextToken().text);
+					index = (Register32)parseRegister(tokenizer.nextToken().text);
 				
 				if (tokenizer.check(TokenType.COMMA)) {
 					tokenizer.nextToken();
@@ -143,6 +148,50 @@ public final class Parser {
 		}
 		
 		return new Memory32(base, index, scale, displacement);
+	}
+	
+	
+	private static Map<String, Register> REGISTER_TABLE;
+	
+	static {
+		REGISTER_TABLE = new HashMap<String, Register>();
+		REGISTER_TABLE.put("%eax", Register32.EAX_REGISTER);
+		REGISTER_TABLE.put("%ebx", Register32.EBX_REGISTER);
+		REGISTER_TABLE.put("%ecx", Register32.ECX_REGISTER);
+		REGISTER_TABLE.put("%edx", Register32.EDX_REGISTER);
+		REGISTER_TABLE.put("%esp", Register32.ESP_REGISTER);
+		REGISTER_TABLE.put("%ebp", Register32.EBP_REGISTER);
+		REGISTER_TABLE.put("%esi", Register32.ESI_REGISTER);
+		REGISTER_TABLE.put("%edi", Register32.EDI_REGISTER);
+		REGISTER_TABLE.put("%ax", Register16.AX_REGISTER);
+		REGISTER_TABLE.put("%bx", Register16.BX_REGISTER);
+		REGISTER_TABLE.put("%cx", Register16.CX_REGISTER);
+		REGISTER_TABLE.put("%dx", Register16.DX_REGISTER);
+		REGISTER_TABLE.put("%sp", Register16.SP_REGISTER);
+		REGISTER_TABLE.put("%bp", Register16.BP_REGISTER);
+		REGISTER_TABLE.put("%si", Register16.SI_REGISTER);
+		REGISTER_TABLE.put("%di", Register16.DI_REGISTER);
+		REGISTER_TABLE.put("%al", Register8.AL_REGISTER);
+		REGISTER_TABLE.put("%bl", Register8.BL_REGISTER);
+		REGISTER_TABLE.put("%cl", Register8.CL_REGISTER);
+		REGISTER_TABLE.put("%dl", Register8.DL_REGISTER);
+		REGISTER_TABLE.put("%ah", Register8.AH_REGISTER);
+		REGISTER_TABLE.put("%bh", Register8.BH_REGISTER);
+		REGISTER_TABLE.put("%ch", Register8.CH_REGISTER);
+		REGISTER_TABLE.put("%dh", Register8.DH_REGISTER);
+		REGISTER_TABLE.put("%cs", SegmentRegister.CS_REGISTER);
+		REGISTER_TABLE.put("%ds", SegmentRegister.DS_REGISTER);
+		REGISTER_TABLE.put("%es", SegmentRegister.ES_REGISTER);
+		REGISTER_TABLE.put("%fs", SegmentRegister.FS_REGISTER);
+		REGISTER_TABLE.put("%gs", SegmentRegister.GS_REGISTER);
+		REGISTER_TABLE.put("%ss", SegmentRegister.SS_REGISTER);
+	}
+	
+	
+	private static Register parseRegister(String name) {
+		if (!REGISTER_TABLE.containsKey(name))
+			throw new IllegalArgumentException("Invalid register name");
+		return REGISTER_TABLE.get(name);
 	}
 	
 	
