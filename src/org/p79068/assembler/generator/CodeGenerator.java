@@ -25,7 +25,7 @@ final class CodeGenerator {
 		
 		for (int i = 0; i < patt.operands.length; i++) {
 			OperandPattern slot = patt.operands[i];
-			if (slot == OperandPattern.IMM8 || slot == OperandPattern.REL8)
+			if (slot == OperandPattern.IMM8 || slot == OperandPattern.IMM8S || slot == OperandPattern.REL8)
 				length += 1;
 			else if (slot == OperandPattern.IMM16 || slot == OperandPattern.REL16)
 				length += 2;
@@ -100,7 +100,7 @@ final class CodeGenerator {
 		// Append immediate operands if necessary
 		for (int i = 0; i < patt.operands.length; i++) {
 			OperandPattern slot = patt.operands[i];
-			if (slot == OperandPattern.IMM8) {
+			if (slot == OperandPattern.IMM8 || slot == OperandPattern.IMM8S) {
 				ImmediateValue value = ((Immediate)operands[i]).getValue(program);
 				result = concatenate(result, value.to1Byte());
 			} else if (slot == OperandPattern.IMM16) {
