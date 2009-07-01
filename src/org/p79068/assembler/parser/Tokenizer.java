@@ -48,7 +48,7 @@ final class Tokenizer {
 		patterns.add(new TokenizerPattern("^\\)", TokenType.RIGHT_PAREN));
 		patterns.add(new TokenizerPattern("^[\n\r]+", TokenType.NEWLINE));
 		patterns.add(new TokenizerPattern("^#[^\n\r]*", null));  // Comment
-		patterns.add(new TokenizerPattern("^$", TokenType.END_OF_FILE));  // Comment
+		patterns.add(new TokenizerPattern("^$", TokenType.END_OF_FILE));
 	}
 	
 	
