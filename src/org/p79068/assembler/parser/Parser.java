@@ -29,6 +29,7 @@ public final class Parser {
 			
 			while (tokenizer.check(TokenType.LABEL)) {
 				String name = tokenizer.nextToken().text;
+				name = name.substring(0, name.length() - 1);
 				program.addStatement(new LabelStatement(name));
 			}
 			
