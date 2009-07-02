@@ -59,7 +59,7 @@ public class ImmediateValue extends Immediate {
 	 * @return {@code true} if this value is a signed or unsigned 8-bit integer, {@code false} otherwise
 	 */
 	public boolean is8Bit() {
-		return (value >> 8) == (value >> 31);
+		return value >= -0x80 && value < 0x100;
 	}
 	
 	
@@ -68,7 +68,7 @@ public class ImmediateValue extends Immediate {
 	 * @return {@code true} if this value is a signed or unsigned 16-bit integer, {@code false} otherwise
 	 */
 	public boolean is16Bit() {
-		return (value >> 16) == (value >> 31);
+		return value >= -0x8000 && value < 0x10000;
 	}
 	
 	
