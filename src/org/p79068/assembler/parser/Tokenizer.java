@@ -26,6 +26,11 @@ final class Tokenizer {
 			this.tokenType = tokenType;
 		}
 		
+		
+		public String toString() {
+			return String.format("[%s: /%s/]", tokenType, pattern);
+		}
+		
 	}
 	
 	
