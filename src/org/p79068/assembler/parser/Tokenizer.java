@@ -14,14 +14,14 @@ import java.util.regex.Pattern;
 
 final class Tokenizer {
 	
-	private static class TokenizerPattern {
+	private static class TokenPattern {
 		
 		public final Pattern pattern;
 		
 		public final TokenType tokenType;
 		
 		
-		public TokenizerPattern(String pattern, TokenType tokenType) {
+		public TokenPattern(String pattern, TokenType tokenType) {
 			this.pattern = Pattern.compile(pattern);
 			this.tokenType = tokenType;
 		}
@@ -35,25 +35,25 @@ final class Tokenizer {
 	
 	
 	
-	private static List<TokenizerPattern> patterns;
+	private static List<TokenPattern> patterns;
 	
 	static {
-		patterns = new ArrayList<TokenizerPattern>();
-		patterns.add(new TokenizerPattern("^[ \t]+", null));  // Whitespace
-		patterns.add(new TokenizerPattern("^[A-Za-z_][A-Za-z0-9_]*:", TokenType.LABEL));
-		patterns.add(new TokenizerPattern("^[A-Za-z_][A-Za-z0-9_]*", TokenType.NAME));
-		patterns.add(new TokenizerPattern("^%[A-Za-z][A-Za-z0-9_]*", TokenType.REGISTER));
-		patterns.add(new TokenizerPattern("^0[xX][0-9a-fA-F]+", TokenType.HEXADECIMAL));
-		patterns.add(new TokenizerPattern("^-?[0-9]+", TokenType.DECIMAL));
-		patterns.add(new TokenizerPattern("^\\$", TokenType.DOLLAR));
-		patterns.add(new TokenizerPattern("^,", TokenType.COMMA));
-		patterns.add(new TokenizerPattern("^\\+", TokenType.PLUS));
-		patterns.add(new TokenizerPattern("^-", TokenType.MINUS));
-		patterns.add(new TokenizerPattern("^\\(", TokenType.LEFT_PAREN));
-		patterns.add(new TokenizerPattern("^\\)", TokenType.RIGHT_PAREN));
-		patterns.add(new TokenizerPattern("^[\n\r]+", TokenType.NEWLINE));
-		patterns.add(new TokenizerPattern("^#[^\n\r]*", null));  // Comment
-		patterns.add(new TokenizerPattern("^$", TokenType.END_OF_FILE));
+		patterns = new ArrayList<TokenPattern>();
+		patterns.add(new TokenPattern("^[ \t]+", null));  // Whitespace
+		patterns.add(new TokenPattern("^[A-Za-z_][A-Za-z0-9_]*:", TokenType.LABEL));
+		patterns.add(new TokenPattern("^[A-Za-z_][A-Za-z0-9_]*", TokenType.NAME));
+		patterns.add(new TokenPattern("^%[A-Za-z][A-Za-z0-9_]*", TokenType.REGISTER));
+		patterns.add(new TokenPattern("^0[xX][0-9a-fA-F]+", TokenType.HEXADECIMAL));
+		patterns.add(new TokenPattern("^-?[0-9]+", TokenType.DECIMAL));
+		patterns.add(new TokenPattern("^\\$", TokenType.DOLLAR));
+		patterns.add(new TokenPattern("^,", TokenType.COMMA));
+		patterns.add(new TokenPattern("^\\+", TokenType.PLUS));
+		patterns.add(new TokenPattern("^-", TokenType.MINUS));
+		patterns.add(new TokenPattern("^\\(", TokenType.LEFT_PAREN));
+		patterns.add(new TokenPattern("^\\)", TokenType.RIGHT_PAREN));
+		patterns.add(new TokenPattern("^[\n\r]+", TokenType.NEWLINE));
+		patterns.add(new TokenPattern("^#[^\n\r]*", null));  // Comment
+		patterns.add(new TokenPattern("^$", TokenType.END_OF_FILE));
 	}
 	
 	
@@ -96,7 +96,7 @@ final class Tokenizer {
 	
 	
 	public Token nextToken() {
-		for (TokenizerPattern pat : patterns) {
+		for (TokenPattern pat : patterns) {
 			String match = match(pat.pattern);
 			if (match != null) {
 				offset += match.length();
