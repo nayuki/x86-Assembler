@@ -26,16 +26,32 @@ public final class Parser {
 	
 	public static Program parseFile(File inputFile) throws IOException {
 		BufferedTokenizer tokenizer = new BufferedTokenizer(new Tokenizer(inputFile));
+		return new Parser(tokenizer).parseFile();
+	}
+	
+	
+	
+	private BufferedTokenizer tokenizer;
+	
+	
+	
+	private Parser(BufferedTokenizer tokenizer) {
+		if (tokenizer == null)
+			throw new NullPointerException();
+		this.tokenizer = tokenizer;
+	}
+	
+	
+	
+	private Program parseFile() {
 		Program program = new Program();
-		
 		while (!tokenizer.check(TokenType.END_OF_FILE))
-			parseLine(tokenizer, program);
-		
+			parseLine(program);
 		return program;
 	}
 	
 	
-	private static void parseLine(BufferedTokenizer tokenizer, Program program) {
+	private void parseLine(Program program) {
 		// Parse label declarations
 		while (tokenizer.check(TokenType.LABEL)) {
 			String name = tokenizer.next().text;
@@ -45,7 +61,7 @@ public final class Parser {
 		
 		// Parse instruction
 		if (tokenizer.check(TokenType.NAME))
-			parseInstruction(tokenizer, program);
+			parseInstruction(program);
 		
 		if (tokenizer.check(TokenType.NEWLINE))
 			tokenizer.next();
@@ -54,7 +70,7 @@ public final class Parser {
 	}
 	
 	
-	private static void parseInstruction(BufferedTokenizer tokenizer, Program program) {
+	private void parseInstruction(Program program) {
 		// Parse mnemonic (easy)
 		String mnemonic = tokenizer.next().text;
 		
@@ -75,14 +91,14 @@ public final class Parser {
 				operands.add(parseRegister(tokenizer.next().text));
 			} else if (tokenizer.check(TokenType.DOLLAR)) {
 				tokenizer.next();
-				operands.add(parseImmediate(tokenizer));
-			} else if (canParseImmediate(tokenizer) || tokenizer.check(TokenType.LEFT_PAREN)) {
+				operands.add(parseImmediate());
+			} else if (canParseImmediate() || tokenizer.check(TokenType.LEFT_PAREN)) {
 				Immediate disp;
-				if (canParseImmediate(tokenizer))
-					disp = parseImmediate(tokenizer);
+				if (canParseImmediate())
+					disp = parseImmediate();
 				else
 					disp = ImmediateValue.ZERO;
-				operands.add(parseMemory(tokenizer, disp));
+				operands.add(parseMemory(disp));
 			} else {
 				throw new RuntimeException("Expected operand");
 			}
@@ -98,14 +114,14 @@ public final class Parser {
 	 * @param tokenizer the tokenizer to test from
 	 * @return {@code true} if the next token is an immediate operand, {@code false} otherwise
 	 */
-	private static boolean canParseImmediate(BufferedTokenizer tokenizer) {
+	private boolean canParseImmediate() {
 		return tokenizer.check(TokenType.DECIMAL)
 		    || tokenizer.check(TokenType.HEXADECIMAL)
 		    || tokenizer.check(TokenType.NAME);
 	}
 	
 	
-	private static Immediate parseImmediate(BufferedTokenizer tokenizer) {
+	private Immediate parseImmediate() {
 		if (tokenizer.check(TokenType.DECIMAL)) {
 			return new ImmediateValue(Integer.parseInt(tokenizer.next().text));
 		} else if (tokenizer.check(TokenType.HEXADECIMAL)) {
@@ -120,7 +136,7 @@ public final class Parser {
 	}
 	
 	
-	private static Memory parseMemory(BufferedTokenizer tokenizer, Immediate displacement) {
+	private Memory parseMemory(Immediate displacement) {
 		Register32 base = null;
 		Register32 index = null;
 		int scale = 1;
@@ -205,12 +221,5 @@ public final class Parser {
 			throw new IllegalArgumentException("Invalid register name");
 		return REGISTER_TABLE.get(name);
 	}
-	
-	
-	
-	/**
-	 * Not instantiable.
-	 */
-	private Parser() {}
 	
 }
