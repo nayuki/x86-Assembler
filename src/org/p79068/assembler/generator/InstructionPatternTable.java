@@ -588,12 +588,8 @@ public class InstructionPatternTable {
 		
 		InstructionPattern bestmatch = null;
 		for (InstructionPattern pat : patternsByMnemonic.get(mnemonic)) {
-			if (matches(pat, operands)) {
-				if (bestmatch == null) {
-					bestmatch = pat;
-				} else if (isBetterMatch(pat, bestmatch, operands)) {
-					bestmatch = pat;
-				}
+			if (matches(pat, operands) && (bestmatch == null || isBetterMatch(pat, bestmatch, operands))) {
+				bestmatch = pat;
 			}
 		}
 		
