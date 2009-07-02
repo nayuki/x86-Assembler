@@ -3,7 +3,7 @@ package org.p79068.assembler.generator;
 import org.p79068.assembler.Program;
 import org.p79068.assembler.operand.Immediate;
 import org.p79068.assembler.operand.ImmediateValue;
-import org.p79068.assembler.operand.Memory32;
+import org.p79068.assembler.operand.Memory;
 import org.p79068.assembler.operand.Operand;
 import org.p79068.assembler.operand.Register;
 import org.p79068.assembler.operand.Register32;
@@ -43,8 +43,8 @@ final class CodeGenerator {
 		if (rm instanceof Register) {
 			return 1;
 			
-		} else if (rm instanceof Memory32) {
-			Memory32 m = (Memory32)rm;
+		} else if (rm instanceof Memory) {
+			Memory m = (Memory)rm;
 			Immediate disp = m.getDisplacement();
 			
 			if (m.getBase() == null && m.getIndex() == null)  // disp32
@@ -148,8 +148,8 @@ final class CodeGenerator {
 			rmvalue = ((Register)rm).getRegisterNumber();
 			rest = new byte[0];
 			
-		} else if (rm instanceof Memory32) {
-			Memory32 m = (Memory32)rm;
+		} else if (rm instanceof Memory) {
+			Memory m = (Memory)rm;
 			ImmediateValue disp = m.getDisplacement().getValue(program);
 			
 			if (m.getBase() == null && m.getIndex() == null) {  // disp32
@@ -222,7 +222,7 @@ final class CodeGenerator {
 	}
 	
 	
-	private static byte[] makeSIBByte(Memory32 mem) {
+	private static byte[] makeSIBByte(Memory mem) {
 		int scale = getScaleNumber(mem.getScale());
 		int index = getIndexNumber(mem.getIndex());
 		int base = getBaseNumber(mem.getBase());

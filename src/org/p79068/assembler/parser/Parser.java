@@ -13,7 +13,7 @@ import org.p79068.assembler.Program;
 import org.p79068.assembler.operand.Immediate;
 import org.p79068.assembler.operand.ImmediateValue;
 import org.p79068.assembler.operand.Label;
-import org.p79068.assembler.operand.Memory32;
+import org.p79068.assembler.operand.Memory;
 import org.p79068.assembler.operand.Operand;
 import org.p79068.assembler.operand.Register;
 import org.p79068.assembler.operand.Register16;
@@ -120,7 +120,7 @@ public final class Parser {
 	}
 	
 	
-	private static Memory32 parseMemory(BufferedTokenizer tokenizer, Immediate displacement) {
+	private static Memory parseMemory(BufferedTokenizer tokenizer, Immediate displacement) {
 		Register32 base = null;
 		Register32 index = null;
 		int scale = 1;
@@ -152,7 +152,7 @@ public final class Parser {
 				throw new RuntimeException("Expected right parenthesis");
 		}
 		
-		return new Memory32(base, index, scale, displacement);
+		return new Memory(base, index, scale, displacement);
 	}
 	
 	

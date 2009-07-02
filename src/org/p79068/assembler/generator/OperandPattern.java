@@ -3,7 +3,7 @@ package org.p79068.assembler.generator;
 import org.p79068.assembler.operand.Immediate;
 import org.p79068.assembler.operand.ImmediateValue;
 import org.p79068.assembler.operand.Label;
-import org.p79068.assembler.operand.Memory32;
+import org.p79068.assembler.operand.Memory;
 import org.p79068.assembler.operand.Operand;
 import org.p79068.assembler.operand.Register16;
 import org.p79068.assembler.operand.Register32;
@@ -26,11 +26,11 @@ abstract class OperandPattern {
 	public static OperandPattern IMM_VAL_1 = new LiteralOperandPattern(new ImmediateValue(1));
 	public static OperandPattern IMM_VAL_3 = new LiteralOperandPattern(new ImmediateValue(3));
 	
-	public static OperandPattern MEM = new OperandPattern("mem") { public boolean matches(Operand op) { return op instanceof Memory32; } };
+	public static OperandPattern MEM = new OperandPattern("mem") { public boolean matches(Operand op) { return op instanceof Memory; } };
 	
-	public static OperandPattern RM8  = new OperandPattern("r/m8" ) { public boolean matches(Operand op) { return op instanceof Register8  || op instanceof Memory32; } };
-	public static OperandPattern RM16 = new OperandPattern("r/m16") { public boolean matches(Operand op) { return op instanceof Register16 || op instanceof Memory32; } };
-	public static OperandPattern RM32 = new OperandPattern("r/m32") { public boolean matches(Operand op) { return op instanceof Register32 || op instanceof Memory32; } };
+	public static OperandPattern RM8  = new OperandPattern("r/m8" ) { public boolean matches(Operand op) { return op instanceof Register8  || op instanceof Memory; } };
+	public static OperandPattern RM16 = new OperandPattern("r/m16") { public boolean matches(Operand op) { return op instanceof Register16 || op instanceof Memory; } };
+	public static OperandPattern RM32 = new OperandPattern("r/m32") { public boolean matches(Operand op) { return op instanceof Register32 || op instanceof Memory; } };
 	
 	public static OperandPattern REG8  = new OperandPattern("reg8" ) { public boolean matches(Operand op) { return op instanceof Register8; } };
 	public static OperandPattern REG16 = new OperandPattern("reg16") { public boolean matches(Operand op) { return op instanceof Register16; } };
