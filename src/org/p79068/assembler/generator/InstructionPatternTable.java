@@ -563,6 +563,15 @@ public class InstructionPatternTable {
 	
 	
 	
+	private void add(InstructionPattern pat) {
+		patterns.add(pat);
+		
+		if (!patternsByMnemonic.containsKey(pat.mnemonic))
+			patternsByMnemonic.put(pat.mnemonic, new HashSet<InstructionPattern>());
+		patternsByMnemonic.get(pat.mnemonic).add(pat);
+	}
+	
+	
 	public InstructionPattern match(String mnemonic, Operand[] operands) {
 		if (!patternsByMnemonic.containsKey(mnemonic))
 			throw new IllegalArgumentException("Invalid mnemonic: " + mnemonic);
@@ -582,15 +591,6 @@ public class InstructionPatternTable {
 			return bestmatch;
 		else
 			throw new IllegalArgumentException("No match: " + mnemonic);
-	}
-	
-	
-	private void add(InstructionPattern pat) {
-		patterns.add(pat);
-		
-		if (!patternsByMnemonic.containsKey(pat.mnemonic))
-			patternsByMnemonic.put(pat.mnemonic, new HashSet<InstructionPattern>());
-		patternsByMnemonic.get(pat.mnemonic).add(pat);
 	}
 	
 	
