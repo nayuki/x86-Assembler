@@ -35,7 +35,7 @@ abstract class OperandPattern {
 	public static OperandPattern REG8  = new OperandPattern("reg8" ) { public boolean matches(Operand op) { return op instanceof Register8; } };
 	public static OperandPattern REG16 = new OperandPattern("reg16") { public boolean matches(Operand op) { return op instanceof Register16; } };
 	public static OperandPattern REG32 = new OperandPattern("reg32") { public boolean matches(Operand op) { return op instanceof Register32; } };
-	public static OperandPattern SREG  = new OperandPattern("sreg")  { public boolean matches(Operand op) { return op instanceof SegmentRegister; } };
+	public static OperandPattern SREG  = new OperandPattern("sreg" ) { public boolean matches(Operand op) { return op instanceof SegmentRegister; } };
 	
 	public static OperandPattern AL = new LiteralOperandPattern(Register8.AL);
 	public static OperandPattern AH = new LiteralOperandPattern(Register8.AH);
