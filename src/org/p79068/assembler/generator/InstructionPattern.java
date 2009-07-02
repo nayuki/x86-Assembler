@@ -88,25 +88,25 @@ public final class InstructionPattern {
 	
 	
 	private static void checkOption(RegisterInOpcode option, OperandPattern[] operands) {
-		if (option.parameterIndex >= operands.length)
+		if (option.operandIndex >= operands.length)
 			throw new IndexOutOfBoundsException("Parameter index out of bounds");
-		if (!isRegisterOperandSlot(operands[option.parameterIndex]))
+		if (!isRegisterOperandSlot(operands[option.operandIndex]))
 			throw new IllegalArgumentException("Option does not match operand");
 	}
 	
 	
 	private static void checkOption(ModRM option, OperandPattern[] operands) {
-		if (option.rmParameterIndex >= operands.length)
+		if (option.rmOperandIndex >= operands.length)
 			throw new IndexOutOfBoundsException("Parameter index out of bounds");
-		if (!isRegisterMemoryOperandSlot(operands[option.rmParameterIndex]))
+		if (!isRegisterMemoryOperandSlot(operands[option.rmOperandIndex]))
 			throw new IllegalArgumentException("Option does not match operand");
 		
-		if (option.regOpcodeParameterIndex >= 10 && option.regOpcodeParameterIndex < 18);  // No problem
-		else if (option.regOpcodeParameterIndex >= 18)
+		if (option.regOpcodeOperandIndex >= 10 && option.regOpcodeOperandIndex < 18);  // No problem
+		else if (option.regOpcodeOperandIndex >= 18)
 			throw new IllegalArgumentException("Invalid register/opcode constant value");
-		else if (option.regOpcodeParameterIndex >= operands.length)
+		else if (option.regOpcodeOperandIndex >= operands.length)
 			throw new IndexOutOfBoundsException("Parameter index out of bounds");
-		else if (!isRegisterOperandSlot(operands[option.regOpcodeParameterIndex]))
+		else if (!isRegisterOperandSlot(operands[option.regOpcodeOperandIndex]))
 			throw new IllegalArgumentException("Option does not match operand");
 	}
 	

@@ -4,14 +4,14 @@ package org.p79068.assembler.generator;
 
 final class RegisterInOpcode extends InstructionOption {
 	
-	public final int parameterIndex;
+	public final int operandIndex;
 	
 	
 	
-	public RegisterInOpcode(int parameterIndex) {
-		if (parameterIndex < 0)
-			throw new IllegalArgumentException("Invalid parameter index");
-		this.parameterIndex = parameterIndex;
+	public RegisterInOpcode(int operandIndex) {
+		if (operandIndex < 0)
+			throw new IllegalArgumentException("Invalid operand index");
+		this.operandIndex = operandIndex;
 	}
 	
 }

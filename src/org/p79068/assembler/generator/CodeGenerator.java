@@ -38,7 +38,7 @@ final class CodeGenerator {
 	
 	
 	private static int getModRMBytesLength(ModRM option, Operand[] operands) {
-		Operand rm = operands[option.rmParameterIndex];
+		Operand rm = operands[option.rmOperandIndex];
 		
 		if (rm instanceof Register) {
 			return 1;
@@ -87,7 +87,7 @@ final class CodeGenerator {
 		if (patt.options.length == 1 && patt.options[0] instanceof RegisterInOpcode) {
 			RegisterInOpcode option = (RegisterInOpcode)patt.options[0];
 			opcodes = opcodes.clone();
-			opcodes[opcodes.length - 1] += ((Register)operands[option.parameterIndex]).getRegisterNumber();
+			opcodes[opcodes.length - 1] += ((Register)operands[option.operandIndex]).getRegisterNumber();
 		}
 		
 		// Append opcode
@@ -138,7 +138,7 @@ final class CodeGenerator {
 	
 	
 	private static byte[] makeModRMBytes(ModRM option, Operand[] operands, Program program) {
-		Operand rm = operands[option.rmParameterIndex];
+		Operand rm = operands[option.rmOperandIndex];
 		int mod;
 		int rmvalue;
 		byte[] rest;
@@ -201,11 +201,11 @@ final class CodeGenerator {
 		
 		// Set reg/op value
 		int regopvalue;
-		if (option.regOpcodeParameterIndex < 10) {
-			Register regop = (Register)operands[option.regOpcodeParameterIndex];
+		if (option.regOpcodeOperandIndex < 10) {
+			Register regop = (Register)operands[option.regOpcodeOperandIndex];
 			regopvalue = regop.getRegisterNumber();
 		} else
-			regopvalue = option.regOpcodeParameterIndex - 10;
+			regopvalue = option.regOpcodeOperandIndex - 10;
 		
 		// Make ModR/M byte
 		byte[] modrm = makeModRMByte(mod, regopvalue, rmvalue);
