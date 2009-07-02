@@ -18,19 +18,19 @@ final class BufferedTokenizer {
 	
 	
 	
-	public Token nextToken() {
+	public Token next() {
 		if (nextToken != null) {
 			Token result = nextToken;
 			nextToken = null;
 			return result;
 		} else
-			return tokenizer.nextToken();
+			return tokenizer.next();
 	}
 	
 	
 	public Token peek() {
 		if (nextToken == null)
-			nextToken = tokenizer.nextToken();
+			nextToken = tokenizer.next();
 		return nextToken;
 	}
 	

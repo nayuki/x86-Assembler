@@ -95,7 +95,7 @@ final class Tokenizer {
 	
 	
 	
-	public Token nextToken() {
+	public Token next() {
 		for (TokenPattern pat : patterns) {
 			String match = match(pat.pattern);
 			if (match != null) {

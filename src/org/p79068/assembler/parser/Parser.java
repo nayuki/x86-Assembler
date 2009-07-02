@@ -38,7 +38,7 @@ public final class Parser {
 	private static void parseLine(BufferedTokenizer tokenizer, Program program) {
 		// Parse label declarations
 		while (tokenizer.check(TokenType.LABEL)) {
-			String name = tokenizer.nextToken().text;
+			String name = tokenizer.next().text;
 			name = name.substring(0, name.length() - 1);
 			program.addStatement(new LabelStatement(name));
 		}
@@ -48,7 +48,7 @@ public final class Parser {
 			parseInstruction(tokenizer, program);
 		
 		if (tokenizer.check(TokenType.NEWLINE))
-			tokenizer.nextToken();
+			tokenizer.next();
 		else
 			throw new RuntimeException("Expected newline");
 	}
@@ -56,7 +56,7 @@ public final class Parser {
 	
 	private static void parseInstruction(BufferedTokenizer tokenizer, Program program) {
 		// Parse mnemonic (easy)
-		String mnemonic = tokenizer.nextToken().text;
+		String mnemonic = tokenizer.next().text;
 		
 		// Parse operands (hard)
 		List<Operand> operands = new ArrayList<Operand>();
@@ -68,13 +68,13 @@ public final class Parser {
 			} else {
 				if (!tokenizer.check(TokenType.COMMA))
 					throw new RuntimeException("Expected comma");
-				tokenizer.nextToken();
+				tokenizer.next();
 			}
 			
 			if (tokenizer.check(TokenType.REGISTER)) {
-				operands.add(parseRegister(tokenizer.nextToken().text));
+				operands.add(parseRegister(tokenizer.next().text));
 			} else if (tokenizer.check(TokenType.DOLLAR)) {
-				tokenizer.nextToken();
+				tokenizer.next();
 				operands.add(parseImmediate(tokenizer));
 			} else if (canParseImmediate(tokenizer) || tokenizer.check(TokenType.LEFT_PAREN)) {
 				Immediate disp;
@@ -107,13 +107,13 @@ public final class Parser {
 	
 	private static Immediate parseImmediate(BufferedTokenizer tokenizer) {
 		if (tokenizer.check(TokenType.DECIMAL)) {
-			return new ImmediateValue(Integer.parseInt(tokenizer.nextToken().text));
+			return new ImmediateValue(Integer.parseInt(tokenizer.next().text));
 		} else if (tokenizer.check(TokenType.HEXADECIMAL)) {
-			String text = tokenizer.nextToken().text;
+			String text = tokenizer.next().text;
 			text = text.substring(2, text.length());
 			return new ImmediateValue((int)Long.parseLong(text, 16));
 		} else if (tokenizer.check(TokenType.NAME)) {
-			return new Label(tokenizer.nextToken().text);
+			return new Label(tokenizer.next().text);
 		} else {
 			throw new RuntimeException("Expected immediate");
 		}
@@ -126,28 +126,28 @@ public final class Parser {
 		int scale = 1;
 		
 		if (tokenizer.check(TokenType.LEFT_PAREN)) {
-			tokenizer.nextToken();
+			tokenizer.next();
 			
 			if (tokenizer.check(TokenType.REGISTER))
-				base = (Register32)parseRegister(tokenizer.nextToken().text);
+				base = (Register32)parseRegister(tokenizer.next().text);
 			
 			if (tokenizer.check(TokenType.COMMA)) {
-				tokenizer.nextToken();
+				tokenizer.next();
 				
 				if (tokenizer.check(TokenType.REGISTER))
-					index = (Register32)parseRegister(tokenizer.nextToken().text);
+					index = (Register32)parseRegister(tokenizer.next().text);
 				
 				if (tokenizer.check(TokenType.COMMA)) {
-					tokenizer.nextToken();
+					tokenizer.next();
 					
 					if (tokenizer.check(TokenType.DECIMAL))
-						scale = Integer.parseInt(tokenizer.nextToken().text);
+						scale = Integer.parseInt(tokenizer.next().text);
 				}
 				
 			}
 			
 			if (tokenizer.check(TokenType.RIGHT_PAREN))
-				tokenizer.nextToken();
+				tokenizer.next();
 			else
 				throw new RuntimeException("Expected right parenthesis");
 		}
