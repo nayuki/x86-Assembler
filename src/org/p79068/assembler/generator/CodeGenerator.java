@@ -71,7 +71,7 @@ final class CodeGenerator {
 	}
 	
 	
-	public static byte[] getMachineCode(InstructionPatternTable table, String mnemonic, Operand[] operands, Program program, int offset) {
+	public static byte[] makeMachineCode(InstructionPatternTable table, String mnemonic, Operand[] operands, Program program, int offset) {
 		// Get matching instruction pattern
 		InstructionPattern pat = table.match(mnemonic, operands);
 		

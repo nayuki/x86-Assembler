@@ -43,7 +43,7 @@ public final class Assembler {
 					InstructionStatement ist = (InstructionStatement)st;
 					String mnemonic = ist.getMnemonic();
 					Operand[] operands = ist.getOperands();
-					byte[] machinecode = CodeGenerator.getMachineCode(patterntable, mnemonic, operands, program, offset);
+					byte[] machinecode = CodeGenerator.makeMachineCode(patterntable, mnemonic, operands, program, offset);
 					out.write(machinecode);
 					offset += machinecode.length;
 				} else if (st instanceof LabelStatement) {
