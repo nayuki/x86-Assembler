@@ -8,16 +8,16 @@ package org.p79068.assembler.operand;
 public final class Memory extends Operand {
 	
 	/** The base register, which may be {@code null}. */
-	private Register32 base;
+	public final Register32 base;
 	
 	/** The index register, which is not {@link Register32}.ESP, and may be {@code null}. */
-	private Register32 index;
+	public final Register32 index;
 	
 	/** The scale, which is either 1, 2, 4, or 8. */
-	private int scale;
+	public final int scale;
 	
 	/** The displacement, which is not {@code null}. */
-	private Immediate displacement;
+	public final Immediate displacement;
 	
 	
 	
@@ -42,42 +42,6 @@ public final class Memory extends Operand {
 		this.displacement = displacement;
 	}
 	
-	
-	
-	/**
-	 * Returns the base register. It may be {@code null}.
-	 * @return the base register
-	 */
-	public Register32 getBase() {
-		return base;
-	}
-	
-	
-	/**
-	 * Returns the index register. It may be {@code null}. It is not ESP.
-	 * @return the index register
-	 */
-	public Register32 getIndex() {
-		return index;
-	}
-	
-	
-	/**
-	 * Returns the index scale. It is either 1, 2, 4, or 8. It is not any other value.
-	 * @return the index scale
-	 */
-	public int getScale() {
-		return scale;
-	}
-	
-	
-	/**
-	 * Returns the displacement. It is not {@code null}.
-	 * @return the displacement
-	 */
-	public Immediate getDisplacement() {
-		return displacement;
-	}
 	
 	
 	public boolean equals(Object obj) {
