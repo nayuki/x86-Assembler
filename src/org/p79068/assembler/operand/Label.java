@@ -3,12 +3,20 @@ package org.p79068.assembler.operand;
 import org.p79068.assembler.Program;
 
 
+/**
+ * A label operand. Immutable.
+ */
 public class Label extends Immediate {
 	
+	/** The name of the label. */
 	private String name;
 	
 	
 	
+	/**
+	 * Constructs a label with the specified name.
+	 * @param name the name of the label
+	 */
 	public Label(String name) {
 		if (name == null)
 			throw new NullPointerException();
@@ -17,6 +25,9 @@ public class Label extends Immediate {
 	
 	
 	
+	/**
+	 * Returns the name of this label.
+	 */
 	public String getName() {
 		return name;
 	}
