@@ -127,6 +127,12 @@ public final class InstructionPattern {
 	}
 	
 	
+	/**
+	 * Returns a new unsigned byte array containing the same sequence of values as the specified int32 array. Each integer value must be in the range [0x00, 0xFF].
+	 * @param opcodes
+	 * @return a new byte array containing the same sequence of values as the int32 array
+	 * @throws IllegalArgumentException if any value of the int32 array is outside of the range [0x00, 0xFF]
+	 */
 	private static byte[] toBytes(int[] opcodes) {
 		byte[] result = new byte[opcodes.length];
 		for (int i = 0; i < opcodes.length; i++) {
