@@ -93,6 +93,11 @@ public final class Parser {
 	}
 	
 	
+	/**
+	 * Tests whether the next token is a decimal number, hexadecimal number, or a label.
+	 * @param tokenizer the tokenizer to test from
+	 * @return {@code true} if the next token is an immediate operand, {@code false} otherwise
+	 */
 	private static boolean canParseImmediate(BufferedTokenizer tokenizer) {
 		return tokenizer.check(TokenType.DECIMAL)
 		    || tokenizer.check(TokenType.HEXADECIMAL)
@@ -188,6 +193,12 @@ public final class Parser {
 	}
 	
 	
+	/**
+	 * Returns the register associated with the specified name. Examples of register names include {@code "%eax"}, {@code "%sp"}, and {@code "%cs"}. The name is case-insensitive.
+	 * @param name the name of the register
+	 * @return the register associated with the name
+	 * @throws IllegalArgumentException if no register is associated with the name
+	 */
 	private static Register parseRegister(String name) {
 		name = name.toLowerCase();
 		if (!REGISTER_TABLE.containsKey(name))
