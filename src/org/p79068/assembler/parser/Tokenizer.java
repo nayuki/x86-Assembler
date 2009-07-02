@@ -111,7 +111,7 @@ final class Tokenizer {
 					return new Token(pat.tokenType, match);
 			}
 		}
-		throw new RuntimeException();
+		throw new RuntimeException("No token pattern match");
 	}
 	
 	

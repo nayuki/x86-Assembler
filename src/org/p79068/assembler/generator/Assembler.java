@@ -52,7 +52,7 @@ public final class Assembler {
 				} else if (st instanceof LabelStatement) {
 					String name = ((LabelStatement)st).getName();
 					if (offset != program.getLabelOffset(name))
-						throw new AssertionError();
+						throw new AssertionError("Label offset mismatch");
 				}
 			}
 		} finally {

@@ -640,7 +640,7 @@ public class InstructionPatternTable {
 		else if (op == REL32)
 			return 32;
 		else
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Not applicable to operand");
 	}
 	
 }

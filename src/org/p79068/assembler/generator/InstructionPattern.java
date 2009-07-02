@@ -49,7 +49,7 @@ public final class InstructionPattern {
 			else if (option instanceof ModRM)
 				checkOption((ModRM)option, operands);
 			else
-				throw new AssertionError();
+				throw new AssertionError("Unrecognized instruction option");
 		}
 		
 		this.mnemonic = mnemonic;

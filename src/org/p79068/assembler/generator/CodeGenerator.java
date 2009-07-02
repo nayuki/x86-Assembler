@@ -67,7 +67,7 @@ final class CodeGenerator {
 			}
 			
 		} else
-			throw new AssertionError();
+			throw new AssertionError("Not a register or memory operand");
 	}
 	
 	
@@ -120,11 +120,11 @@ final class CodeGenerator {
 				// Encode signed
 				else if (slot == OperandPattern.IMM8S || slot == OperandPattern.REL8) {
 					if (!value.isSigned8Bit())
-						throw new RuntimeException();
+						throw new RuntimeException("Not a signed 8-bit immediate operand");
 					result = concatenate(result, value.to1Byte());
 				} else if (slot == OperandPattern.REL16) {
 					if (!value.isSigned16Bit())
-						throw new RuntimeException();
+						throw new RuntimeException("Not a signed 16-bit immediate operand");
 					result = concatenate(result, value.to2Bytes());
 				} else {
 					throw new AssertionError();
@@ -197,7 +197,7 @@ final class CodeGenerator {
 			}
 			
 		} else
-			throw new AssertionError();
+			throw new AssertionError("Not a register or memory operand");
 		
 		// Set reg/op value
 		int regopvalue;
@@ -217,7 +217,7 @@ final class CodeGenerator {
 	
 	private static byte[] makeModRMByte(int mod, int regop, int rm) {
 		if (mod < 0 || mod >= 4 || regop < 0 || regop >= 8 || rm < 0 || rm >= 8)
-			throw new IllegalArgumentException();
+			throw new AssertionError("Invalid ModR/M fields");
 		return new byte[]{(byte)(mod << 6 | regop << 3 | rm << 0)};
 	}
 	
@@ -240,7 +240,7 @@ final class CodeGenerator {
 	
 	private static int getIndexNumber(Register32 index) {
 		if (index == Register32.ESP)
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("ESP register not allowed");
 		if (index != null)
 			return index.getRegisterNumber();
 		else
@@ -254,7 +254,7 @@ final class CodeGenerator {
 			case 2:  return 1;
 			case 4:  return 2;
 			case 8:  return 3;
-			default:  throw new AssertionError();
+			default:  throw new AssertionError("Invalid scale");
 		}
 	}
 	
