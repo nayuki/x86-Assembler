@@ -101,6 +101,14 @@ final class Tokenizer {
 	}
 	
 	
+	Tokenizer(String sourceCode) {
+		if (sourceCode == null)
+			throw new NullPointerException();
+		this.sourceCode = sourceCode;
+		offset = 0;
+	}
+	
+	
 	
 	public Token next() {
 		for (TokenPattern pat : patterns) {
