@@ -10,7 +10,7 @@ final class Token {
 	
 	
 	Token(TokenType type, String text) {
-		if (text == null)
+		if (type == null || text == null)
 			throw new NullPointerException();
 		this.type = type;
 		this.text = text;

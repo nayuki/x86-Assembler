@@ -16,6 +16,8 @@ public abstract class Register extends Operand {
 	Register(String name, int registerNumber) {
 		if (name == null)
 			throw new NullPointerException();
+		if (registerNumber < 0 || registerNumber >= 8)
+			throw new IllegalArgumentException("Invalid register number");
 		this.name = name;
 		this.registerNumber = registerNumber;
 	}

@@ -25,6 +25,8 @@ import org.p79068.assembler.operand.SegmentRegister;
 public final class Parser {
 	
 	public static Program parseFile(File inputFile) throws IOException {
+		if (inputFile == null)
+			throw new NullPointerException();
 		BufferedTokenizer tokenizer = new BufferedTokenizer(new Tokenizer(inputFile));
 		return new Parser(tokenizer).parseFile();
 	}

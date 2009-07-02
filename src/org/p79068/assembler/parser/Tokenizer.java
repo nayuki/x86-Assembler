@@ -22,6 +22,8 @@ final class Tokenizer {
 		
 		
 		public TokenPattern(String pattern, TokenType tokenType) {
+			if (pattern == null)
+				throw new NullPointerException();
 			this.pattern = Pattern.compile(pattern);
 			this.tokenType = tokenType;
 		}
@@ -64,6 +66,9 @@ final class Tokenizer {
 	 * @throws IOException
 	 */
 	private static String read(File file) throws IOException {
+		if (file == null)
+			throw new NullPointerException();
+		
 		Reader in = new InputStreamReader(new BufferedInputStream(new FileInputStream(file)));
 		
 		StringBuilder sb = new StringBuilder();
@@ -89,6 +94,8 @@ final class Tokenizer {
 	
 	
 	public Tokenizer(File file) throws IOException {
+		if (file == null)
+			throw new NullPointerException();
 		sourceCode = read(file);
 		offset = 0;
 	}

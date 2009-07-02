@@ -19,6 +19,9 @@ public final class Assembler {
 	
 	
 	public static void assembleToFile(Program program, File outputfile) throws IOException {
+		if (program == null || outputfile == null)
+			throw new NullPointerException();
+		
 		int offset = 0;
 		for (Statement st : program.getStatements()) {
 			if (st instanceof InstructionStatement) {

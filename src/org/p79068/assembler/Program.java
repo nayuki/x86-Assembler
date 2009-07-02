@@ -28,6 +28,8 @@ public final class Program {
 	
 	
 	public int getLabelOffset(String name) {
+		if (name == null)
+			throw new NullPointerException();
 		if (!labels.containsKey(name))
 			throw new IllegalArgumentException("Label does not exist");
 		return labels.get(name);
@@ -35,11 +37,15 @@ public final class Program {
 	
 	
 	public void addStatement(Statement statement) {
+		if (statement == null)
+			throw new NullPointerException();
 		statements.add(statement);
 	}
 	
 	
 	public void addLabel(String name, int offset) {
+		if (name == null)
+			throw new NullPointerException();
 		if (labels.containsKey(name))
 			throw new IllegalArgumentException("Label already exists");
 		labels.put(name, offset);

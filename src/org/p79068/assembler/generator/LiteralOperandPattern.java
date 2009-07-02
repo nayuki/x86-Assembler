@@ -18,6 +18,8 @@ final class LiteralOperandPattern extends OperandPattern {
 	
 	@Override
 	public boolean matches(Operand operand) {
+		if (operand == null)
+			throw new NullPointerException();
 		return operand.equals(literal);
 	}
 	

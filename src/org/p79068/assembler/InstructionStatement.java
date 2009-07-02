@@ -16,6 +16,11 @@ public class InstructionStatement extends Statement {
 	public InstructionStatement(String mnemonic, Operand[] operands) {
 		if (mnemonic == null || operands == null)
 			throw new NullPointerException();
+		for (Operand op : operands) {
+			if (op == null)
+				throw new NullPointerException();
+		}
+		
 		this.mnemonic = mnemonic;
 		this.operands = operands;
 	}
