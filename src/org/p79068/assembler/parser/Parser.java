@@ -27,7 +27,7 @@ public final class Parser {
 	public static Program parseFile(File file) throws IOException {
 		if (file == null)
 			throw new NullPointerException();
-		BufferedTokenizer tokenizer = new BufferedTokenizer(new Tokenizer(file));
+		BufferedTokenizer tokenizer = new BufferedTokenizer(new StringTokenizer(file));
 		return new Parser(tokenizer).parseFile();
 	}
 	

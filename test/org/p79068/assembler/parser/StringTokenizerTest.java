@@ -7,18 +7,18 @@ import org.junit.Test;
 
 
 
-public class TokenizerTest {
+public class StringTokenizerTest {
 	
 	@Test
 	public void testEmpty() {
-		Tokenizer t = new Tokenizer("");
+		Tokenizer t = new StringTokenizer("");
 		compareNext(t, END_OF_FILE, "");
 	}
 	
 	
 	@Test
 	public void testSymbols() {
-		Tokenizer t = new Tokenizer("$(),");
+		Tokenizer t = new StringTokenizer("$(),");
 		compareNext(t, DOLLAR, "$");
 		compareNext(t, LEFT_PAREN, "(");
 		compareNext(t, RIGHT_PAREN, ")");
@@ -29,7 +29,7 @@ public class TokenizerTest {
 	
 	@Test
 	public void testWhitespace() {
-		Tokenizer t = new Tokenizer(" $\t(  ) \t ");
+		Tokenizer t = new StringTokenizer(" $\t(  ) \t ");
 		compareNext(t, DOLLAR, "$");
 		compareNext(t, LEFT_PAREN, "(");
 		compareNext(t, RIGHT_PAREN, ")");
@@ -39,7 +39,7 @@ public class TokenizerTest {
 	
 	@Test
 	public void testName() {
-		Tokenizer t = new Tokenizer("name");
+		Tokenizer t = new StringTokenizer("name");
 		compareNext(t, NAME, "name");
 		compareNext(t, END_OF_FILE, "");
 	}
@@ -47,7 +47,7 @@ public class TokenizerTest {
 	
 	@Test
 	public void testLabel() {
-		Tokenizer t = new Tokenizer("label:");
+		Tokenizer t = new StringTokenizer("label:");
 		compareNext(t, LABEL, "label:");
 		compareNext(t, END_OF_FILE, "");
 	}
@@ -55,7 +55,7 @@ public class TokenizerTest {
 	
 	@Test
 	public void testRegister() {
-		Tokenizer t = new Tokenizer("%reg");
+		Tokenizer t = new StringTokenizer("%reg");
 		compareNext(t, REGISTER, "%reg");
 		compareNext(t, END_OF_FILE, "");
 	}
@@ -63,7 +63,7 @@ public class TokenizerTest {
 	
 	@Test
 	public void testDecimal() {
-		Tokenizer t = new Tokenizer("0 1 -23");
+		Tokenizer t = new StringTokenizer("0 1 -23");
 		compareNext(t, DECIMAL, "0");
 		compareNext(t, DECIMAL, "1");
 		compareNext(t, DECIMAL, "-23");
@@ -73,7 +73,7 @@ public class TokenizerTest {
 	
 	@Test
 	public void testHexadecimal() {
-		Tokenizer t = new Tokenizer("0x0 0X1 0xdead 0xBEEF");
+		Tokenizer t = new StringTokenizer("0x0 0X1 0xdead 0xBEEF");
 		compareNext(t, HEXADECIMAL, "0x0");
 		compareNext(t, HEXADECIMAL, "0X1");
 		compareNext(t, HEXADECIMAL, "0xdead");
