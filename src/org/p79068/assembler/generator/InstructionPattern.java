@@ -90,7 +90,7 @@ public final class InstructionPattern {
 	private static void checkOption(RegisterInOpcode option, OperandPattern[] operands) {
 		if (option.operandIndex >= operands.length)
 			throw new IndexOutOfBoundsException("Parameter index out of bounds");
-		if (!isRegisterOperandSlot(operands[option.operandIndex]))
+		if (!isRegisterPattern(operands[option.operandIndex]))
 			throw new IllegalArgumentException("Option does not match operand");
 	}
 	
@@ -98,7 +98,7 @@ public final class InstructionPattern {
 	private static void checkOption(ModRM option, OperandPattern[] operands) {
 		if (option.rmOperandIndex >= operands.length)
 			throw new IndexOutOfBoundsException("Parameter index out of bounds");
-		if (!isRegisterMemoryOperandSlot(operands[option.rmOperandIndex]))
+		if (!isRegisterMemoryPattern(operands[option.rmOperandIndex]))
 			throw new IllegalArgumentException("Option does not match operand");
 		
 		if (option.regOpcodeOperandIndex >= 10 && option.regOpcodeOperandIndex < 18);  // No problem
@@ -106,24 +106,24 @@ public final class InstructionPattern {
 			throw new IllegalArgumentException("Invalid register/opcode constant value");
 		else if (option.regOpcodeOperandIndex >= operands.length)
 			throw new IndexOutOfBoundsException("Parameter index out of bounds");
-		else if (!isRegisterOperandSlot(operands[option.regOpcodeOperandIndex]))
+		else if (!isRegisterPattern(operands[option.regOpcodeOperandIndex]))
 			throw new IllegalArgumentException("Option does not match operand");
 	}
 	
 	
-	private static boolean isRegisterMemoryOperandSlot(OperandPattern opslot) {
-		return opslot == RM8
-		    || opslot == RM16
-		    || opslot == RM32
-		    || opslot == MEM;
+	private static boolean isRegisterMemoryPattern(OperandPattern pat) {
+		return pat == RM8
+		    || pat == RM16
+		    || pat == RM32
+		    || pat == MEM;
 	}
 	
 	
-	private static boolean isRegisterOperandSlot(OperandPattern opslot) {
-		return opslot == REG8
-		    || opslot == REG16
-		    || opslot == REG32
-		    || opslot == SREG;
+	private static boolean isRegisterPattern(OperandPattern pat) {
+		return pat == REG8
+		    || pat == REG16
+		    || pat == REG32
+		    || pat == SREG;
 	}
 	
 	

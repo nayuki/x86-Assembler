@@ -568,12 +568,12 @@ public class InstructionPatternTable {
 			throw new IllegalArgumentException("Invalid mnemonic: " + mnemonic);
 		
 		InstructionPattern bestmatch = null;
-		for (InstructionPattern patt : patternsByMnemonic.get(mnemonic)) {
-			if (matches(patt, operands)) {
+		for (InstructionPattern pat : patternsByMnemonic.get(mnemonic)) {
+			if (matches(pat, operands)) {
 				if (bestmatch == null) {
-					bestmatch = patt;
-				} else if (isBetterMatch(patt, bestmatch, operands)) {
-					bestmatch = patt;
+					bestmatch = pat;
+				} else if (isBetterMatch(pat, bestmatch, operands)) {
+					bestmatch = pat;
 				}
 			}
 		}
@@ -594,11 +594,11 @@ public class InstructionPatternTable {
 	}
 	
 	
-	private static boolean matches(InstructionPattern patt, Operand[] operands) {
-		if (patt.operands.length != operands.length)
+	private static boolean matches(InstructionPattern pat, Operand[] operands) {
+		if (pat.operands.length != operands.length)
 			return false;
 		for (int i = 0; i < operands.length && i < operands.length; i++) {
-			if (!patt.operands[i].matches(operands[i]))
+			if (!pat.operands[i].matches(operands[i]))
 				return false;
 		}
 		return true;
