@@ -160,36 +160,36 @@ public final class Parser {
 	
 	static {
 		REGISTER_TABLE = new HashMap<String, Register>();
-		REGISTER_TABLE.put("%eax", Register32.EAX_REGISTER);
-		REGISTER_TABLE.put("%ebx", Register32.EBX_REGISTER);
-		REGISTER_TABLE.put("%ecx", Register32.ECX_REGISTER);
-		REGISTER_TABLE.put("%edx", Register32.EDX_REGISTER);
-		REGISTER_TABLE.put("%esp", Register32.ESP_REGISTER);
-		REGISTER_TABLE.put("%ebp", Register32.EBP_REGISTER);
-		REGISTER_TABLE.put("%esi", Register32.ESI_REGISTER);
-		REGISTER_TABLE.put("%edi", Register32.EDI_REGISTER);
-		REGISTER_TABLE.put("%ax", Register16.AX_REGISTER);
-		REGISTER_TABLE.put("%bx", Register16.BX_REGISTER);
-		REGISTER_TABLE.put("%cx", Register16.CX_REGISTER);
-		REGISTER_TABLE.put("%dx", Register16.DX_REGISTER);
-		REGISTER_TABLE.put("%sp", Register16.SP_REGISTER);
-		REGISTER_TABLE.put("%bp", Register16.BP_REGISTER);
-		REGISTER_TABLE.put("%si", Register16.SI_REGISTER);
-		REGISTER_TABLE.put("%di", Register16.DI_REGISTER);
-		REGISTER_TABLE.put("%al", Register8.AL_REGISTER);
-		REGISTER_TABLE.put("%bl", Register8.BL_REGISTER);
-		REGISTER_TABLE.put("%cl", Register8.CL_REGISTER);
-		REGISTER_TABLE.put("%dl", Register8.DL_REGISTER);
-		REGISTER_TABLE.put("%ah", Register8.AH_REGISTER);
-		REGISTER_TABLE.put("%bh", Register8.BH_REGISTER);
-		REGISTER_TABLE.put("%ch", Register8.CH_REGISTER);
-		REGISTER_TABLE.put("%dh", Register8.DH_REGISTER);
-		REGISTER_TABLE.put("%cs", SegmentRegister.CS_REGISTER);
-		REGISTER_TABLE.put("%ds", SegmentRegister.DS_REGISTER);
-		REGISTER_TABLE.put("%es", SegmentRegister.ES_REGISTER);
-		REGISTER_TABLE.put("%fs", SegmentRegister.FS_REGISTER);
-		REGISTER_TABLE.put("%gs", SegmentRegister.GS_REGISTER);
-		REGISTER_TABLE.put("%ss", SegmentRegister.SS_REGISTER);
+		REGISTER_TABLE.put("%eax", Register32.EAX);
+		REGISTER_TABLE.put("%ebx", Register32.EBX);
+		REGISTER_TABLE.put("%ecx", Register32.ECX);
+		REGISTER_TABLE.put("%edx", Register32.EDX);
+		REGISTER_TABLE.put("%esp", Register32.ESP);
+		REGISTER_TABLE.put("%ebp", Register32.EBP);
+		REGISTER_TABLE.put("%esi", Register32.ESI);
+		REGISTER_TABLE.put("%edi", Register32.EDI);
+		REGISTER_TABLE.put("%ax", Register16.AX);
+		REGISTER_TABLE.put("%bx", Register16.BX);
+		REGISTER_TABLE.put("%cx", Register16.CX);
+		REGISTER_TABLE.put("%dx", Register16.DX);
+		REGISTER_TABLE.put("%sp", Register16.SP);
+		REGISTER_TABLE.put("%bp", Register16.BP);
+		REGISTER_TABLE.put("%si", Register16.SI);
+		REGISTER_TABLE.put("%di", Register16.DI);
+		REGISTER_TABLE.put("%al", Register8.AL);
+		REGISTER_TABLE.put("%bl", Register8.BL);
+		REGISTER_TABLE.put("%cl", Register8.CL);
+		REGISTER_TABLE.put("%dl", Register8.DL);
+		REGISTER_TABLE.put("%ah", Register8.AH);
+		REGISTER_TABLE.put("%bh", Register8.BH);
+		REGISTER_TABLE.put("%ch", Register8.CH);
+		REGISTER_TABLE.put("%dh", Register8.DH);
+		REGISTER_TABLE.put("%cs", SegmentRegister.CS);
+		REGISTER_TABLE.put("%ds", SegmentRegister.DS);
+		REGISTER_TABLE.put("%es", SegmentRegister.ES);
+		REGISTER_TABLE.put("%fs", SegmentRegister.FS);
+		REGISTER_TABLE.put("%gs", SegmentRegister.GS);
+		REGISTER_TABLE.put("%ss", SegmentRegister.SS);
 	}
 	
 	

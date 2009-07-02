@@ -49,16 +49,16 @@ final class CodeGenerator {
 			
 			if (m.getBase() == null && m.getIndex() == null)  // disp32
 				return 5;
-			else if (m.getBase() != Register32.ESP_REGISTER && m.getBase() != Register32.EBP_REGISTER && m.getIndex() == null && disp instanceof ImmediateValue && ((ImmediateValue)disp).isZero())  // eax, ecx, edx, ebx, esi, edi
+			else if (m.getBase() != Register32.ESP && m.getBase() != Register32.EBP && m.getIndex() == null && disp instanceof ImmediateValue && ((ImmediateValue)disp).isZero())  // eax, ecx, edx, ebx, esi, edi
 				return 1;
-			else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null && disp instanceof ImmediateValue && ((ImmediateValue)disp).isSigned8Bit())  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
+			else if (m.getBase() != Register32.ESP && m.getIndex() == null && disp instanceof ImmediateValue && ((ImmediateValue)disp).isSigned8Bit())  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
 				return 2;
-			else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null)  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp32
+			else if (m.getBase() != Register32.ESP && m.getIndex() == null)  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp32
 				return 5;
 			else {  // SIB
 				if (m.getBase() == null)  // index*scale + disp32
 					return 6;
-				else if (m.getBase() != Register32.EBP_REGISTER && disp instanceof ImmediateValue && ((ImmediateValue)disp).isZero())  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
+				else if (m.getBase() != Register32.EBP && disp instanceof ImmediateValue && ((ImmediateValue)disp).isZero())  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
 					return 2;
 				else if (disp instanceof ImmediateValue && ((ImmediateValue)disp).isSigned8Bit())  // base + index*scale + disp8
 					return 3;
@@ -157,17 +157,17 @@ final class CodeGenerator {
 				rmvalue = 5;
 				rest = disp.to4Bytes();
 				
-			} else if (m.getBase() != Register32.ESP_REGISTER && m.getBase() != Register32.EBP_REGISTER && m.getIndex() == null && m.getDisplacement() instanceof ImmediateValue && disp.isZero()) {  // eax, ecx, edx, ebx, esi, edi
+			} else if (m.getBase() != Register32.ESP && m.getBase() != Register32.EBP && m.getIndex() == null && m.getDisplacement() instanceof ImmediateValue && disp.isZero()) {  // eax, ecx, edx, ebx, esi, edi
 				mod = 0;
 				rmvalue = m.getBase().getRegisterNumber();
 				rest = new byte[0];
 				
-			} else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null && m.getDisplacement() instanceof ImmediateValue && disp.isSigned8Bit()) {  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
+			} else if (m.getBase() != Register32.ESP && m.getIndex() == null && m.getDisplacement() instanceof ImmediateValue && disp.isSigned8Bit()) {  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp8
 				mod = 1;
 				rmvalue = m.getBase().getRegisterNumber();
 				rest = disp.to1Byte();
 				
-			} else if (m.getBase() != Register32.ESP_REGISTER && m.getIndex() == null) {  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp32
+			} else if (m.getBase() != Register32.ESP && m.getIndex() == null) {  // (eax, ecx, edx, ebx, ebp, esi, edi) + disp32
 				mod = 2;
 				rmvalue = m.getBase().getRegisterNumber();
 				rest = disp.to4Bytes();
@@ -179,7 +179,7 @@ final class CodeGenerator {
 					mod = 0;
 					rest = disp.to4Bytes();
 					
-				} else if (m.getBase() != Register32.EBP_REGISTER && m.getDisplacement() instanceof ImmediateValue && disp.isZero()) {  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
+				} else if (m.getBase() != Register32.EBP && m.getDisplacement() instanceof ImmediateValue && disp.isZero()) {  // (eax, ecx, edx, ebx, esp, esi, edi) + index*scale
 					mod = 0;
 					rest = new byte[0];
 					
@@ -239,7 +239,7 @@ final class CodeGenerator {
 	
 	
 	private static int getIndexNumber(Register32 index) {
-		if (index == Register32.ESP_REGISTER)
+		if (index == Register32.ESP)
 			throw new IllegalArgumentException();
 		if (index != null)
 			return index.getRegisterNumber();

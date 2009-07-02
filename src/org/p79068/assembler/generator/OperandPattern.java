@@ -37,39 +37,39 @@ abstract class OperandPattern {
 	public static OperandPattern REG32 = new OperandPattern("reg32") { public boolean matches(Operand op) { return op instanceof Register32; } };
 	public static OperandPattern SREG  = new OperandPattern("sreg")  { public boolean matches(Operand op) { return op instanceof SegmentRegister; } };
 	
-	public static OperandPattern AL = new LiteralOperandPattern(Register8.AL_REGISTER);
-	public static OperandPattern AH = new LiteralOperandPattern(Register8.AH_REGISTER);
-	public static OperandPattern BL = new LiteralOperandPattern(Register8.BL_REGISTER);
-	public static OperandPattern BH = new LiteralOperandPattern(Register8.BH_REGISTER);
-	public static OperandPattern CL = new LiteralOperandPattern(Register8.CL_REGISTER);
-	public static OperandPattern CH = new LiteralOperandPattern(Register8.CH_REGISTER);
-	public static OperandPattern DL = new LiteralOperandPattern(Register8.DL_REGISTER);
-	public static OperandPattern DH = new LiteralOperandPattern(Register8.DH_REGISTER);
+	public static OperandPattern AL = new LiteralOperandPattern(Register8.AL);
+	public static OperandPattern AH = new LiteralOperandPattern(Register8.AH);
+	public static OperandPattern BL = new LiteralOperandPattern(Register8.BL);
+	public static OperandPattern BH = new LiteralOperandPattern(Register8.BH);
+	public static OperandPattern CL = new LiteralOperandPattern(Register8.CL);
+	public static OperandPattern CH = new LiteralOperandPattern(Register8.CH);
+	public static OperandPattern DL = new LiteralOperandPattern(Register8.DL);
+	public static OperandPattern DH = new LiteralOperandPattern(Register8.DH);
 	
-	public static OperandPattern AX = new LiteralOperandPattern(Register16.AX_REGISTER);
-	public static OperandPattern BX = new LiteralOperandPattern(Register16.BX_REGISTER);
-	public static OperandPattern CX = new LiteralOperandPattern(Register16.CX_REGISTER);
-	public static OperandPattern DX = new LiteralOperandPattern(Register16.DX_REGISTER);
-	public static OperandPattern SP = new LiteralOperandPattern(Register16.SP_REGISTER);
-	public static OperandPattern BP = new LiteralOperandPattern(Register16.BP_REGISTER);
-	public static OperandPattern SI = new LiteralOperandPattern(Register16.SI_REGISTER);
-	public static OperandPattern DI = new LiteralOperandPattern(Register16.DI_REGISTER);
+	public static OperandPattern AX = new LiteralOperandPattern(Register16.AX);
+	public static OperandPattern BX = new LiteralOperandPattern(Register16.BX);
+	public static OperandPattern CX = new LiteralOperandPattern(Register16.CX);
+	public static OperandPattern DX = new LiteralOperandPattern(Register16.DX);
+	public static OperandPattern SP = new LiteralOperandPattern(Register16.SP);
+	public static OperandPattern BP = new LiteralOperandPattern(Register16.BP);
+	public static OperandPattern SI = new LiteralOperandPattern(Register16.SI);
+	public static OperandPattern DI = new LiteralOperandPattern(Register16.DI);
 	
-	public static OperandPattern EAX = new LiteralOperandPattern(Register32.EAX_REGISTER);
-	public static OperandPattern EBX = new LiteralOperandPattern(Register32.EBX_REGISTER);
-	public static OperandPattern ECX = new LiteralOperandPattern(Register32.ECX_REGISTER);
-	public static OperandPattern EDX = new LiteralOperandPattern(Register32.EDX_REGISTER);
-	public static OperandPattern ESP = new LiteralOperandPattern(Register32.ESP_REGISTER);
-	public static OperandPattern EBP = new LiteralOperandPattern(Register32.EBP_REGISTER);
-	public static OperandPattern ESI = new LiteralOperandPattern(Register32.ESI_REGISTER);
-	public static OperandPattern EDI = new LiteralOperandPattern(Register32.EDI_REGISTER);
+	public static OperandPattern EAX = new LiteralOperandPattern(Register32.EAX);
+	public static OperandPattern EBX = new LiteralOperandPattern(Register32.EBX);
+	public static OperandPattern ECX = new LiteralOperandPattern(Register32.ECX);
+	public static OperandPattern EDX = new LiteralOperandPattern(Register32.EDX);
+	public static OperandPattern ESP = new LiteralOperandPattern(Register32.ESP);
+	public static OperandPattern EBP = new LiteralOperandPattern(Register32.EBP);
+	public static OperandPattern ESI = new LiteralOperandPattern(Register32.ESI);
+	public static OperandPattern EDI = new LiteralOperandPattern(Register32.EDI);
 	
-	public static OperandPattern CS = new LiteralOperandPattern(SegmentRegister.CS_REGISTER);
-	public static OperandPattern DS = new LiteralOperandPattern(SegmentRegister.DS_REGISTER);
-	public static OperandPattern ES = new LiteralOperandPattern(SegmentRegister.ES_REGISTER);
-	public static OperandPattern FS = new LiteralOperandPattern(SegmentRegister.FS_REGISTER);
-	public static OperandPattern GS = new LiteralOperandPattern(SegmentRegister.GS_REGISTER);
-	public static OperandPattern SS = new LiteralOperandPattern(SegmentRegister.SS_REGISTER);
+	public static OperandPattern CS = new LiteralOperandPattern(SegmentRegister.CS);
+	public static OperandPattern DS = new LiteralOperandPattern(SegmentRegister.DS);
+	public static OperandPattern ES = new LiteralOperandPattern(SegmentRegister.ES);
+	public static OperandPattern FS = new LiteralOperandPattern(SegmentRegister.FS);
+	public static OperandPattern GS = new LiteralOperandPattern(SegmentRegister.GS);
+	public static OperandPattern SS = new LiteralOperandPattern(SegmentRegister.SS);
 	
 	
 	

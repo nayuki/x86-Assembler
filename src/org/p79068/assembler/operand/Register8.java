@@ -7,28 +7,28 @@ package org.p79068.assembler.operand;
 public final class Register8 extends Register {
 	
 	/** The AL register. */
-	public static Register8 AL_REGISTER = new Register8("al", 0);
+	public static Register8 AL = new Register8("al", 0);
 	
 	/** The CL register. */
-	public static Register8 CL_REGISTER = new Register8("cl", 1);
+	public static Register8 CL = new Register8("cl", 1);
 	
 	/** The DL register. */
-	public static Register8 DL_REGISTER = new Register8("dl", 2);
+	public static Register8 DL = new Register8("dl", 2);
 	
 	/** The BL register. */
-	public static Register8 BL_REGISTER = new Register8("bl", 3);
+	public static Register8 BL = new Register8("bl", 3);
 	
 	/** The AH register. */
-	public static Register8 AH_REGISTER = new Register8("ah", 4);
+	public static Register8 AH = new Register8("ah", 4);
 	
 	/** The CH register. */
-	public static Register8 CH_REGISTER = new Register8("ch", 5);
+	public static Register8 CH = new Register8("ch", 5);
 	
 	/** The DH register. */
-	public static Register8 DH_REGISTER = new Register8("dh", 6);
+	public static Register8 DH = new Register8("dh", 6);
 	
 	/** The BH register. */
-	public static Register8 BH_REGISTER = new Register8("bh", 7);
+	public static Register8 BH = new Register8("bh", 7);
 	
 	
 	
