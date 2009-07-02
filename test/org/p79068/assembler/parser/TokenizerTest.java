@@ -12,73 +12,79 @@ public class TokenizerTest {
 	@Test
 	public void testEmpty() {
 		Tokenizer t = new Tokenizer("");
-		assertEquals(new Token(END_OF_FILE, ""), t.next());
+		compareNext(t, END_OF_FILE, "");
 	}
 	
 	
 	@Test
 	public void testSymbols() {
 		Tokenizer t = new Tokenizer("$(),");
-		assertEquals(new Token(DOLLAR, "$"), t.next());
-		assertEquals(new Token(LEFT_PAREN, "("), t.next());
-		assertEquals(new Token(RIGHT_PAREN, ")"), t.next());
-		assertEquals(new Token(COMMA, ","), t.next());
-		assertEquals(new Token(END_OF_FILE, ""), t.next());
+		compareNext(t, DOLLAR, "$");
+		compareNext(t, LEFT_PAREN, "(");
+		compareNext(t, RIGHT_PAREN, ")");
+		compareNext(t, COMMA, ",");
+		compareNext(t, END_OF_FILE, "");
 	}
 	
 	
 	@Test
 	public void testWhitespace() {
 		Tokenizer t = new Tokenizer(" $\t(  ) \t ");
-		assertEquals(new Token(DOLLAR, "$"), t.next());
-		assertEquals(new Token(LEFT_PAREN, "("), t.next());
-		assertEquals(new Token(RIGHT_PAREN, ")"), t.next());
-		assertEquals(new Token(END_OF_FILE, ""), t.next());
+		compareNext(t, DOLLAR, "$");
+		compareNext(t, LEFT_PAREN, "(");
+		compareNext(t, RIGHT_PAREN, ")");
+		compareNext(t, END_OF_FILE, "");
 	}
 	
 	
 	@Test
 	public void testName() {
 		Tokenizer t = new Tokenizer("name");
-		assertEquals(new Token(NAME, "name"), t.next());
-		assertEquals(new Token(END_OF_FILE, ""), t.next());
+		compareNext(t, NAME, "name");
+		compareNext(t, END_OF_FILE, "");
 	}
 	
 	
 	@Test
 	public void testLabel() {
 		Tokenizer t = new Tokenizer("label:");
-		assertEquals(new Token(LABEL, "label:"), t.next());
-		assertEquals(new Token(END_OF_FILE, ""), t.next());
+		compareNext(t, LABEL, "label:");
+		compareNext(t, END_OF_FILE, "");
 	}
 	
 	
 	@Test
 	public void testRegister() {
 		Tokenizer t = new Tokenizer("%reg");
-		assertEquals(new Token(REGISTER, "%reg"), t.next());
-		assertEquals(new Token(END_OF_FILE, ""), t.next());
+		compareNext(t, REGISTER, "%reg");
+		compareNext(t, END_OF_FILE, "");
 	}
 	
 	
 	@Test
 	public void testDecimal() {
 		Tokenizer t = new Tokenizer("0 1 -23");
-		assertEquals(new Token(DECIMAL, "0"), t.next());
-		assertEquals(new Token(DECIMAL, "1"), t.next());
-		assertEquals(new Token(DECIMAL, "-23"), t.next());
-		assertEquals(new Token(END_OF_FILE, ""), t.next());
+		compareNext(t, DECIMAL, "0");
+		compareNext(t, DECIMAL, "1");
+		compareNext(t, DECIMAL, "-23");
+		compareNext(t, END_OF_FILE, "");
 	}
 	
 	
 	@Test
 	public void testHexadecimal() {
 		Tokenizer t = new Tokenizer("0x0 0X1 0xdead 0xBEEF");
-		assertEquals(new Token(HEXADECIMAL, "0x0"), t.next());
-		assertEquals(new Token(HEXADECIMAL, "0X1"), t.next());
-		assertEquals(new Token(HEXADECIMAL, "0xdead"), t.next());
-		assertEquals(new Token(HEXADECIMAL, "0xBEEF"), t.next());
-		assertEquals(new Token(END_OF_FILE, ""), t.next());
+		compareNext(t, HEXADECIMAL, "0x0");
+		compareNext(t, HEXADECIMAL, "0X1");
+		compareNext(t, HEXADECIMAL, "0xdead");
+		compareNext(t, HEXADECIMAL, "0xBEEF");
+		compareNext(t, END_OF_FILE, "");
+	}
+	
+	
+	
+	private static void compareNext(Tokenizer t, TokenType type, String text) {
+		assertEquals(new Token(type, text), t.next());
 	}
 	
 }
