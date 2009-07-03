@@ -22,6 +22,12 @@ public final class Assembler {
 		if (program == null || outputfile == null)
 			throw new NullPointerException();
 		
+		computeLabelOffsets(program);
+		assembleProgram(program, outputfile);
+	}
+	
+	
+	private static void computeLabelOffsets(Program program) {
 		int offset = 0;
 		for (Statement st : program.getStatements()) {
 			if (st instanceof InstructionStatement) {
@@ -35,12 +41,15 @@ public final class Assembler {
 				program.addLabel(name, offset);
 			}
 		}
-		
+	}
+	
+	
+	private static void assembleProgram(Program program, File outputfile) throws IOException {
 		OutputStream out0 = new FileOutputStream(outputfile);
 		OutputStream out = new BufferedOutputStream(out0);
 		
 		try {
-			offset = 0;
+			int offset = 0;
 			for (Statement st : program.getStatements()) {
 				if (st instanceof InstructionStatement) {
 					InstructionStatement ist = (InstructionStatement)st;
