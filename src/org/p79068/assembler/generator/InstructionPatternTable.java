@@ -564,6 +564,8 @@ public class InstructionPatternTable {
 	
 	
 	private void add(InstructionPattern pat) {
+		if (pat == null)
+			throw new NullPointerException();
 		patterns.add(pat);
 		
 		if (!patternsByMnemonic.containsKey(pat.mnemonic))
@@ -578,11 +580,15 @@ public class InstructionPatternTable {
 	
 	
 	private static OperandPattern[] opPat(OperandPattern... operands) {
+		if (operands == null)
+			throw new NullPointerException();
 		return operands;
 	}
 	
 	
 	public InstructionPattern match(String mnemonic, Operand[] operands) {
+		if (mnemonic == null || operands == null)
+			throw new NullPointerException();
 		if (!patternsByMnemonic.containsKey(mnemonic))
 			throw new IllegalArgumentException("Invalid mnemonic: " + mnemonic);
 		
@@ -633,6 +639,8 @@ public class InstructionPatternTable {
 	
 	
 	private static int getWidth(OperandPattern op) {
+		if (op == null)
+			throw new NullPointerException();
 		if (op == REL8)
 			return 8;
 		else if (op == REL16)
