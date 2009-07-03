@@ -117,6 +117,8 @@ final class StringTokenizer extends Tokenizer {
 				offset += match.length();
 				if (pat.tokenType != null)
 					return new Token(pat.tokenType, match);
+				else
+					return next();
 			}
 		}
 		throw new RuntimeException("No token pattern match");
