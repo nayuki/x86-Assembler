@@ -18,6 +18,9 @@ public final class Assembler {
 	
 	private static InstructionPatternTable patterntable = InstructionPatternTable.MODE32_TABLE;
 	
+	private static final int ENTRY_POINT = 0x00100054;
+	
+	
 	
 	public static void assembleToFile(Program program, File outputfile) throws IOException {
 		if (program == null || outputfile == null)
@@ -29,7 +32,7 @@ public final class Assembler {
 	
 	
 	private static void computeLabelOffsets(Program program) {
-		int offset = 0x08000054;
+		int offset = ENTRY_POINT;
 		for (Statement st : program.getStatements()) {
 			if (st instanceof InstructionStatement) {
 				InstructionStatement ist = (InstructionStatement)st;
@@ -51,7 +54,8 @@ public final class Assembler {
 		OutputStream out = new BufferedOutputStream(out0);
 		
 		try {
-			writeElfHeader(code, out);
+			out.write(makeElfHeader(ENTRY_POINT));
+			out.write(makeProgramHeader(ENTRY_POINT, code.length));
 			out.write(code);
 		} finally {
 			out.close();
@@ -59,87 +63,48 @@ public final class Assembler {
 	}
 	
 	
-	private static void writeElfHeader(byte[] code, OutputStream out) throws IOException {
-		// Write ELF header
-		
-		// e_ident
-		out.write(new byte[]{0x7F, 'E', 'L', 'F'});  // Magic number
-		out.write(0x01);  // Class: 0x01 = 32-bit
-		out.write(0x01);  // Data: 0x01 = Little endian
-		out.write(0x01);  // Version: 0x01 = Current
-		out.write(new byte[9]);  // Padding: 9 bytes of zeros
-		
-		// e_type
-		out.write(0x02); out.write(0x00);  // Type: 0x0002 = Executable file
-		
-		// e_machine
-		out.write(0x03); out.write(0x00);  // Machine: 0x0003 = Intel 80386
-		
-		// e_version
-		out.write(0x01); out.write(0x00); out.write(0x00); out.write(0x00);  // Version: 0x00000001 = Current
-		
-		// e_entry
-		out.write(0x54); out.write(0x00); out.write(0x00); out.write(0x08);  // Entry point: 0x08000000
-		
-		// e_phoff
-		out.write(0x34); out.write(0x00); out.write(0x00); out.write(0x00);
-		
-		// e_shoff
-		out.write(0x00); out.write(0x00); out.write(0x00); out.write(0x00);
-		
-		// e_flags
-		out.write(0x00); out.write(0x00); out.write(0x00); out.write(0x00);
-		
-		// e_ehsize
-		out.write(0x34); out.write(0x00);
-		
-		// e_phentsize
-		out.write(0x20); out.write(0x00);
-		
-		// e_phnum
-		out.write(0x01); out.write(0x00);
-		
-		// e_shentsize
-		out.write(0x00); out.write(0x00);
-		
-		// e_shnum
-		out.write(0x00); out.write(0x00);
-		
-		// e_shstrndx
-		out.write(0x00); out.write(0x00);
-		
-		// Write program header
-		
-		// p_type
-		out.write(0x01); out.write(0x00); out.write(0x00); out.write(0x00);  // Type: 0x00000001 = Loadable
-		
-		// p_offset
-		out.write(0x54); out.write(0x00); out.write(0x00); out.write(0x00);
-		
-		// p_vaddr
-		out.write(0x54); out.write(0x00); out.write(0x00); out.write(0x08);
-		
-		// p_paddr
-		out.write(0x00); out.write(0x00); out.write(0x00); out.write(0x00);  // Physical address: Ignored
-		
-		// p_filesz
-		out.write(code.length >>> 0); out.write(code.length >>> 8); out.write(code.length >>> 16); out.write(code.length >>> 24);
-		
-		// p_memsz
-		out.write(code.length >>> 0); out.write(code.length >>> 8); out.write(code.length >>> 16); out.write(code.length >>> 24);
-		
-		// p_flags
-		out.write(0x07); out.write(0x00); out.write(0x00); out.write(0x00);
-		
-		// p_align
-		out.write(0x00); out.write(0x10); out.write(0x00); out.write(0x00);
+	private static byte[] makeElfHeader(int entryPoint) {
+		return new byte[] {
+			0x7F, 'E', 'L', 'F',  // Magic number
+			0x01,  // Class: 0x01 = 32-bit
+			0x01,  // Data: 0x01 = Little endian
+			0x01,  // Version: 0x01 = Current
+			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // Padding: 9 bytes of zeros
+			0x02, 0x00,  // Type: 0x0002 = Executable file
+			0x03, 0x00,  // Machine: 0x0003 = Intel 80386
+			0x01, 0x00, 0x00, 0x00,  // Version: 0x00000001 = Current
+			(byte)(entryPoint >>> 0), (byte)(entryPoint >>> 8), (byte)(entryPoint >>> 16), (byte)(entryPoint >>> 24),  // Enttry point
+			0x34, 0x00, 0x00, 0x00,  // Program header offset
+			0x00, 0x00, 0x00, 0x00,  // Section header offset
+			0x00, 0x00, 0x00, 0x00,  // Flags (unused on xcodeSize86)
+			0x34, 0x00,  // ELF header size
+			0x20, 0x00,  // Program header entry size
+			0x01, 0x00,  // Program header entry count
+			0x00, 0x00,  // Section header entry size
+			0x00, 0x00,  // Section header entry count
+			0x00, 0x00   // Section name string table section index
+		};
+	}
+	
+	
+	private static byte[] makeProgramHeader(int virtualAddress, int codeSize) {
+		return new byte[] {
+			0x01, 0x00, 0x00, 0x00,  // Type: 0x00000001 = Loadable
+			0x54, 0x00, 0x00, 0x00,  // File offset
+			(byte)(virtualAddress >>> 0), (byte)(virtualAddress >>> 8), (byte)(virtualAddress >>> 16), (byte)(virtualAddress >>> 24),  // Virtual address
+			0x00, 0x00, 0x00, 0x00,  // Physical address (ignored on x86)
+			(byte)(codeSize >>> 0), (byte)(codeSize >>> 8), (byte)(codeSize >>> 16), (byte)(codeSize >>> 24),  // Size in file
+			(byte)(codeSize >>> 0), (byte)(codeSize >>> 8), (byte)(codeSize >>> 16), (byte)(codeSize >>> 24),  // Size in memory
+			0x07, 0x00, 0x00, 0x00,  // Flags: 0x00000007 = Read, write, execute
+			0x00, 0x10, 0x00, 0x00   // Alignment: 0x00001000 = 4 KiB
+		};
 	}
 	
 	
 	private static byte[] assembleToBytes(Program program) {
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream(); 
-			int offset = 0x08000054;
+			int offset = ENTRY_POINT;
 			for (Statement st : program.getStatements()) {
 				if (st instanceof InstructionStatement) {
 					InstructionStatement ist = (InstructionStatement)st;
