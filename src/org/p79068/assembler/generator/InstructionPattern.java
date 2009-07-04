@@ -37,9 +37,6 @@ public final class InstructionPattern {
 		if (operands.length > 10)
 			throw new IllegalArgumentException("Invalid operands");
 		
-		if (opcodes.length == 0)
-			throw new IllegalArgumentException("Invalid opcodes");
-		
 		if (options.length > 1)
 			throw new IllegalArgumentException("Invalid options");
 		if (options.length == 1) {

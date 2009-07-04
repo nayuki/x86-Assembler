@@ -17,6 +17,9 @@ public class InstructionPatternTable {
 	
 	static {
 		MODE32_TABLE = new InstructionPatternTable();
+		MODE32_TABLE.add("byte"         , opPat(IMM8)                , MODELESS, new int[]{});
+		MODE32_TABLE.add("word"         , opPat(IMM16)               , MODELESS, new int[]{});
+		MODE32_TABLE.add("dword"        , opPat(IMM32)               , MODELESS, new int[]{});
 		MODE32_TABLE.add("addb"         , opPat(RM8, REG8)           , MODELESS, new int[]{0x00}, new ModRM(0, 1));
 		MODE32_TABLE.add("addw"         , opPat(RM16, REG16)         , MODE16  , new int[]{0x01}, new ModRM(0, 1));
 		MODE32_TABLE.add("addl"         , opPat(RM32, REG32)         , MODE32  , new int[]{0x01}, new ModRM(0, 1));
