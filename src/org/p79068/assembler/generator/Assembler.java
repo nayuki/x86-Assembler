@@ -12,6 +12,11 @@ import org.p79068.assembler.LabelStatement;
 import org.p79068.assembler.Program;
 import org.p79068.assembler.Statement;
 import org.p79068.assembler.operand.Operand;
+import org.p79068.libelf.ElfFile;
+import org.p79068.libelf.ElfHeader;
+import org.p79068.libelf.ObjectType;
+import org.p79068.libelf.ProgramHeader;
+import org.p79068.libelf.SegmentType;
 
 
 public final class Assembler {
@@ -50,54 +55,35 @@ public final class Assembler {
 	
 	private static void assembleProgram(Program program, File outputfile) throws IOException {
 		byte[] code = assembleToBytes(program);
+		
+		ElfFile elf = new ElfFile();
+		
+		ElfHeader eh = new ElfHeader();
+		eh.type = ObjectType.ET_EXEC;
+		eh.entry = ENTRY_POINT;
+		eh.shstrndx = 0;
+		elf.elfHeader = eh;
+		
+		ProgramHeader ph = new ProgramHeader();
+		ph.type = SegmentType.PT_LOAD;
+		ph.vaddr = ENTRY_POINT;
+		ph.filesz = code.length;
+		ph.memsz = code.length;
+		ph.flags = 0x7;
+		ph.align = 0x1000;
+		elf.programHeaders.add(ph);
+		ph.offset = elf.getDataOffset();
+		
+		elf.data = code;
+		
 		OutputStream out0 = new FileOutputStream(outputfile);
 		OutputStream out = new BufferedOutputStream(out0);
 		
 		try {
-			out.write(makeElfHeader(ENTRY_POINT));
-			out.write(makeProgramHeader(ENTRY_POINT, code.length));
-			out.write(code);
+			out.write(elf.toBytes());
 		} finally {
 			out.close();
 		}
-	}
-	
-	
-	private static byte[] makeElfHeader(int entryPoint) {
-		return new byte[] {
-			0x7F, 'E', 'L', 'F',  // Magic number
-			0x01,  // Class: 0x01 = 32-bit
-			0x01,  // Data: 0x01 = Little endian
-			0x01,  // Version: 0x01 = Current
-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // Padding: 9 bytes of zeros
-			0x02, 0x00,  // Type: 0x0002 = Executable file
-			0x03, 0x00,  // Machine: 0x0003 = Intel 80386
-			0x01, 0x00, 0x00, 0x00,  // Version: 0x00000001 = Current
-			(byte)(entryPoint >>> 0), (byte)(entryPoint >>> 8), (byte)(entryPoint >>> 16), (byte)(entryPoint >>> 24),  // Enttry point
-			0x34, 0x00, 0x00, 0x00,  // Program header offset
-			0x00, 0x00, 0x00, 0x00,  // Section header offset
-			0x00, 0x00, 0x00, 0x00,  // Flags (unused on x86)
-			0x34, 0x00,  // ELF header size
-			0x20, 0x00,  // Program header entry size
-			0x01, 0x00,  // Program header entry count
-			0x00, 0x00,  // Section header entry size
-			0x00, 0x00,  // Section header entry count
-			0x00, 0x00   // Section name string table section index
-		};
-	}
-	
-	
-	private static byte[] makeProgramHeader(int virtualAddress, int codeSize) {
-		return new byte[] {
-			0x01, 0x00, 0x00, 0x00,  // Type: 0x00000001 = Loadable
-			0x54, 0x00, 0x00, 0x00,  // File offset
-			(byte)(virtualAddress >>> 0), (byte)(virtualAddress >>> 8), (byte)(virtualAddress >>> 16), (byte)(virtualAddress >>> 24),  // Virtual address
-			0x00, 0x00, 0x00, 0x00,  // Physical address (ignored on x86)
-			(byte)(codeSize >>> 0), (byte)(codeSize >>> 8), (byte)(codeSize >>> 16), (byte)(codeSize >>> 24),  // Size in file
-			(byte)(codeSize >>> 0), (byte)(codeSize >>> 8), (byte)(codeSize >>> 16), (byte)(codeSize >>> 24),  // Size in memory
-			0x07, 0x00, 0x00, 0x00,  // Flags: 0x00000007 = Read, write, execute
-			0x00, 0x10, 0x00, 0x00   // Alignment: 0x00001000 = 4 KiB
-		};
 	}
 	
 	
