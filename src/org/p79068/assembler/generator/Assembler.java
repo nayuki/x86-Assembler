@@ -76,7 +76,7 @@ public final class Assembler {
 			(byte)(entryPoint >>> 0), (byte)(entryPoint >>> 8), (byte)(entryPoint >>> 16), (byte)(entryPoint >>> 24),  // Enttry point
 			0x34, 0x00, 0x00, 0x00,  // Program header offset
 			0x00, 0x00, 0x00, 0x00,  // Section header offset
-			0x00, 0x00, 0x00, 0x00,  // Flags (unused on xcodeSize86)
+			0x00, 0x00, 0x00, 0x00,  // Flags (unused on x86)
 			0x34, 0x00,  // ELF header size
 			0x20, 0x00,  // Program header entry size
 			0x01, 0x00,  // Program header entry count
