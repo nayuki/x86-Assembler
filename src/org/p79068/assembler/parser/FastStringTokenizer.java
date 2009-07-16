@@ -62,10 +62,11 @@ public class FastStringTokenizer extends Tokenizer {
 	@Override
 	public Token next() {
 		int start = offset;
-		if (offset == sourceCode.length())
-			return new Token(TokenType.END_OF_FILE, "");
 		
-		switch (sourceCode.charAt(offset)) {
+		switch (peekChar()) {
+			case -1:
+				return new Token(TokenType.END_OF_FILE, "");
+			
 			case '$':
 				offset++;
 				return new Token(TokenType.DOLLAR, "$");
@@ -88,9 +89,9 @@ public class FastStringTokenizer extends Tokenizer {
 			
 			case '-':
 				offset++;
-				if (offset < sourceCode.length() && isDecimal(sourceCode.charAt(offset))) {
+				if (isDecimal(peekChar())) {
 					offset++;
-					while (offset < sourceCode.length() && isDecimal(sourceCode.charAt(offset)))
+					while (isDecimal(peekChar()))
 						offset++;
 					return new Token(TokenType.DECIMAL, sourceCode.substring(start, offset));
 				} else {
@@ -100,63 +101,63 @@ public class FastStringTokenizer extends Tokenizer {
 			case '\n':
 			case '\r':
 				offset++;
-				while (offset < sourceCode.length() && (sourceCode.charAt(offset) == '\r' || sourceCode.charAt(offset) == '\n'))
+				while (peekChar() == '\r' || peekChar() == '\n')
 					offset++;
 				return new Token(TokenType.NEWLINE, sourceCode.substring(start, offset));
 			
 			case ' ':  // Whitespace
 			case '\t':
 				offset++;
-				while (offset < sourceCode.length() && (sourceCode.charAt(offset) == ' ' || sourceCode.charAt(offset) == '\t'))
+				while (peekChar() == ' ' || peekChar() == '\t')
 					offset++;
 				return next();
 			
 			case '#':  // Comment
 				offset++;
-				while (offset < sourceCode.length() && (sourceCode.charAt(offset) != '\r' || sourceCode.charAt(offset) != '\n'))
+				while (peekChar() != '\r' && peekChar() != '\n')
 					offset++;
 				return next();
 			
 			case '%':
 				offset++;
-				if (offset == sourceCode.length() || !isNameStart(sourceCode.charAt(offset)))
+				if (!isNameStart(peekChar()))
 					throw new RuntimeException("No token pattern match");
 				offset++;
-				while (offset < sourceCode.length() && isNameContinuation(sourceCode.charAt(offset)))
+				while (isNameContinuation(peekChar()))
 					offset++;
 				return new Token(TokenType.REGISTER, sourceCode.substring(start, offset));
 			
 			case '0':
 				offset++;
-				if (offset == sourceCode.length())
+				if (peekChar() == -1)
 					return new Token(TokenType.DECIMAL, "0");
-				if (sourceCode.charAt(offset) != 'x' && sourceCode.charAt(offset) != 'X') {
-					while (offset < sourceCode.length() && isDecimal(sourceCode.charAt(offset)))
+				if (peekChar() != 'x' && peekChar() != 'X') {
+					while (isDecimal(peekChar()))
 						offset++;
 					return new Token(TokenType.DECIMAL, sourceCode.substring(start, offset));
 				} else {
 					offset++;
-					while (offset < sourceCode.length() && isHexadecimal(sourceCode.charAt(offset)))
+					while (isHexadecimal(peekChar()))
 						offset++;
 					return new Token(TokenType.HEXADECIMAL, sourceCode.substring(start, offset));
 				}
 			
 			default:
-				if (isNameStart(sourceCode.charAt(offset))) {
+				if (isNameStart(peekChar())) {
 					offset++;
-					while (offset < sourceCode.length() && isNameContinuation(sourceCode.charAt(offset)))
+					while (isNameContinuation(peekChar()))
 						offset++;
 					
-					if (offset < sourceCode.length() && sourceCode.charAt(offset) == ':') {
+					if (peekChar() == ':') {
 						offset++;
 						return new Token(TokenType.LABEL, sourceCode.substring(start, offset));
 					} else {
 						return new Token(TokenType.NAME, sourceCode.substring(start, offset));
 					}
 					
-				} else if (isDecimal(sourceCode.charAt(offset))) {
+				} else if (isDecimal(peekChar())) {
 					offset++;
-					while (offset < sourceCode.length() && isDecimal(sourceCode.charAt(offset)))
+					while (isDecimal(peekChar()))
 						offset++;
 					return new Token(TokenType.DECIMAL, sourceCode.substring(start, offset));
 					
@@ -167,22 +168,30 @@ public class FastStringTokenizer extends Tokenizer {
 	}
 	
 	
-	private static boolean isNameStart(char c) {
+	private int peekChar() {
+		if (offset == sourceCode.length())
+			return -1;
+		else
+			return sourceCode.charAt(offset);
+	}
+	
+	
+	private static boolean isNameStart(int c) {
 		return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '_';
 	}
 	
 	
-	private static boolean isNameContinuation(char c) {
+	private static boolean isNameContinuation(int c) {
 		return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '_';
 	}
 	
 	
-	private static boolean isDecimal(char c) {
+	private static boolean isDecimal(int c) {
 		return c >= '0' && c <= '9';
 	}
 	
 	
-	private static boolean isHexadecimal(char c) {
+	private static boolean isHexadecimal(int c) {
 		return c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f' || c >= '0' && c <= '9';
 	}
 	
