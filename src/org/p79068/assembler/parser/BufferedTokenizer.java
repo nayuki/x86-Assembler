@@ -4,7 +4,7 @@ package org.p79068.assembler.parser;
 /**
  * Decorates a tokenizer with peeking capabilities.
  */
-final class BufferedTokenizer {
+final class BufferedTokenizer extends Tokenizer {
 	
 	private Tokenizer tokenizer;
 	
