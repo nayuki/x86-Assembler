@@ -3,7 +3,7 @@ package org.p79068.libelf;
 import org.p79068.util.ByteBuffer;
 
 
-public class SectionHeader {
+public final class SectionHeader {
 	
 	static int SECTION_HEADER_ENTRY_SIZE = 40;
 	

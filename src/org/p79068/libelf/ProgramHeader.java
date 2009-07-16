@@ -3,7 +3,7 @@ package org.p79068.libelf;
 import org.p79068.util.ByteBuffer;
 
 
-public class ProgramHeader {
+public final class ProgramHeader {
 	
 	static int PROGRAM_HEADER_ENTRY_SIZE = 32;
 	

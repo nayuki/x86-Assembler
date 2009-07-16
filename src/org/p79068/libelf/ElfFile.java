@@ -6,7 +6,7 @@ import java.util.List;
 import org.p79068.util.ByteBuffer;
 
 
-public class ElfFile {
+public final class ElfFile {
 	
 	public ElfHeader elfHeader;
 	

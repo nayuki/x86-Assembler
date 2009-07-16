@@ -3,7 +3,7 @@ package org.p79068.libelf;
 import org.p79068.util.ByteBuffer;
 
 
-public class ElfHeader {
+public final class ElfHeader {
 	
 	private static final int ELFCLASS32 = 1;
 	
