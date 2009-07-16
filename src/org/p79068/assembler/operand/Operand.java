@@ -7,4 +7,8 @@ package org.p79068.assembler.operand;
  * @see Register
  * @see Memory
  */
-public class Operand {}
+public class Operand {
+	
+	Operand() {}
+	
+}

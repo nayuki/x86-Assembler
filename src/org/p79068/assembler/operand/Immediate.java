@@ -8,6 +8,9 @@ import org.p79068.assembler.Program;
  */
 public abstract class Immediate extends Operand {
 	
+	Immediate() {}
+	
+	
 	public abstract ImmediateValue getValue(Program program);
 	
 }
