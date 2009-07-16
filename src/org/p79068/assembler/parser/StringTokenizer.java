@@ -29,6 +29,7 @@ final class StringTokenizer extends Tokenizer {
 		}
 		
 		
+		@Override
 		public String toString() {
 			return String.format("[%s: /%s/]", tokenType, pattern);
 		}
@@ -110,6 +111,7 @@ final class StringTokenizer extends Tokenizer {
 	
 	
 	
+	@Override
 	public Token next() {
 		for (TokenPattern pat : patterns) {
 			String match = match(pat.pattern);

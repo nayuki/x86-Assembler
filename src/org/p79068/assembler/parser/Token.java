@@ -30,6 +30,7 @@ final class Token {
 	
 	
 	
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Token))
 			return false;
@@ -40,6 +41,7 @@ final class Token {
 	}
 	
 	
+	@Override
 	public int hashCode() {
 		return type.hashCode() + text.hashCode();
 	}
@@ -49,6 +51,7 @@ final class Token {
 	 * Returns a string representation of this token. The format is subjected to change.
 	 * @return a string representation of this token
 	 */
+	@Override
 	public String toString() {
 		return String.format("[%s %s]", type, text);
 	}

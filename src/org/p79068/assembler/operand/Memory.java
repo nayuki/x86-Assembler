@@ -44,6 +44,7 @@ public final class Memory extends Operand {
 	
 	
 	
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Memory))
 			return false;
@@ -57,6 +58,7 @@ public final class Memory extends Operand {
 	}
 	
 	
+	@Override
 	public int hashCode() {
 		return base.hashCode() + index.hashCode() + scale + displacement.hashCode();
 	}
@@ -66,6 +68,7 @@ public final class Memory extends Operand {
 	 * Returns a string representation of this memory reference. The format is subjected to change.
 	 * @return a string representation of this memory reference
 	 */
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");

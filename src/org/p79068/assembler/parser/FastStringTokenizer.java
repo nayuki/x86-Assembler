@@ -55,6 +55,7 @@ public class FastStringTokenizer extends Tokenizer {
 	
 	
 	
+	@Override
 	public Token next() {
 		int start = offset;
 		if (offset == sourceCode.length())

@@ -39,6 +39,7 @@ public class InstructionStatement extends Statement {
 	}
 	
 	
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof LabelStatement))
 			return false;
@@ -49,11 +50,13 @@ public class InstructionStatement extends Statement {
 	}
 	
 	
+	@Override
 	public int hashCode() {
 		return mnemonic.hashCode() + operands.hashCode();
 	}
 	
 	
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		

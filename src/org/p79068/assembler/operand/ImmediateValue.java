@@ -73,6 +73,7 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	@Override
 	public ImmediateValue getValue(Map<String,Integer> labelOffsets) {
 		return this;
 	}
@@ -87,6 +88,7 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof ImmediateValue))
 			return false;
@@ -95,6 +97,7 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	@Override
 	public int hashCode() {
 		return value;
 	}
@@ -104,6 +107,7 @@ public class ImmediateValue extends Immediate {
 	 * Returns a string representation of this immediate value. The format is subjected to change.
 	 * @return a string representation of this immediate value
 	 */
+	@Override
 	public String toString() {
 		return Integer.toString(value);
 	}

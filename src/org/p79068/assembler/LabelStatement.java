@@ -20,6 +20,7 @@ public class LabelStatement extends Statement {
 	}
 	
 	
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof LabelStatement))
 			return false;
@@ -28,11 +29,13 @@ public class LabelStatement extends Statement {
 	}
 	
 	
+	@Override
 	public int hashCode() {
 		return name.hashCode();
 	}
 	
 	
+	@Override
 	public String toString() {
 		return name;
 	}

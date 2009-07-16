@@ -13,29 +13,29 @@ import org.p79068.assembler.operand.SegmentRegister;
 
 abstract class OperandPattern {
 	
-	public static OperandPattern IMM8  = new OperandPattern("imm8" ) { public boolean matches(Operand op) { return op instanceof Label || op instanceof ImmediateValue && ((ImmediateValue)op).is8Bit(); } };
-	public static OperandPattern IMM16 = new OperandPattern("imm16") { public boolean matches(Operand op) { return op instanceof Label || op instanceof ImmediateValue && ((ImmediateValue)op).is16Bit(); } };
-	public static OperandPattern IMM32 = new OperandPattern("imm32") { public boolean matches(Operand op) { return op instanceof Label || op instanceof ImmediateValue; } };
+	public static OperandPattern IMM8  = new OperandPattern("imm8" ) { @Override public boolean matches(Operand op) { return op instanceof Label || op instanceof ImmediateValue && ((ImmediateValue)op).is8Bit(); } };
+	public static OperandPattern IMM16 = new OperandPattern("imm16") { @Override public boolean matches(Operand op) { return op instanceof Label || op instanceof ImmediateValue && ((ImmediateValue)op).is16Bit(); } };
+	public static OperandPattern IMM32 = new OperandPattern("imm32") { @Override public boolean matches(Operand op) { return op instanceof Label || op instanceof ImmediateValue; } };
 	
-	public static OperandPattern IMM8S = new OperandPattern("imm8s") { public boolean matches(Operand op) { return op instanceof ImmediateValue && ((ImmediateValue)op).isSigned8Bit(); } };
+	public static OperandPattern IMM8S = new OperandPattern("imm8s") { @Override public boolean matches(Operand op) { return op instanceof ImmediateValue && ((ImmediateValue)op).isSigned8Bit(); } };
 	
-	public static OperandPattern REL8  = new OperandPattern("rel8" ) { public boolean matches(Operand op) { return op instanceof Immediate; } };
-	public static OperandPattern REL16 = new OperandPattern("rel16") { public boolean matches(Operand op) { return op instanceof Immediate; } };
-	public static OperandPattern REL32 = new OperandPattern("rel32") { public boolean matches(Operand op) { return op instanceof Immediate; } };
+	public static OperandPattern REL8  = new OperandPattern("rel8" ) { @Override public boolean matches(Operand op) { return op instanceof Immediate; } };
+	public static OperandPattern REL16 = new OperandPattern("rel16") { @Override public boolean matches(Operand op) { return op instanceof Immediate; } };
+	public static OperandPattern REL32 = new OperandPattern("rel32") { @Override public boolean matches(Operand op) { return op instanceof Immediate; } };
 	
 	public static OperandPattern IMM_VAL_1 = new LiteralOperandPattern(new ImmediateValue(1));
 	public static OperandPattern IMM_VAL_3 = new LiteralOperandPattern(new ImmediateValue(3));
 	
-	public static OperandPattern MEM = new OperandPattern("mem") { public boolean matches(Operand op) { return op instanceof Memory; } };
+	public static OperandPattern MEM = new OperandPattern("mem") { @Override public boolean matches(Operand op) { return op instanceof Memory; } };
 	
-	public static OperandPattern RM8  = new OperandPattern("r/m8" ) { public boolean matches(Operand op) { return op instanceof Register8  || op instanceof Memory; } };
-	public static OperandPattern RM16 = new OperandPattern("r/m16") { public boolean matches(Operand op) { return op instanceof Register16 || op instanceof Memory; } };
-	public static OperandPattern RM32 = new OperandPattern("r/m32") { public boolean matches(Operand op) { return op instanceof Register32 || op instanceof Memory; } };
+	public static OperandPattern RM8  = new OperandPattern("r/m8" ) { @Override public boolean matches(Operand op) { return op instanceof Register8  || op instanceof Memory; } };
+	public static OperandPattern RM16 = new OperandPattern("r/m16") { @Override public boolean matches(Operand op) { return op instanceof Register16 || op instanceof Memory; } };
+	public static OperandPattern RM32 = new OperandPattern("r/m32") { @Override public boolean matches(Operand op) { return op instanceof Register32 || op instanceof Memory; } };
 	
-	public static OperandPattern REG8  = new OperandPattern("reg8" ) { public boolean matches(Operand op) { return op instanceof Register8; } };
-	public static OperandPattern REG16 = new OperandPattern("reg16") { public boolean matches(Operand op) { return op instanceof Register16; } };
-	public static OperandPattern REG32 = new OperandPattern("reg32") { public boolean matches(Operand op) { return op instanceof Register32; } };
-	public static OperandPattern SREG  = new OperandPattern("sreg" ) { public boolean matches(Operand op) { return op instanceof SegmentRegister; } };
+	public static OperandPattern REG8  = new OperandPattern("reg8" ) { @Override public boolean matches(Operand op) { return op instanceof Register8; } };
+	public static OperandPattern REG16 = new OperandPattern("reg16") { @Override public boolean matches(Operand op) { return op instanceof Register16; } };
+	public static OperandPattern REG32 = new OperandPattern("reg32") { @Override public boolean matches(Operand op) { return op instanceof Register32; } };
+	public static OperandPattern SREG  = new OperandPattern("sreg" ) { @Override public boolean matches(Operand op) { return op instanceof SegmentRegister; } };
 	
 	public static OperandPattern AL = new LiteralOperandPattern(Register8.AL);
 	public static OperandPattern AH = new LiteralOperandPattern(Register8.AH);
@@ -92,6 +92,7 @@ abstract class OperandPattern {
 	 * Returns a string representation of this operand pattern. The format is subjected to change.
 	 * @return a string representation of this operand pattern
 	 */
+	@Override
 	public String toString() {
 		return name;
 	}

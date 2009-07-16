@@ -33,11 +33,13 @@ public class Label extends Immediate {
 	}
 	
 	
+	@Override
 	public ImmediateValue getValue(Map<String,Integer> labelOffsets) {
 		return new ImmediateValue(labelOffsets.get(name));
 	}
 	
 	
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Label))
 			return false;
@@ -46,6 +48,7 @@ public class Label extends Immediate {
 	}
 	
 	
+	@Override
 	public int hashCode() {
 		return name.hashCode();
 	}
@@ -55,6 +58,7 @@ public class Label extends Immediate {
 	 * Returns a string representation of this label operand. The format is subjected to change.
 	 * @return a string representation of this label operand
 	 */
+	@Override
 	public String toString() {
 		return name;
 	}
