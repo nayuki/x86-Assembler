@@ -4,7 +4,7 @@ import java.util.Map;
 
 
 /**
- * A label operand. Immutable.
+ * A label operand. A label is simply a string name. Immutable.
  */
 public class Label extends Immediate {
 	

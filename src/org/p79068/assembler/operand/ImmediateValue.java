@@ -4,10 +4,10 @@ import java.util.Map;
 
 
 /**
- * An immediate literal value.
+ * An immediate literal value. It is simply a 32-bit integer. Immutable.
  */
 public class ImmediateValue extends Immediate {
-
+	
 	/** The constant zero. */
 	public static final ImmediateValue ZERO = new ImmediateValue(0);
 	
@@ -73,10 +73,6 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
-	/**
-	 * Tests whether this value is a signed or unsigned 32-bit integer.
-	 * @return {@code true} if this value is a signed or unsigned 32-bit integer, {@code false} otherwise
-	 */
 	public ImmediateValue getValue(Map<String,Integer> labelOffsets) {
 		return this;
 	}
