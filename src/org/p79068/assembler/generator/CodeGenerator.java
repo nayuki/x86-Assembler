@@ -22,8 +22,8 @@ final class CodeGenerator {
 		
 		length += pat.opcodes.length;
 		
-		if (pat.options.length == 1 && pat.options[0] instanceof ModRM)
-			length += getModRMBytesLength((ModRM)pat.options[0], operands);
+		if (pat.options.size() == 1 && pat.options.get(0) instanceof ModRM)
+			length += getModRMBytesLength((ModRM)pat.options.get(0), operands);
 		
 		for (int i = 0; i < pat.operands.size(); i++) {
 			OperandPattern slot = pat.operands.get(i);
@@ -86,8 +86,8 @@ final class CodeGenerator {
 		
 		// Process register-in-opcode option
 		byte[] opcodes = pat.opcodes;
-		if (pat.options.length == 1 && pat.options[0] instanceof RegisterInOpcode) {
-			RegisterInOpcode option = (RegisterInOpcode)pat.options[0];
+		if (pat.options.size() == 1 && pat.options.get(0) instanceof RegisterInOpcode) {
+			RegisterInOpcode option = (RegisterInOpcode)pat.options.get(0);
 			opcodes = opcodes.clone();
 			opcodes[opcodes.length - 1] += ((Register)operands.get(option.operandIndex)).getRegisterNumber();
 		}
@@ -96,8 +96,8 @@ final class CodeGenerator {
 		result = concatenate(result, opcodes);
 		
 		// Append ModR/M and SIB bytes if necessary
-		if (pat.options.length == 1 && pat.options[0] instanceof ModRM)
-			result = concatenate(result, makeModRMBytes((ModRM)pat.options[0], operands, program));
+		if (pat.options.size() == 1 && pat.options.get(0) instanceof ModRM)
+			result = concatenate(result, makeModRMBytes((ModRM)pat.options.get(0), operands, program));
 		
 		// Append immediate operands if necessary
 		for (int i = 0; i < pat.operands.size(); i++) {

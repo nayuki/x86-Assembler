@@ -23,7 +23,7 @@ public final class InstructionPattern {
 	
 	public final OperandSizeMode operandSizeMode;
 	
-	public final InstructionOption[] options;
+	public final List<InstructionOption> options;
 	
 	
 	public final byte[] opcodes;
@@ -54,12 +54,15 @@ public final class InstructionPattern {
 		
 		this.mnemonic = mnemonic;
 		this.operandSizeMode = operandSizeMode;
-		this.options = options;
 		this.opcodes = toBytes(opcodes);
 		
 		List<OperandPattern> temp = new ArrayList<OperandPattern>();
 		Collections.addAll(temp, operands);
 		this.operands = Collections.unmodifiableList(temp);
+		
+		List<InstructionOption> tempopt = new ArrayList<InstructionOption>();
+		Collections.addAll(tempopt, options);
+		this.options = Collections.unmodifiableList(tempopt);
 	}
 	
 	
