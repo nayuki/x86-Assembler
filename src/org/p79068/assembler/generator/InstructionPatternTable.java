@@ -557,7 +557,7 @@ public class InstructionPatternTable {
 	private static boolean matches(InstructionPattern pat, Operand[] operands) {
 		if (pat.operands.length != operands.length)
 			return false;
-		for (int i = 0; i < operands.length && i < operands.length; i++) {
+		for (int i = 0; i < pat.operands.length && i < operands.length; i++) {
 			if (!pat.operands[i].matches(operands[i]))
 				return false;
 		}
