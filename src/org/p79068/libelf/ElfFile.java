@@ -35,7 +35,7 @@ public final class ElfFile {
 	
 	
 	public byte[] toBytes() {
-		ByteBuffer b = new ByteBuffer();
+		ByteBuffer b = new ByteBuffer(getDataOffset() + data.length);
 		b.append(elfHeader.getBytes((short)programHeaders.size(), (short)sectionHeaders.size()));
 		for (ProgramHeader ph : programHeaders)
 			b.append(ph.toBytes());
