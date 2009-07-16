@@ -1,6 +1,6 @@
 package org.p79068.assembler.operand;
 
-import org.p79068.assembler.Program;
+import java.util.Map;
 
 
 /**
@@ -11,6 +11,6 @@ public abstract class Immediate extends Operand {
 	Immediate() {}
 	
 	
-	public abstract ImmediateValue getValue(Program program);
+	public abstract ImmediateValue getValue(Map<String,Integer> labelOffsets);
 	
 }

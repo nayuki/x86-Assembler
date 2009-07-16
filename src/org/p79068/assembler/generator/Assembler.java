@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.p79068.assembler.InstructionStatement;
 import org.p79068.assembler.LabelStatement;
@@ -32,12 +34,13 @@ public final class Assembler {
 		if (program == null || outputfile == null)
 			throw new NullPointerException();
 		
-		computeLabelOffsets(program);
-		assembleProgram(program, outputfile);
+		Map<String,Integer> labelOffsets = computeLabelOffsets(program);
+		assembleProgram(program, labelOffsets, outputfile);
 	}
 	
 	
-	private static void computeLabelOffsets(Program program) {
+	private static Map<String,Integer> computeLabelOffsets(Program program) {
+		Map<String,Integer> result = new HashMap<String,Integer>();
 		int offset = ENTRY_POINT;
 		for (Statement st : program.getStatements()) {
 			if (st instanceof InstructionStatement) {
@@ -48,14 +51,15 @@ public final class Assembler {
 				offset += length;
 			} else if (st instanceof LabelStatement) {
 				String name = ((LabelStatement)st).getName();
-				program.addLabel(name, offset);
+				result.put(name, offset);
 			}
 		}
+		return result;
 	}
 	
 	
-	private static void assembleProgram(Program program, File outputfile) throws IOException {
-		byte[] code = assembleToBytes(program);
+	private static void assembleProgram(Program program, Map<String,Integer> labelOffsets, File outputfile) throws IOException {
+		byte[] code = assembleToBytes(program, labelOffsets);
 		
 		ElfFile elf = new ElfFile();
 		
@@ -88,7 +92,7 @@ public final class Assembler {
 	}
 	
 	
-	private static byte[] assembleToBytes(Program program) {
+	private static byte[] assembleToBytes(Program program, Map<String,Integer> labelOffsets) {
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream(); 
 			int offset = ENTRY_POINT;
@@ -97,12 +101,12 @@ public final class Assembler {
 					InstructionStatement ist = (InstructionStatement)st;
 					String mnemonic = ist.getMnemonic();
 					List<Operand> operands = ist.getOperands();
-					byte[] machinecode = CodeGenerator.makeMachineCode(patterntable, mnemonic, operands, program, offset);
+					byte[] machinecode = CodeGenerator.makeMachineCode(patterntable, mnemonic, operands, program, labelOffsets, offset);
 					out.write(machinecode);
 					offset += machinecode.length;
 				} else if (st instanceof LabelStatement) {
 					String name = ((LabelStatement)st).getName();
-					if (offset != program.getLabelOffset(name))
+					if (offset != labelOffsets.get(name))
 						throw new AssertionError("Label offset mismatch");
 				}
 			}

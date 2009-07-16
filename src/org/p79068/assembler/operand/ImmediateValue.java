@@ -1,6 +1,6 @@
 package org.p79068.assembler.operand;
 
-import org.p79068.assembler.Program;
+import java.util.Map;
 
 
 /**
@@ -77,7 +77,7 @@ public class ImmediateValue extends Immediate {
 	 * Tests whether this value is a signed or unsigned 32-bit integer.
 	 * @return {@code true} if this value is a signed or unsigned 32-bit integer, {@code false} otherwise
 	 */
-	public ImmediateValue getValue(Program program) {
+	public ImmediateValue getValue(Map<String,Integer> labelOffsets) {
 		return this;
 	}
 	

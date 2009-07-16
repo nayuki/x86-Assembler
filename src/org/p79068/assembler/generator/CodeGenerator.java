@@ -1,6 +1,7 @@
 package org.p79068.assembler.generator;
 
 import java.util.List;
+import java.util.Map;
 
 import org.p79068.assembler.Program;
 import org.p79068.assembler.operand.Immediate;
@@ -73,7 +74,7 @@ final class CodeGenerator {
 	}
 	
 	
-	public static byte[] makeMachineCode(InstructionPatternTable table, String mnemonic, List<Operand> operands, Program program, int offset) {
+	public static byte[] makeMachineCode(InstructionPatternTable table, String mnemonic, List<Operand> operands, Program program, Map<String,Integer> labelOffsets, int offset) {
 		// Get matching instruction pattern
 		InstructionPattern pat = table.match(mnemonic, operands);
 		
@@ -97,7 +98,7 @@ final class CodeGenerator {
 		
 		// Append ModR/M and SIB bytes if necessary
 		if (pat.options.size() == 1 && pat.options.get(0) instanceof ModRM)
-			result = concatenate(result, makeModRMBytes((ModRM)pat.options.get(0), operands, program));
+			result = concatenate(result, makeModRMBytes((ModRM)pat.options.get(0), operands, program, labelOffsets));
 		
 		// Append immediate operands if necessary
 		for (int i = 0; i < pat.operands.size(); i++) {
@@ -105,10 +106,10 @@ final class CodeGenerator {
 			
 			if (slot == OperandPattern.IMM8 || slot == OperandPattern.IMM8S || slot == OperandPattern.IMM16 || slot == OperandPattern.IMM32 || slot == OperandPattern.REL8 || slot == OperandPattern.REL16 || slot == OperandPattern.REL32) {
 				
-				ImmediateValue value = ((Immediate)operands.get(i)).getValue(program);
+				ImmediateValue value = ((Immediate)operands.get(i)).getValue(labelOffsets);
 				
 				if (slot == OperandPattern.REL8 || slot == OperandPattern.REL16 || slot == OperandPattern.REL32)
-					value = new ImmediateValue(value.getValue(program).getValue() - offset - getMachineCodeLength(table, mnemonic, operands));
+					value = new ImmediateValue(value.getValue(labelOffsets).getValue() - offset - getMachineCodeLength(table, mnemonic, operands));
 				
 				// Encode signed or unsigned
 				if (slot == OperandPattern.IMM8) {
@@ -139,7 +140,7 @@ final class CodeGenerator {
 	}
 	
 	
-	private static byte[] makeModRMBytes(ModRM option, List<Operand> operands, Program program) {
+	private static byte[] makeModRMBytes(ModRM option, List<Operand> operands, Program program, Map<String,Integer> labelOffsets) {
 		Operand rm = operands.get(option.rmOperandIndex);
 		int mod;
 		int rmvalue;
@@ -152,7 +153,7 @@ final class CodeGenerator {
 			
 		} else if (rm instanceof Memory) {
 			Memory m = (Memory)rm;
-			ImmediateValue disp = m.displacement.getValue(program);
+			ImmediateValue disp = m.displacement.getValue(labelOffsets);
 			
 			if (m.base == null && m.index == null) {  // disp32
 				mod = 0;

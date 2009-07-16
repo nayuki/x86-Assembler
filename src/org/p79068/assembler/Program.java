@@ -2,9 +2,7 @@ package org.p79068.assembler;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -15,8 +13,6 @@ public final class Program {
 	/** The list of statements. */
 	private List<Statement> statements;
 	
-	private Map<String,Integer> labels;
-	
 	
 	
 	/**
@@ -24,7 +20,6 @@ public final class Program {
 	 */
 	public Program() {
 		statements = new ArrayList<Statement>();
-		labels = new HashMap<String,Integer>();
 	}
 	
 	
@@ -38,15 +33,6 @@ public final class Program {
 	}
 	
 	
-	public int getLabelOffset(String name) {
-		if (name == null)
-			throw new NullPointerException();
-		if (!labels.containsKey(name))
-			throw new IllegalArgumentException("Label does not exist");
-		return labels.get(name);
-	}
-	
-	
 	/**
 	 * Appends the specified statement to the list of statements in this program.
 	 * @param statement the statement to append
@@ -55,15 +41,6 @@ public final class Program {
 		if (statement == null)
 			throw new NullPointerException();
 		statements.add(statement);
-	}
-	
-	
-	public void addLabel(String name, int offset) {
-		if (name == null)
-			throw new NullPointerException();
-		if (labels.containsKey(name))
-			throw new IllegalArgumentException("Label already exists");
-		labels.put(name, offset);
 	}
 	
 }
