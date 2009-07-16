@@ -1,5 +1,8 @@
 package org.p79068.assembler.generator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static org.p79068.assembler.generator.OperandPattern.*;
@@ -16,7 +19,7 @@ public final class InstructionPattern {
 	
 	public final String mnemonic;
 	
-	public final OperandPattern[] operands;
+	public final List<OperandPattern> operands;
 	
 	public final OperandSizeMode operandSizeMode;
 	
@@ -50,10 +53,13 @@ public final class InstructionPattern {
 		}
 		
 		this.mnemonic = mnemonic;
-		this.operands = operands.clone();
 		this.operandSizeMode = operandSizeMode;
 		this.options = options;
 		this.opcodes = toBytes(opcodes);
+		
+		List<OperandPattern> temp = new ArrayList<OperandPattern>();
+		Collections.addAll(temp, operands);
+		this.operands = Collections.unmodifiableList(temp);
 	}
 	
 	
@@ -67,7 +73,7 @@ public final class InstructionPattern {
 		
 		sb.append(mnemonic);
 		
-		if (operands.length > 0) {
+		if (operands.size() > 0) {
 			sb.append("  ");
 			boolean initial = true;
 			for (OperandPattern op : operands) {

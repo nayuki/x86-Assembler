@@ -25,8 +25,8 @@ final class CodeGenerator {
 		if (pat.options.length == 1 && pat.options[0] instanceof ModRM)
 			length += getModRMBytesLength((ModRM)pat.options[0], operands);
 		
-		for (int i = 0; i < pat.operands.length; i++) {
-			OperandPattern slot = pat.operands[i];
+		for (int i = 0; i < pat.operands.size(); i++) {
+			OperandPattern slot = pat.operands.get(i);
 			if (slot == OperandPattern.IMM8 || slot == OperandPattern.IMM8S || slot == OperandPattern.REL8)
 				length += 1;
 			else if (slot == OperandPattern.IMM16 || slot == OperandPattern.REL16)
@@ -100,8 +100,8 @@ final class CodeGenerator {
 			result = concatenate(result, makeModRMBytes((ModRM)pat.options[0], operands, program));
 		
 		// Append immediate operands if necessary
-		for (int i = 0; i < pat.operands.length; i++) {
-			OperandPattern slot = pat.operands[i];
+		for (int i = 0; i < pat.operands.size(); i++) {
+			OperandPattern slot = pat.operands.get(i);
 			
 			if (slot == OperandPattern.IMM8 || slot == OperandPattern.IMM8S || slot == OperandPattern.IMM16 || slot == OperandPattern.IMM32 || slot == OperandPattern.REL8 || slot == OperandPattern.REL16 || slot == OperandPattern.REL32) {
 				

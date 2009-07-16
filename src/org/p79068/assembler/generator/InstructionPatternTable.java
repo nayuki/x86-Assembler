@@ -556,10 +556,10 @@ public class InstructionPatternTable {
 	
 	
 	private static boolean matches(InstructionPattern pat, List<Operand> operands) {
-		if (pat.operands.length != operands.size())
+		if (pat.operands.size() != operands.size())
 			return false;
-		for (int i = 0; i < pat.operands.length && i < operands.size(); i++) {
-			if (!pat.operands[i].matches(operands.get(i)))
+		for (int i = 0; i < pat.operands.size() && i < operands.size(); i++) {
+			if (!pat.operands.get(i).matches(operands.get(i)))
 				return false;
 		}
 		return true;
@@ -571,10 +571,10 @@ public class InstructionPatternTable {
 		boolean isworse = false;
 		
 		for (int i = 0; i < operands.size(); i++) {
-			if (x.operands[i] == REL8 || x.operands[i] == REL16 || x.operands[i] == REL32) {
+			if (x.operands.get(i) == REL8 || x.operands.get(i) == REL16 || x.operands.get(i) == REL32) {
 				// Wider is better
-				isbetter |= isWider(x.operands[i], y.operands[i]);
-				isworse |= isWider(y.operands[i], x.operands[i]);
+				isbetter |= isWider(x.operands.get(i), y.operands.get(i));
+				isworse |= isWider(y.operands.get(i), x.operands.get(i));
 			}
 		}
 		
