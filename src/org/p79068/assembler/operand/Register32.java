@@ -32,6 +32,11 @@ public final class Register32 extends Register {
 	
 	
 	
+	/**
+	 * Constructs a 32-bit register with the specified name and register number.
+	 * @param name the name of the register
+	 * @param registerNumber the register number
+	 */
 	private Register32(String name, int registerNumber) {
 		super(name, registerNumber);
 	}

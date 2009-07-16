@@ -8,6 +8,9 @@ import java.util.regex.Pattern;
 import static org.p79068.assembler.generator.OperandPattern.*;
 
 
+/**
+ * An instruction pattern.
+ */
 public final class InstructionPattern {
 	
 	/**
@@ -30,6 +33,15 @@ public final class InstructionPattern {
 	
 	
 	
+	/**
+	 * Constructions an instruction pattern with the specified parameters.
+	 * @param mnemonic the mnemonic
+	 * @param operands the operands
+	 * @param operandSizeMode the operand size mode
+	 * @param opcodes the opcodes
+	 * @param options the options
+	 * @throws NullPointerException if any argument is {@code null}
+	 */
 	public InstructionPattern(String mnemonic, OperandPattern[] operands, OperandSizeMode operandSizeMode, int[] opcodes, InstructionOption... options) {
 		if (mnemonic == null || operands == null || operandSizeMode == null || opcodes == null || options == null)
 			throw new NullPointerException();

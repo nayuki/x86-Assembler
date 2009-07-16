@@ -7,21 +7,32 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * An assembly language program. A program consists of a list of statements. Program objects are mutable.
+ */
 public final class Program {
 	
+	/** The list of statements. */
 	private List<Statement> statements;
 	
 	private Map<String,Integer> labels;
 	
 	
 	
+	/**
+	 * Constructs a program with an empty list of statements.
+	 */
 	public Program() {
 		statements = new ArrayList<Statement>();
 		labels = new HashMap<String,Integer>();
 	}
-
 	
 	
+	
+	/**
+	 * Returns a read-only view of the list of statements in this program. The data will change as the program changes.
+	 * @return the list of statements in this program
+	 */
 	public List<Statement> getStatements() {
 		return Collections.unmodifiableList(statements);
 	}
@@ -36,6 +47,10 @@ public final class Program {
 	}
 	
 	
+	/**
+	 * Appends the specified statement to the list of statements in this program.
+	 * @param statement the statement to append
+	 */
 	public void addStatement(Statement statement) {
 		if (statement == null)
 			throw new NullPointerException();

@@ -26,6 +26,11 @@ public final class SegmentRegister extends Register {
 	
 	
 	
+	/**
+	 * Constructs a segment register with the specified name and register number.
+	 * @param name the name of the register
+	 * @param registerNumber the register number
+	 */
 	private SegmentRegister(String name, int registerNumber) {
 		super(name, registerNumber);
 	}

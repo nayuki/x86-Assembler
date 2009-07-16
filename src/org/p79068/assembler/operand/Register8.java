@@ -32,6 +32,11 @@ public final class Register8 extends Register {
 	
 	
 	
+	/**
+	 * Constructs an 8-bit register with the specified name and register number.
+	 * @param name the name of the register
+	 * @param registerNumber the register number
+	 */
 	private Register8(String name, int registerNumber) {
 		super(name, registerNumber);
 	}

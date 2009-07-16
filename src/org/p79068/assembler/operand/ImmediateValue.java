@@ -13,6 +13,7 @@ public class ImmediateValue extends Immediate {
 	
 	
 	
+	/** The value. */
 	private int value;
 	
 	

@@ -32,6 +32,11 @@ public final class Register16 extends Register {
 	
 	
 	
+	/**
+	 * Constructs a 16-bit register with the specified name and register number.
+	 * @param name the name of the register
+	 * @param registerNumber the register number
+	 */
 	private Register16(String name, int registerNumber) {
 		super(name, registerNumber);
 	}

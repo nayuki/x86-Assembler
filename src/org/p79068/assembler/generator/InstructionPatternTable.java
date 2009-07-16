@@ -12,8 +12,12 @@ import java.util.Set;
 import org.p79068.assembler.operand.Operand;
 
 
+/**
+ * A set of instruction patterns.
+ */
 public class InstructionPatternTable {
 	
+	/** The table of instructions for x86, 32-bit mode. */
 	public static final InstructionPatternTable MODE32_TABLE;
 	
 	static {
@@ -504,6 +508,9 @@ public class InstructionPatternTable {
 	
 	
 	
+	/**
+	 * Constructs an empty instruction pattern table.
+	 */
 	private InstructionPatternTable() {
 		patterns = new HashSet<InstructionPattern>();
 		patternsByMnemonic = new HashMap<String,Set<InstructionPattern>>();
@@ -511,6 +518,11 @@ public class InstructionPatternTable {
 	
 	
 	
+	/**
+	 * Adds the specified instruction pattern to this table.
+	 * @param pat the instruction pattern to add to this table
+	 * @throws NullPointerException if the instruction pattern is {@code null}
+	 */
 	private void add(InstructionPattern pat) {
 		if (pat == null)
 			throw new NullPointerException();
@@ -522,12 +534,26 @@ public class InstructionPatternTable {
 	}
 	
 	
+	/**
+	 * Adds the specified instruction pattern to this table. Each entry in the opcode array must be in the range [0x00, 0xFF].
+	 * @param mnemonics the mnemonics, separated by vertical bar (|)
+	 * @param operands the list of operand patterns
+	 * @param operandSizeMode the operand size mode
+	 * @param opcodes the opcodes
+	 * @param options the list of options
+	 */
 	private void add(String mnemonics, OperandPattern[] operands, OperandSizeMode operandSizeMode, int[] opcodes, InstructionOption... options) {
 		for (String mnemonic : mnemonics.split("\\|"))
 			add(new InstructionPattern(mnemonic, operands, operandSizeMode, opcodes, options));
 	}
 	
 	
+	/**
+	 * A convenience method that returns the specified varargs as an array.
+	 * @param operands the list of operand patterns
+	 * @return the list of operand patterns
+	 * @throws NullPointerException if the list of operand patterns is {@code null}
+	 */
 	private static OperandPattern[] opPat(OperandPattern... operands) {
 		if (operands == null)
 			throw new NullPointerException();
@@ -535,6 +561,12 @@ public class InstructionPatternTable {
 	}
 	
 	
+	/**
+	 * Returns an instruction pattern in this table that matches the specified mnemonic and that best matches list of operands.
+	 * @param mnemonic the mnemonic
+	 * @param operands the list of operands
+	 * @return an instruction pattern that matches the mnemonic and operands
+	 */
 	public InstructionPattern match(String mnemonic, List<Operand> operands) {
 		if (mnemonic == null || operands == null)
 			throw new NullPointerException();
