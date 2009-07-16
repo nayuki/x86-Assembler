@@ -24,20 +24,14 @@ public final class ByteBuffer {
 	
 	
 	public void append(byte b) {
-		if (length == Integer.MAX_VALUE)
-			throw new IllegalStateException();
-		if (length == data.length)
-			resize(length * 2);
+		ensureCapacity((long)length + 1);
 		data[length] = b;
 		length++;
 	}
 	
 	
 	public void appendLittleEndian(short x) {
-		if ((long)length + 2 > Integer.MAX_VALUE)
-			throw new IllegalStateException();
-		while (length + 2 > data.length)
-			resize(data.length * 2);
+		ensureCapacity((long)length + 2);
 		data[length + 0] = (byte)(x >>> 0);
 		data[length + 1] = (byte)(x >>> 8);
 		length += 2;
@@ -45,10 +39,7 @@ public final class ByteBuffer {
 	
 	
 	public void appendLittleEndian(int x) {
-		if ((long)length + 4 > Integer.MAX_VALUE)
-			throw new IllegalStateException();
-		while (length + 4 > data.length)
-			resize(data.length * 2);
+		ensureCapacity((long)length + 4);
 		data[length + 0] = (byte)(x >>>  0);
 		data[length + 1] = (byte)(x >>>  8);
 		data[length + 2] = (byte)(x >>> 16);
@@ -58,10 +49,7 @@ public final class ByteBuffer {
 	
 	
 	public void append(byte[] b) {
-		if ((long)length + b.length > Integer.MAX_VALUE)
-			throw new IllegalStateException();
-		while (length + b.length > data.length)
-			resize(data.length * 2);
+		ensureCapacity((long)length + b.length);
 		System.arraycopy(b, 0, data, length, b.length);
 		length += b.length;
 	}
@@ -74,9 +62,20 @@ public final class ByteBuffer {
 	}
 	
 	
+	private void ensureCapacity(long capacity) {
+		if (capacity < 0)
+			throw new IllegalArgumentException("Negative capacity");
+		if (capacity > Integer.MAX_VALUE)
+			throw new IllegalStateException("Maximum length exceeded");
+		
+		while (data.length < capacity)
+			resize((int)Math.min((long)data.length * 2, Integer.MAX_VALUE));
+	}
+	
+	
 	private void resize(int newCapacity) {
 		if (newCapacity < length)
-			throw new AssertionError();
+			throw new IllegalArgumentException("Capacity less than length");
 		byte[] newdata = new byte[newCapacity];
 		System.arraycopy(data, 0, newdata, 0, length);
 		data = newdata;
