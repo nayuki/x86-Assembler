@@ -18,6 +18,7 @@ public class StringTokenizerTest {
 	public void testEmpty() {
 		Tokenizer t = newTokenizer("");
 		compareNext(t, END_OF_FILE, "");
+		compareNext(t, END_OF_FILE, "");
 	}
 	
 	
@@ -28,6 +29,7 @@ public class StringTokenizerTest {
 		compareNext(t, LEFT_PAREN, "(");
 		compareNext(t, RIGHT_PAREN, ")");
 		compareNext(t, COMMA, ",");
+		compareNext(t, END_OF_FILE, "");
 		compareNext(t, END_OF_FILE, "");
 	}
 	
@@ -46,6 +48,7 @@ public class StringTokenizerTest {
 	public void testName() {
 		Tokenizer t = newTokenizer("name");
 		compareNext(t, NAME, "name");
+		compareNext(t, END_OF_FILE, "");
 		compareNext(t, END_OF_FILE, "");
 	}
 	
@@ -84,6 +87,31 @@ public class StringTokenizerTest {
 		compareNext(t, HEXADECIMAL, "0xdead");
 		compareNext(t, HEXADECIMAL, "0xBEEF");
 		compareNext(t, END_OF_FILE, "");
+	}
+	
+	
+	@Test
+	public void testNewline() {
+		Tokenizer t = newTokenizer("0x123ABC\ndef: \r\n\r\n\nGHI \r\r \t");
+		compareNext(t, HEXADECIMAL, "0x123ABC");
+		compareNext(t, NEWLINE, "\n");
+		compareNext(t, LABEL, "def:");
+		compareNext(t, NEWLINE, "\r\n\r\n\n");
+		compareNext(t, NAME, "GHI");
+		compareNext(t, NEWLINE, "\r\r");
+		compareNext(t, END_OF_FILE, "");
+		compareNext(t, END_OF_FILE, "");
+	}
+	
+	
+	@Test
+	public void testComment() {
+		Tokenizer t = newTokenizer("the#quick\nbrown # fox 123 !@#$% \r jumped");
+		compareNext(t, NAME, "the");
+		compareNext(t, NEWLINE, "\n");
+		compareNext(t, NAME, "brown");
+		compareNext(t, NEWLINE, "\r");
+		compareNext(t, NAME, "jumped");
 	}
 	
 	
