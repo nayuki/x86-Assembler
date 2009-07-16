@@ -56,9 +56,9 @@ public final class InstructionPattern {
 		this.operandSizeMode = operandSizeMode;
 		this.opcodes = toBytes(opcodes);
 		
-		List<OperandPattern> temp = new ArrayList<OperandPattern>();
-		Collections.addAll(temp, operands);
-		this.operands = Collections.unmodifiableList(temp);
+		List<OperandPattern> tempoper = new ArrayList<OperandPattern>();
+		Collections.addAll(tempoper, operands);
+		this.operands = Collections.unmodifiableList(tempoper);
 		
 		List<InstructionOption> tempopt = new ArrayList<InstructionOption>();
 		Collections.addAll(tempopt, options);
