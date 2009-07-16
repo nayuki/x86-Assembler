@@ -74,8 +74,8 @@ public final class Memory extends Operand {
 	
 	
 	/**
-	 * Returns a string representation of this memory reference. The format is subjected to change.
-	 * @return a string representation of this memory reference
+	 * Returns a string representation of this memory operand. The format is subjected to change.
+	 * @return a string representation of this memory operand
 	 */
 	@Override
 	public String toString() {
