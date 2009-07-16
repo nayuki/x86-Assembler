@@ -30,6 +30,11 @@ final class Token {
 	
 	
 	
+	/**
+	 * Compares this token to the specified object for equality. Returns {@code true} if the specified object is a token with the same type and text. Otherwise returns {@code false}.
+	 * @param obj the object to compare this token against
+	 * @return {@code true} if the object is a token with the same type and text, {@code false} otherwise
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Token))
@@ -41,6 +46,10 @@ final class Token {
 	}
 	
 	
+	/**
+	 * Returns the hash code for this token.
+	 * @return the hash code for this token.
+	 */
 	@Override
 	public int hashCode() {
 		return type.hashCode() + text.hashCode();

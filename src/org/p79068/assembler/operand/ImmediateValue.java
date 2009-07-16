@@ -73,6 +73,11 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	/**
+	 * Returns the value of this immediate value, which is itself.
+	 * @param labelOffsets the mapping of label names to offsets (ignored)
+	 * @return the value of this immediate value
+	 */
 	@Override
 	public ImmediateValue getValue(Map<String,Integer> labelOffsets) {
 		return this;
@@ -88,6 +93,11 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	/**
+	 * Compares this immediate value to the specified object for equality. Returns {@code true} if the specified object is an immediate value with the same value. Otherwise returns {@code false}.
+	 * @param obj the object to compare this immediate value against
+	 * @return {@code true} if the object is an immediate value with the same value, {@code false} otherwise
+	 */
 	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof ImmediateValue))
@@ -97,6 +107,10 @@ public class ImmediateValue extends Immediate {
 	}
 	
 	
+	/**
+	 * Returns the hash code for this immediate value.
+	 * @return the hash code for this immediate value
+	 */
 	@Override
 	public int hashCode() {
 		return value;
@@ -135,8 +149,8 @@ public class ImmediateValue extends Immediate {
 		if (!is16Bit())
 			throw new IllegalStateException("Not a 16-bit integer");
 		return new byte[]{
-			(byte)(value >>>  0),
-			(byte)(value >>>  8)
+			(byte)(value >>> 0),
+			(byte)(value >>> 8)
 		};
 	}
 	
@@ -149,7 +163,7 @@ public class ImmediateValue extends Immediate {
 		if (!is8Bit())
 			throw new IllegalStateException("Not an 8-bit integer");
 		return new byte[]{
-			(byte)(value >>>  0)
+			(byte)(value >>> 0)
 		};
 	}
 	

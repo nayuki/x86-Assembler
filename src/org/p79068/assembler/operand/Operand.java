@@ -9,6 +9,9 @@ package org.p79068.assembler.operand;
  */
 public class Operand {
 	
+	/**
+	 * Constructs an operand.
+	 */
 	Operand() {}
 	
 }

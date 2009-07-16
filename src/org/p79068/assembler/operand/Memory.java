@@ -2,7 +2,7 @@ package org.p79068.assembler.operand;
 
 
 /**
- * A 32-bit memory reference. Immutable.
+ * A 32-bit memory reference. A memory operand has a base register (possibly {@code null}), an index register (possibly {@code null}), an index scale, and a displacement. A memory operand represents the address <var>base</var> + <var>index</var>*<var>scale</var> + <var>displacement</var>. Immutable.
  * @see Register32
  */
 public final class Memory extends Operand {
@@ -13,7 +13,7 @@ public final class Memory extends Operand {
 	/** The index register, which is not {@link Register32}.ESP, and may be {@code null}. */
 	public final Register32 index;
 	
-	/** The scale, which is either 1, 2, 4, or 8. */
+	/** The index scale, which is either 1, 2, 4, or 8. */
 	public final int scale;
 	
 	/** The displacement, which is not {@code null}. */
@@ -44,6 +44,11 @@ public final class Memory extends Operand {
 	
 	
 	
+	/**
+	 * Compares this memory operand to the specified object for equality. Returns {@code true} if the specified object is a memory operand with the same base, index, scale, and displacement. Otherwise returns {@code false}.
+	 * @param obj the object to compare this memory operand against
+	 * @return {@code true} if the object is a memory operand with the same parameters, {@code false} otherwise
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Memory))
@@ -58,6 +63,10 @@ public final class Memory extends Operand {
 	}
 	
 	
+	/**
+	 * Returns the hash code for this memory operand.
+	 * @return the hash code for this memory operand
+	 */
 	@Override
 	public int hashCode() {
 		return base.hashCode() + index.hashCode() + scale + displacement.hashCode();

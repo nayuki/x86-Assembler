@@ -55,6 +55,10 @@ public class FastStringTokenizer extends Tokenizer {
 	
 	
 	
+	/**
+	 * Returns the next token from this tokenizer.
+	 * @return the next token from this tokenizer
+	 */
 	@Override
 	public Token next() {
 		int start = offset;

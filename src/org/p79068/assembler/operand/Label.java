@@ -33,12 +33,22 @@ public class Label extends Immediate {
 	}
 	
 	
+	/**
+	 * Returns the value of this label operand, given the specified label offset mapping. This method returns an {@link ImmediateValue} of {@code labelOffset.get(this.name)}.
+	 * @param labelOffsets the mapping of label names to offset
+	 * @return the offset of this label
+	 */
 	@Override
 	public ImmediateValue getValue(Map<String,Integer> labelOffsets) {
 		return new ImmediateValue(labelOffsets.get(name));
 	}
 	
-	
+
+	/**
+	 * Compares this label to the specified object for equality. Returns {@code true} if the specified object is a label with the same name. Otherwise returns {@code false}.
+	 * @param obj the object to compare this label against
+	 * @return {@code true} if the object is a label with the same name, {@code false} otherwise
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Label))
@@ -48,6 +58,10 @@ public class Label extends Immediate {
 	}
 	
 	
+	/**
+	 * Returns the hash code for this label.
+	 * @return the hash code for this label
+	 */
 	@Override
 	public int hashCode() {
 		return name.hashCode();

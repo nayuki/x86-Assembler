@@ -62,9 +62,9 @@ final class StringTokenizer extends Tokenizer {
 	
 	/**
 	 * Reads the contents of the specified file, appends a newline character ({@code '\n'}), and returns the result.
-	 * @param file
-	 * @return
-	 * @throws IOException
+	 * @param file the file to read from
+	 * @return the contents of the file as a string, plus a trailing newline
+	 * @throws IOException if an I/O exception occurred
 	 */
 	private static String read(File file) throws IOException {
 		if (file == null)
@@ -111,6 +111,10 @@ final class StringTokenizer extends Tokenizer {
 	
 	
 	
+	/**
+	 * Returns the next token from this tokenizer.
+	 * @return the next token from this tokenizer
+	 */
 	@Override
 	public Token next() {
 		for (TokenPattern pat : patterns) {

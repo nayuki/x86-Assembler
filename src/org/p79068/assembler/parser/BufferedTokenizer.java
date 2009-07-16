@@ -1,6 +1,9 @@
 package org.p79068.assembler.parser;
 
 
+/**
+ * Decorates a tokenizer with peeking capabilities.
+ */
 final class BufferedTokenizer {
 	
 	private Tokenizer tokenizer;
@@ -18,6 +21,10 @@ final class BufferedTokenizer {
 	
 	
 	
+	/**
+	 * Returns the next token from this tokenizer.
+	 * @return the next token from this tokenizer
+	 */
 	public Token next() {
 		if (nextToken != null) {
 			Token result = nextToken;
