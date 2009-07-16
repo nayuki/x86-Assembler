@@ -1,6 +1,8 @@
 package org.p79068.assembler;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.p79068.assembler.operand.Operand;
 
@@ -9,11 +11,11 @@ public class InstructionStatement extends Statement {
 	
 	private String mnemonic;
 	
-	private Operand[] operands;
+	private List<Operand> operands;
 	
 	
 	
-	public InstructionStatement(String mnemonic, Operand[] operands) {
+	public InstructionStatement(String mnemonic, List<Operand> operands) {
 		if (mnemonic == null || operands == null)
 			throw new NullPointerException();
 		for (Operand op : operands) {
@@ -22,7 +24,7 @@ public class InstructionStatement extends Statement {
 		}
 		
 		this.mnemonic = mnemonic;
-		this.operands = operands;
+		this.operands = Collections.unmodifiableList(new ArrayList<Operand>(operands));
 	}
 	
 	
@@ -32,7 +34,7 @@ public class InstructionStatement extends Statement {
 	}
 	
 	
-	public Operand[] getOperands() {
+	public List<Operand> getOperands() {
 		return operands;
 	}
 	
@@ -42,13 +44,13 @@ public class InstructionStatement extends Statement {
 			return false;
 		else {
 			InstructionStatement ist = (InstructionStatement)obj;
-			return mnemonic.equals(ist.mnemonic) && Arrays.deepEquals(operands, ist.operands);
+			return mnemonic.equals(ist.mnemonic) && operands.equals(ist.operands);
 		}
 	}
 	
 	
 	public int hashCode() {
-		return mnemonic.hashCode() + Arrays.deepHashCode(operands);
+		return mnemonic.hashCode() + operands.hashCode();
 	}
 	
 	
@@ -57,7 +59,7 @@ public class InstructionStatement extends Statement {
 		
 		sb.append(mnemonic);
 		
-		if (operands.length > 0) {
+		if (operands.size() > 0) {
 			sb.append("  ");
 			
 			boolean initial = true;

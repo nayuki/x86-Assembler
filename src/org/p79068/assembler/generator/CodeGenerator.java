@@ -1,5 +1,7 @@
 package org.p79068.assembler.generator;
 
+import java.util.List;
+
 import org.p79068.assembler.Program;
 import org.p79068.assembler.operand.Immediate;
 import org.p79068.assembler.operand.ImmediateValue;
@@ -11,7 +13,7 @@ import org.p79068.assembler.operand.Register32;
 
 final class CodeGenerator {
 	
-	public static int getMachineCodeLength(InstructionPatternTable table, String mnemonic, Operand[] operands) {
+	public static int getMachineCodeLength(InstructionPatternTable table, String mnemonic, List<Operand> operands) {
 		InstructionPattern pat = table.match(mnemonic, operands);
 		int length = 0;
 		
@@ -37,8 +39,8 @@ final class CodeGenerator {
 	}
 	
 	
-	private static int getModRMBytesLength(ModRM option, Operand[] operands) {
-		Operand rm = operands[option.rmOperandIndex];
+	private static int getModRMBytesLength(ModRM option, List<Operand> operands) {
+		Operand rm = operands.get(option.rmOperandIndex);
 		
 		if (rm instanceof Register) {
 			return 1;
@@ -71,7 +73,7 @@ final class CodeGenerator {
 	}
 	
 	
-	public static byte[] makeMachineCode(InstructionPatternTable table, String mnemonic, Operand[] operands, Program program, int offset) {
+	public static byte[] makeMachineCode(InstructionPatternTable table, String mnemonic, List<Operand> operands, Program program, int offset) {
 		// Get matching instruction pattern
 		InstructionPattern pat = table.match(mnemonic, operands);
 		
@@ -87,7 +89,7 @@ final class CodeGenerator {
 		if (pat.options.length == 1 && pat.options[0] instanceof RegisterInOpcode) {
 			RegisterInOpcode option = (RegisterInOpcode)pat.options[0];
 			opcodes = opcodes.clone();
-			opcodes[opcodes.length - 1] += ((Register)operands[option.operandIndex]).getRegisterNumber();
+			opcodes[opcodes.length - 1] += ((Register)operands.get(option.operandIndex)).getRegisterNumber();
 		}
 		
 		// Append opcode
@@ -103,7 +105,7 @@ final class CodeGenerator {
 			
 			if (slot == OperandPattern.IMM8 || slot == OperandPattern.IMM8S || slot == OperandPattern.IMM16 || slot == OperandPattern.IMM32 || slot == OperandPattern.REL8 || slot == OperandPattern.REL16 || slot == OperandPattern.REL32) {
 				
-				ImmediateValue value = ((Immediate)operands[i]).getValue(program);
+				ImmediateValue value = ((Immediate)operands.get(i)).getValue(program);
 				
 				if (slot == OperandPattern.REL8 || slot == OperandPattern.REL16 || slot == OperandPattern.REL32)
 					value = new ImmediateValue(value.getValue(program).getValue() - offset - getMachineCodeLength(table, mnemonic, operands));
@@ -137,8 +139,8 @@ final class CodeGenerator {
 	}
 	
 	
-	private static byte[] makeModRMBytes(ModRM option, Operand[] operands, Program program) {
-		Operand rm = operands[option.rmOperandIndex];
+	private static byte[] makeModRMBytes(ModRM option, List<Operand> operands, Program program) {
+		Operand rm = operands.get(option.rmOperandIndex);
 		int mod;
 		int rmvalue;
 		byte[] rest;
@@ -202,7 +204,7 @@ final class CodeGenerator {
 		// Set reg/op value
 		int regopvalue;
 		if (option.regOpcodeOperandIndex < 10) {
-			Register regop = (Register)operands[option.regOpcodeOperandIndex];
+			Register regop = (Register)operands.get(option.regOpcodeOperandIndex);
 			regopvalue = regop.getRegisterNumber();
 		} else
 			regopvalue = option.regOpcodeOperandIndex - 10;

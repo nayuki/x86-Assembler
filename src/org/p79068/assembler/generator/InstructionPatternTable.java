@@ -5,6 +5,7 @@ import static org.p79068.assembler.generator.OperandSizeMode.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -534,7 +535,7 @@ public class InstructionPatternTable {
 	}
 	
 	
-	public InstructionPattern match(String mnemonic, Operand[] operands) {
+	public InstructionPattern match(String mnemonic, List<Operand> operands) {
 		if (mnemonic == null || operands == null)
 			throw new NullPointerException();
 		if (!patternsByMnemonic.containsKey(mnemonic))
@@ -554,22 +555,22 @@ public class InstructionPatternTable {
 	}
 	
 	
-	private static boolean matches(InstructionPattern pat, Operand[] operands) {
-		if (pat.operands.length != operands.length)
+	private static boolean matches(InstructionPattern pat, List<Operand> operands) {
+		if (pat.operands.length != operands.size())
 			return false;
-		for (int i = 0; i < pat.operands.length && i < operands.length; i++) {
-			if (!pat.operands[i].matches(operands[i]))
+		for (int i = 0; i < pat.operands.length && i < operands.size(); i++) {
+			if (!pat.operands[i].matches(operands.get(i)))
 				return false;
 		}
 		return true;
 	}
 	
 	
-	private static boolean isBetterMatch(InstructionPattern x, InstructionPattern y, Operand[] operands) {
+	private static boolean isBetterMatch(InstructionPattern x, InstructionPattern y, List<Operand> operands) {
 		boolean isbetter = false;
 		boolean isworse = false;
 		
-		for (int i = 0; i < operands.length; i++) {
+		for (int i = 0; i < operands.size(); i++) {
 			if (x.operands[i] == REL8 || x.operands[i] == REL16 || x.operands[i] == REL32) {
 				// Wider is better
 				isbetter |= isWider(x.operands[i], y.operands[i]);

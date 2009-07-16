@@ -107,7 +107,7 @@ public final class Parser {
 			expectcomma = true;
 		}
 		
-		program.addStatement(new InstructionStatement(mnemonic, operands.toArray(new Operand[operands.size()])));
+		program.addStatement(new InstructionStatement(mnemonic, operands));
 	}
 	
 	
