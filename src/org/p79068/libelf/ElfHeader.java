@@ -63,5 +63,4 @@ public final class ElfHeader {
 		return b.toArray();
 	}
 	
-	
 }
