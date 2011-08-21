@@ -34,11 +34,6 @@ public final class ElfHeader {
 	
 	
 	
-	public byte[] getIdent() {
-		return ident.clone();
-	}
-	
-	
 	byte[] getBytes(short phnum, short shnum) {
 		int phoff = ELF_HEADER_SIZE;
 		int shoff = phoff + phnum * ProgramHeader.PROGRAM_HEADER_ENTRY_SIZE;
